@@ -10,7 +10,7 @@ subprojects
 	iw2d
 	iwresmanager
 	# For physics
-	../libraries/box2d/box2d_library
+	libraries/box2d/box2d_library
 	# For audio
 	SoundEngine
 }
