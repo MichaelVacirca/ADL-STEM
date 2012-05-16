@@ -1,0 +1,113 @@
+﻿Build started 5/16/2012 3:30:21 PM.
+     1>Project "C:\GIT\ADL-STEM\libraries\build_box2d_vc10\box2d_vc10.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release_box2d_vc10_x86\box2d_vc10.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         All outputs are up-to-date.
+       ClCompile:
+         C:\Marmalade\6.0\s3e\bin\CL.exe /c /I"c:/git/adl-stem/libraries" /Ic:/marmalade/6.0/s3e/h /Ic:/marmalade/6.0/s3e/h/ext /Ic:/marmalade/6.0/s3e/h/std /Ic:/marmalade/6.0/s3e/h/std/c++ /Ic:/marmalade/6.0/s3e/h/ext_legacy /Ic:/marmalade/6.0/s3e/h/legacy /I. /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /X /Gm /EHsc /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release_box2d_vc10_x86\\" /Fd"Release_box2d_vc10_x86\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt "c:/git/adl-stem/libraries/Box2D/Dynamics/b2World.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2Joint.cpp" "c:/git/adl-stem/libraries/Box2D/Rope/b2Rope.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/b2Island.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2Distance.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2DynamicTree.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2CircleContact.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2Timer.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2FrictionJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/b2Fixture.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2Draw.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/Shapes/b2CircleShape.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2PolygonContact.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2PulleyJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2WeldJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2CollideCircle.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/Shapes/b2LoopShape.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2ContactSolver.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2Settings.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2StackAllocator.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2MouseJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/Shapes/b2PolygonShape.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2Collision.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2WheelJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2Math.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2DistanceJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2CollidePolygon.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2LoopAndCircleContact.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/b2ContactManager.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/b2WorldCallbacks.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2GearJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2LoopAndPolygonContact.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2TimeOfImpact.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/Shapes/b2EdgeShape.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2RopeJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/b2Body.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2BroadPhase.cpp" "c:/git/adl-stem/libraries/Box2D/Collision/b2CollideEdge.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp" "c:/git/adl-stem/libraries/Box2D/Common/b2BlockAllocator.cpp" "c:/git/adl-stem/libraries/Box2D/Dynamics/Contacts/b2Contact.cpp" /S3Eproject /J /FI"C:\GIT\ADL-STEM\libraries\build_box2d_vc10\temp_defines_release.h"
+         b2Contact.cpp
+         b2BlockAllocator.cpp
+         b2RevoluteJoint.cpp
+         b2CollideEdge.cpp
+         b2BroadPhase.cpp
+         b2Body.cpp
+         b2RopeJoint.cpp
+         b2EdgeShape.cpp
+         b2TimeOfImpact.cpp
+         b2LoopAndPolygonContact.cpp
+         b2GearJoint.cpp
+         b2WorldCallbacks.cpp
+         b2ContactManager.cpp
+         b2LoopAndCircleContact.cpp
+         b2CollidePolygon.cpp
+         b2DistanceJoint.cpp
+         b2Math.cpp
+         b2WheelJoint.cpp
+         b2Collision.cpp
+         b2PrismaticJoint.cpp
+         Generating Code...
+         Compiling...
+         b2PolygonShape.cpp
+         b2MouseJoint.cpp
+         b2EdgeAndCircleContact.cpp
+         b2StackAllocator.cpp
+         b2PolygonAndCircleContact.cpp
+         b2Settings.cpp
+         b2ContactSolver.cpp
+         b2LoopShape.cpp
+         b2CollideCircle.cpp
+         b2WeldJoint.cpp
+         b2PulleyJoint.cpp
+         b2PolygonContact.cpp
+         b2CircleShape.cpp
+         b2Draw.cpp
+         b2Fixture.cpp
+         b2FrictionJoint.cpp
+         b2Timer.cpp
+         b2CircleContact.cpp
+         b2DynamicTree.cpp
+         b2EdgeAndPolygonContact.cpp
+         Generating Code...
+         Compiling...
+         b2Distance.cpp
+         b2Island.cpp
+         b2Rope.cpp
+         b2Joint.cpp
+         b2World.cpp
+         Generating Code...
+       Lib:
+         C:\Marmalade\6.0\s3e\bin\Lib.exe /OUT:"C:\GIT\ADL-STEM\libraries\lib\x86\box2d.lib" /NOLOGO Release_box2d_vc10_x86\b2World.obj
+         Release_box2d_vc10_x86\b2Joint.obj
+         Release_box2d_vc10_x86\b2Rope.obj
+         Release_box2d_vc10_x86\b2Island.obj
+         Release_box2d_vc10_x86\b2Distance.obj
+         Release_box2d_vc10_x86\b2EdgeAndPolygonContact.obj
+         Release_box2d_vc10_x86\b2DynamicTree.obj
+         Release_box2d_vc10_x86\b2CircleContact.obj
+         Release_box2d_vc10_x86\b2Timer.obj
+         Release_box2d_vc10_x86\b2FrictionJoint.obj
+         Release_box2d_vc10_x86\b2Fixture.obj
+         Release_box2d_vc10_x86\b2Draw.obj
+         Release_box2d_vc10_x86\b2CircleShape.obj
+         Release_box2d_vc10_x86\b2PolygonContact.obj
+         Release_box2d_vc10_x86\b2PulleyJoint.obj
+         Release_box2d_vc10_x86\b2WeldJoint.obj
+         Release_box2d_vc10_x86\b2CollideCircle.obj
+         Release_box2d_vc10_x86\b2LoopShape.obj
+         Release_box2d_vc10_x86\b2ContactSolver.obj
+         Release_box2d_vc10_x86\b2Settings.obj
+         Release_box2d_vc10_x86\b2PolygonAndCircleContact.obj
+         Release_box2d_vc10_x86\b2StackAllocator.obj
+         Release_box2d_vc10_x86\b2EdgeAndCircleContact.obj
+         Release_box2d_vc10_x86\b2MouseJoint.obj
+         Release_box2d_vc10_x86\b2PolygonShape.obj
+         Release_box2d_vc10_x86\b2PrismaticJoint.obj
+         Release_box2d_vc10_x86\b2Collision.obj
+         Release_box2d_vc10_x86\b2WheelJoint.obj
+         Release_box2d_vc10_x86\b2Math.obj
+         Release_box2d_vc10_x86\b2DistanceJoint.obj
+         Release_box2d_vc10_x86\b2CollidePolygon.obj
+         Release_box2d_vc10_x86\b2LoopAndCircleContact.obj
+         Release_box2d_vc10_x86\b2ContactManager.obj
+         Release_box2d_vc10_x86\b2WorldCallbacks.obj
+         Release_box2d_vc10_x86\b2GearJoint.obj
+         Release_box2d_vc10_x86\b2LoopAndPolygonContact.obj
+         Release_box2d_vc10_x86\b2TimeOfImpact.obj
+         Release_box2d_vc10_x86\b2EdgeShape.obj
+         Release_box2d_vc10_x86\b2RopeJoint.obj
+         Release_box2d_vc10_x86\b2Body.obj
+         Release_box2d_vc10_x86\b2BroadPhase.obj
+         Release_box2d_vc10_x86\b2CollideEdge.obj
+         Release_box2d_vc10_x86\b2RevoluteJoint.obj
+         Release_box2d_vc10_x86\b2BlockAllocator.obj
+         Release_box2d_vc10_x86\b2Contact.obj   
+         box2d_vc10.vcxproj -> C:\GIT\ADL-STEM\libraries\lib\x86\box2d.lib
+       FinalizeBuildStatus:
+         Deleting file "Release_box2d_vc10_x86\box2d_vc10.unsuccessfulbuild".
+         Touching "Release_box2d_vc10_x86\box2d_vc10.lastbuildstate".
+     1>Done Building Project "C:\GIT\ADL-STEM\libraries\build_box2d_vc10\box2d_vc10.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:34.86
