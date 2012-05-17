@@ -6,13 +6,14 @@
 #include "IwGxFont.h"
 // For physics
 #include "Box2D/Box2D.h"
-
+#include "IwSound.h"
 #include "Sprite.h"
 
 enum eSpriteType
 {
-	ST_None, 
-	ST_Atom, 
+	ST_None,
+	ST_Atom,
+	ST_Compound
 };
 
 //
@@ -63,6 +64,8 @@ protected:
 	CIw2DImage*					atom_H_image;
 	CIw2DImage*					atom_O_image;
 	CIw2DImage*					atom_image;
+	CIw2DImage*					compound_CO_image;
+	CIw2DImage*					inventory_image;
 
 	// Font
 	CIw2DFont*					Font;

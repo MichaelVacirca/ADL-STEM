@@ -45,6 +45,8 @@ void CGame::Init()
 	atom_H_image		= Iw2DCreateImageResource("atom_h");
 	atom_O_image		= Iw2DCreateImageResource("atom_o");
 	atom_image			= Iw2DCreateImageResource("atom");
+	inventory_image		= Iw2DCreateImageResource("inventory");
+	compound_CO_image	= Iw2DCreateImageResource("compound_co");
 
 	// Create the font that is used to display the score
 	Font = Iw2DCreateFontResource("trebuchet_12");
@@ -102,38 +104,45 @@ void CGame::Init()
 	// Create background sprite
 	CSprite* background_sprite = new CSprite();
 	background_sprite->Init();
-	background_sprite->setPosAngScale(screen_width / 2, screen_height / 2, 0, IW_GEOM_ONE);
+	background_sprite->setPosAngScale(screen_width / 2, screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically & horizontally on screen
 	background_sprite->setImage(background_image);
 	background_sprite->setDestSize(screen_width, screen_height);
 	SpriteManager->addSprite(background_sprite);
 
+	// Create inventory sprite
+	CSprite* inventory_sprite = new CSprite();
+	inventory_sprite->Init();
+	inventory_sprite->setPosAngScale(screen_width - (84 / 2), screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically on screen
+	inventory_sprite->setImage(inventory_image);
+	inventory_sprite->setDestSize(84, 163);
+	SpriteManager->addSprite(inventory_sprite);
+
 	// Create a bunch of atoms
-	Atom* atom_sprite = new Atom();
+	CAtom* atom_sprite = new CAtom();
 	atom_sprite->Init();
 	atom_sprite->setPosAngScale(50, 50, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_C_image);
-	atom_sprite->setVelocity(2, 0);
+	atom_sprite->setVelocity(1, 0);
 	SpriteManager->addSprite(atom_sprite);
 	
-	atom_sprite = new Atom();
+	atom_sprite = new CAtom();
 	atom_sprite->Init();
 	atom_sprite->setPosAngScale(200, 150, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_H_image);
-	atom_sprite->setVelocity(0, 2);
+	atom_sprite->setVelocity(0, 1);
 	SpriteManager->addSprite(atom_sprite);
 	
-	atom_sprite = new Atom();
+	atom_sprite = new CAtom();
 	atom_sprite->Init();
 	atom_sprite->setPosAngScale(150, 200, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_O_image);
-	atom_sprite->setVelocity(2, 2);
+	atom_sprite->setVelocity(1, 1);
 	SpriteManager->addSprite(atom_sprite);
 	
-	atom_sprite = new Atom();
+	atom_sprite = new CAtom();
 	atom_sprite->Init();
 	atom_sprite->setPosAngScale(200, 300, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_image);
-	//atom_sprite->setVelocity(2, 2);
 	SpriteManager->addSprite(atom_sprite);
 	
 	// For audio
@@ -156,6 +165,11 @@ void CGame::Release()
 	{
 		delete background_image;
 		background_image = NULL;
+	}
+	if (inventory_image != NULL)
+	{
+		delete inventory_image;
+		inventory_image = NULL;
 	}
 	if (atom_C_image != NULL)
 	{
@@ -289,7 +303,7 @@ void CGame::DrawScore()
 	//// Draw the score number
 	//Iw2DDrawString(str, CIwSVec2(100, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 	// HASAN - display target & current compound, not score
-	Iw2DDrawString("Target Compound: H20", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
+	Iw2DDrawString("Target Compound: C0", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 
 	Iw2DDrawString("Current Compound: ___", CIwSVec2(200, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 }

@@ -41,6 +41,10 @@ files
 	Input.h
 	Sprite.cpp
 	Sprite.h
+	Compound.h
+	Compound.cpp
+	Inventory.h
+	Inventory.cpp
 
 	[Data]
 	(data)

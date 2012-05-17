@@ -1,4 +1,4 @@
-#if !defined(_WATER_DROP_H_)
+#if !defined(_ATOM_H_)
 #define _ATOM_H_
 
 #include "s3e.h"
@@ -6,12 +6,14 @@
 
 #include "Sprite.h"
 
+#define ATOM_RADIUS		64
+
 //
 //
-// Atom - Atom objects are spawned as needed, bounce off walls, and attach to each other when the correct activation energy is provided.
+// CAtom - Atom objects are spawned as needed, bounce off walls, and attach to each other when the correct activation energy is provided.
 //
 // 
-class Atom : public CSprite
+class CAtom : public CSprite
 {
 	/// Properties
 protected:
@@ -25,10 +27,11 @@ public:
 protected:
 	bool		WallCollideCheck();
 	bool		WallCollideCheck(int x, int y);
+	bool		CompoundCollideCheck();
 
 public:
-	Atom() : CSprite() {}
-	virtual ~Atom()	{}
+	CAtom() : CSprite() {}
+	virtual ~CAtom()	{}
 
 	void	Init();				// Initialise the atom game object
 	bool	Update();			// Update our atom object
