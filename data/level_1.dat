@@ -1,0 +1,4 @@
+# Data for level 1
+
+goal_compound: CO
+inventory: C(1), O(1), H(1)

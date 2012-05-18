@@ -11,6 +11,8 @@
 //
 CGame g_Game;
 
+MyContactListener g_MyContactListener;
+
 //
 //
 // CGame implementation
@@ -18,9 +20,24 @@ CGame g_Game;
 //
 void CGame::Init()
 {
+	// Load the resource group that contains our graphics
+	CIwResGroup* gameGroup = IwGetResManager()->LoadGroup("game.group");
+	IwGetResManager()->SetCurrentGroup(gameGroup);		// Ensure that game is the current resource group
+
+	// HASAN - set initial game state
+	//m_nGameState = GS_Playing;
+	m_nGameState = GS_Welcome;
+
+	// HASAN - create & initialize inventory reference object
+	m_pInventory = new CInventory();
+	m_pInventory->Init();
+
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
-	m_gravity = b2Vec2(0.0f, -9.8f);
+	//m_gravity = b2Vec2(0.0f, -9.8f);
+	// HASAN - experimenting with different gravity settings
+	m_gravity = b2Vec2(0.0f, 9.8f);  // "falls" upward
+	m_gravity = b2Vec2(0.0f, 0.0f);  // 
 	m_doSleep = false;
 
 	physicsHz = 60;
@@ -28,25 +45,21 @@ void CGame::Init()
 	velocityIterations = 10;
 	positionIterations = 8;
 
-	CIw2DImage*				g_Image = NULL;
-	b2World*				g_world = NULL;
+	m_Image = NULL;
+	m_world = NULL;
 	//-----------------------------------------------------------------------------
 
 	// Allocate the sprite manager
 	SpriteManager = new CSpriteManager();
-
-	// Load the resource group that contains our graphics
-	CIwResGroup* Level1Group = IwGetResManager()->LoadGroup("Level1.group");
-	IwGetResManager()->SetCurrentGroup(Level1Group);		// Ensure that Level1 is the current resource group
 
 	// Create images that we can use to render our objects
 	background_image	= Iw2DCreateImageResource("background");
 	atom_C_image		= Iw2DCreateImageResource("atom_c");
 	atom_H_image		= Iw2DCreateImageResource("atom_h");
 	atom_O_image		= Iw2DCreateImageResource("atom_o");
-	atom_image			= Iw2DCreateImageResource("atom");
-	inventory_image		= Iw2DCreateImageResource("inventory");
-	compound_CO_image	= Iw2DCreateImageResource("compound_co");
+	//atom_image			= Iw2DCreateImageResource("atom");
+	// HASAN - use the 'blank' atom as the image to associate with the box2d example
+	m_Image				= Iw2DCreateImageResource("atom");
 
 	// Create the font that is used to display the score
 	Font = Iw2DCreateFontResource("trebuchet_12");
@@ -58,13 +71,16 @@ void CGame::Init()
 	m_prevTime = s3eTimerGetMs();
 
 	// create a box2d world
-	if( !(g_world = new b2World(m_gravity, m_doSleep)) )		{ /*error*/	}
+	if( !(m_world = new b2World(m_gravity, m_doSleep)) )		{ /*error*/	}
+
+	// HASAN - new for collision callbacks
+	m_world->SetContactListener(&g_MyContactListener);
 
 	// add a boundary at the edge of the screen
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set(0, 0);
-	b2Body* boundaryBody = g_world->CreateBody(&bodyDef);
+	b2Body* boundaryBody = m_world->CreateBody(&bodyDef);
 
 	const float hw = (float)Iw2DGetSurfaceWidth() * 0.5f / 8;
 	const float hh = (float)Iw2DGetSurfaceHeight() * 0.5f / 8;
@@ -79,21 +95,30 @@ void CGame::Init()
 //	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(0, 0);
-	m_body = g_world->CreateBody(&bodyDef);
+	m_body = m_world->CreateBody(&bodyDef);
 	m_body->SetLinearDamping(0.1f);
 
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(0.5f * (8/2), 0.5f * (8/2));
+	//polygonShape.SetAsBox(0.5f * (8/2), 0.5f * (8/2));
+	// HASAN - use circle instead of a box
+	b2CircleShape circleShape;
+	circleShape.m_radius = 5.0f;
 
 	b2FixtureDef fd;
-	fd.shape = &polygonShape;
+	//fd.shape = &polygonShape;
+	// HASAN - use circle instead of a box 
+	fd.shape = &circleShape;
 	fd.friction = 0.5f;
 	fd.density = 10.0f;
-	fd.restitution = 0.5f;
+	//fd.restitution = 0.5f;
+	// HASAN - more bouncy
+	fd.restitution = 0.95f;   // between 0 & 1 (1 = most bouncy)
 
 	m_body->CreateFixture(&fd);
 
 	m_body->SetAngularVelocity(2.15f);		// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
+	// HASAN - when in zero gravity, Set an initial linear velocity.
+	m_body->SetLinearVelocity(b2Vec2(50, 20));
 	//-----------------------------------------------------------------------------
 
 
@@ -109,53 +134,43 @@ void CGame::Init()
 	background_sprite->setDestSize(screen_width, screen_height);
 	SpriteManager->addSprite(background_sprite);
 
-	// Create inventory sprite
-	CSprite* inventory_sprite = new CSprite();
-	inventory_sprite->Init();
-	inventory_sprite->setPosAngScale(screen_width - (84 / 2), screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically on screen
-	inventory_sprite->setImage(inventory_image);
-	inventory_sprite->setDestSize(84, 163);
-	SpriteManager->addSprite(inventory_sprite);
-
 	// Create a bunch of atoms
 	CAtom* atom_sprite = new CAtom();
-	atom_sprite->Init();
+	atom_sprite->Init("C");
 	atom_sprite->setPosAngScale(50, 50, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_C_image);
 	atom_sprite->setVelocity(1, 0);
 	SpriteManager->addSprite(atom_sprite);
 	
 	atom_sprite = new CAtom();
-	atom_sprite->Init();
+	atom_sprite->Init("H");
 	atom_sprite->setPosAngScale(200, 150, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_H_image);
 	atom_sprite->setVelocity(0, 1);
 	SpriteManager->addSprite(atom_sprite);
 	
 	atom_sprite = new CAtom();
-	atom_sprite->Init();
+	atom_sprite->Init("O");
 	atom_sprite->setPosAngScale(150, 200, 0, IW_GEOM_ONE);
 	atom_sprite->setImage(atom_O_image);
 	atom_sprite->setVelocity(1, 1);
 	SpriteManager->addSprite(atom_sprite);
 	
-	atom_sprite = new CAtom();
-	atom_sprite->Init();
-	atom_sprite->setPosAngScale(200, 300, 0, IW_GEOM_ONE);
-	atom_sprite->setImage(atom_image);
-	SpriteManager->addSprite(atom_sprite);
+	//atom_sprite = new CAtom();
+	//atom_sprite->Init();
+	//atom_sprite->setPosAngScale(200, 300, 0, IW_GEOM_ONE);
+	//atom_sprite->setImage(atom_image);
+	//SpriteManager->addSprite(atom_sprite);
 	
 	// For audio
-	ExplosionSoundSpec = (CIwSoundSpec*)Level1Group->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
+	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 	ExplosionSoundInstance = NULL;
 
-	// Set-up game data
-	WaterDropTimer = 10;
 
-
+	// HASAN - commenting out below for now b/c it's annoying
 	// Play some MP3 music using s3e Audio (if the codec is supported)
-	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
-		s3eAudioPlay("music.mp3", 1);
+	//if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
+	//	s3eAudioPlay("music.mp3", 1);
 }
 
 void CGame::Release()
@@ -165,11 +180,6 @@ void CGame::Release()
 	{
 		delete background_image;
 		background_image = NULL;
-	}
-	if (inventory_image != NULL)
-	{
-		delete inventory_image;
-		inventory_image = NULL;
 	}
 	if (atom_C_image != NULL)
 	{
@@ -185,6 +195,11 @@ void CGame::Release()
 	{
 		delete atom_O_image;
 		atom_O_image = NULL;
+	}
+	if (m_Image != NULL)
+	{
+		delete m_Image;
+		m_Image = NULL;
 	}
 
 	// HASAN - new from box2d example
@@ -209,6 +224,20 @@ void CGame::Release()
 		delete SpriteManager;
 		SpriteManager = NULL;
 	}
+
+	// HASAN - clean-up inventory
+	if (m_pInventory != NULL)
+	{
+		m_pInventory->Release();
+
+		delete m_pInventory;
+		m_pInventory = NULL;
+	}
+}
+
+int	CGame::getGameState()
+{
+	return m_nGameState;
 }
 
 void CGame::PlayExplosionSound()
@@ -231,18 +260,9 @@ void CGame::Update()
 
 	// Update Iw Sound Manager
 	IwGetSoundManager()->Update();
-		
-	// Updaste water drop timer
-	WaterDropTimer--;
-	if (WaterDropTimer <= 0)
-	{
-		// Create water drop
-		WaterDropTimer = 10;
-		//WaterDrop* drop_sprite = new WaterDrop();
-		//drop_sprite->Init();
-		//drop_sprite->setImage(water_drop_image);
-		//SpriteManager->addSprite(drop_sprite);
-	}
+	
+	// HASAN - updated inventory
+	m_pInventory->Update();
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
@@ -272,6 +292,31 @@ void CGame::Draw()
 	// Draw the score text
 	DrawScore();
 
+	// HASAN - new from box2d example
+	//-----------------------------------------------------------------------------
+	//static const CIwSVec2 imageSize(m_Image->GetWidth() >> 3, m_Image->GetHeight() >> 3);
+	// HASAN - don't want the image size reduced
+	static const CIwSVec2 imageSize(m_Image->GetWidth() , m_Image->GetHeight());
+	static const CIwSVec2 halfImageSize = imageSize >> 1;
+
+	const CIwSVec2 screenCentre = CIwSVec2((int16)Iw2DGetSurfaceWidth() >> 1, (int16)Iw2DGetSurfaceHeight() >> 1);
+
+	const b2Transform t = m_body->GetTransform();
+	const CIwSVec2 pos = screenCentre + (CIwSVec2(int16(t.p.x*8), -int16(t.p.y*8)));
+	const float angle = -t.q.GetAngle() * (180.0f/3.14159f);	// reverse angle as our screen-Y coord is reversed
+
+	CIwMat2D rot;
+	rot.SetRot(iwangle(angle * 1024 / 90), CIwVec2(pos) << 3);
+	Iw2DSetTransformMatrixSubPixel(rot);
+
+	Iw2DDrawImage(m_Image, pos - halfImageSize, imageSize);
+
+    Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
+	//-----------------------------------------------------------------------------
+
+	// HASAN - draw inventory
+	m_pInventory->Update();
+
 	// Show surface
 	Iw2DSurfaceShow();
 }
@@ -284,6 +329,9 @@ void CGame::updateScore(int amount)
 
 void CGame::DrawScore()
 {
+	if(m_nGameState == GS_Welcome || m_nGameState == GS_LevelSelect)
+		return;
+
 	// Set the current font
 	Iw2DSetFont(Font);
 

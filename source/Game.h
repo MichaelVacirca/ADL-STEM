@@ -9,12 +9,25 @@
 #include "IwSound.h"
 
 #include "Sprite.h"
+// HASAN - for inventory
+#include "Inventory.h"
 
 enum eSpriteType
 {
 	ST_None,
 	ST_Atom,
 	ST_Compound
+};
+
+// HASAN - new enum for different game states
+enum eGameState
+{
+	GS_Welcome,
+	GS_LevelSelect,
+	GS_Playing,
+	GS_Paused,
+	GS_LevelCompletedSuccess,
+	GS_LevelCompletedFailure
 };
 
 //
@@ -36,9 +49,15 @@ public:
 	void						addSprite(CSprite* sprite)		{ SpriteManager->addSprite(sprite); }
 	void						removeSprite(CSprite* sprite)	{ SpriteManager->removeSprite(sprite); }
 	void						updateScore(int amount);
+	// HASAN - new to expose the game state to other classes
+	int							getGameState();
 	/// Properties End
 protected:
-	int							WaterDropTimer;
+	// HASAN - for determining what to display when
+	int					m_nGameState;
+	// HASAN - inventory reference
+	CInventory*			m_pInventory;
+
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
 	b2Vec2					m_gravity;
@@ -65,8 +84,6 @@ protected:
 	CIw2DImage*					atom_H_image;
 	CIw2DImage*					atom_O_image;
 	CIw2DImage*					atom_image;
-	CIw2DImage*					compound_CO_image;
-	CIw2DImage*					inventory_image;
 
 	// Font
 	CIw2DFont*					Font;
@@ -92,5 +109,43 @@ extern CGame g_Game;
 
 
 
+// HASAN - this class probably should be moved somewhere else, but putting here for now
+
+class MyContactListener : public b2ContactListener
+{
+	void BeginContact(b2Contact* contact)
+	{
+  
+		////check if fixture A was a ball
+		//void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+		//if ( bodyUserData )
+		//	static_cast<Ball*>( bodyUserData )->startContact();
+  //
+		////check if fixture B was a ball
+		//bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+		//if ( bodyUserData )
+		//	static_cast<Ball*>( bodyUserData )->startContact();
+		// HASAN - for simplicity, just play a sound regardless of what's hitting
+		g_Game.PlayExplosionSound();
+	}
+  
+	void EndContact(b2Contact* contact)
+	{
+  
+		// HASAN - for simplicity, don't care about ending contact for now
+		////check if fixture A was a ball
+		//void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+		//if ( bodyUserData )
+		//	static_cast<Ball*>( bodyUserData )->endContact();
+  //
+		////check if fixture B was a ball
+		//bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+		//if ( bodyUserData )
+		//	static_cast<Ball*>( bodyUserData )->endContact();
+  
+	}
+};
+
+extern MyContactListener g_MyContactListener;
 
 #endif // _C_GAME_H_

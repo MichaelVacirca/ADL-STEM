@@ -1,0 +1,25 @@
+# Atom data
+
+atom_symbol:O
+atom_name:Oxygen
+atom_weight:10
+atom_image:atom_o.png
+atom_size:5
+#atom_radius:2.5
+atom_charge:+2
+
+atom_symbol:C
+atom_name:Carbon
+atom_weight:12
+atom_image:atom_c.png
+atom_size:5
+#atom_radius:2.5
+atom_charge:+1
+
+atom_symbol:H
+atom_name:Hydrogen
+atom_weight:8
+atom_image:atom_h.png
+atom_size:5
+#atom_radius:2.5
+atom_charge:0

@@ -1,4 +1,5 @@
 #include "Atom.h"
+
 #include "Game.h"
 
 //
@@ -13,8 +14,78 @@
 //
 //
 
-void CAtom::Init()
+void CAtom::Init(const char* i_strAtomSymbol)
 {
+	// HASAN - Lookup atom information to create the correct atom
+
+	s3eFile* file = s3eFileOpen("atoms.dat", "r");
+	int filesize = s3eFileGetSize(file);
+	//s3eFileClose(file);
+	s3eFileSeek(file, 0, S3E_FILESEEK_SET);
+
+	file = s3eFileOpen("atoms.dat", "rb");
+	char *buffer = new char[filesize + 1];
+	char lineBuffer[256];
+	char *pch2;
+	int len = filesize;
+	if (file != NULL)
+	{
+		if (s3eFileRead(buffer, len, 1, file) != 1)
+		{
+			s3eFileGetError();
+			s3eDebugOutputString(s3eFileGetErrorString());
+		}
+
+		// HASAN - read file contents for atom data file and store in this object
+		char* pch = strtok(buffer, "\n\r");
+		s3eDebugOutputString("Parsed file\n-----------\n");
+		while (pch != NULL)
+		{
+			// HASAN - debug
+			s3eDebugOutputString(pch);
+			if (pch[0] == '#')
+			{
+				// ignore comments
+				// HASAN - debug
+				s3eDebugOutputString("  -> comment");
+			}
+			else
+			{
+				// HASAN TODO - get the subsequent parsing to work (can't user 'strtok_r' b/c of linking error
+				strcpy(lineBuffer, pch);
+				pch2 = strtok(lineBuffer, ":");
+				if (!strcmp(pch2, "atom_symbol"))
+				{
+					// HASAN - debug
+					s3eDebugOutputString("  -> atom_symbol");
+
+					pch2 = strtok(NULL, ":");
+					if (!strcmp(pch2, i_strAtomSymbol))
+					{
+						s3eDebugOutputString("Atom symbol match found!");
+
+						// HASAN - more parsing needed here
+
+
+						// early terminate out of loop when match is found
+						break;
+					}
+				}
+			}
+
+			pch = strtok(NULL, "\n\r");
+		}
+
+		s3eFileClose(file);
+	}
+	else
+	{
+		s3eFileGetError();
+		s3eDebugOutputString(s3eFileGetErrorString());
+	}
+
+	delete [] buffer;
+
 	Destroyed = false;
 	Type = ST_Atom;
 	// HASAN - random velocity - may use later
@@ -105,9 +176,9 @@ bool CAtom::CompoundCollideCheck()
 					// play sound effect
 					//g_Game.PlayExplosionSound();  // play constantly unless the objects are destroyed below
 
+					// HASAN - do not use below to destroy atoms, but combine them into a compound
 					// Tell the atom to destroy itself
 					//atom->Destroy();
-					// HASAN TODO - uncomment below line when have compound creation working
 					//return false;
 				}
 			}

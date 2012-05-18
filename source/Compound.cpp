@@ -18,14 +18,14 @@
 void CCompound::Init()
 {
 	Destroyed = false;
-	Type = ST_Compound;
+	//Type = ST_Compound;
 	// HASAN - random velocity - may use later
 	//Velocity.x = 0;
 	//Velocity.y = 2 + (rand() * 6) / RAND_MAX;
 	Velocity.x = 0;
 	Velocity.y = 0;
-	Position.x = 20 + (rand() * (Iw2DGetSurfaceWidth() - 40)) / RAND_MAX;
-	Position.y = -20;
+	//Position.x = 20 + (rand() * (Iw2DGetSurfaceWidth() - 40)) / RAND_MAX;
+	//Position.y = -20;
 }
 
 bool CCompound::Update()
@@ -33,10 +33,10 @@ bool CCompound::Update()
 	if (Destroyed)
 		return false;	// Tell the sprite manager to remove this compound
 
-	CSprite::Update();
+	//CSprite::Update();
 
-	Position.x += Velocity.x;
-	Position.y += Velocity.y;
+	//Position.x += Velocity.x;
+	//Position.y += Velocity.y;
 
 	// If compound is at any edge of the screen, give new random velocity to 'bounce' it out of subsequent collisions
 	if (WallCollideCheck())
@@ -60,7 +60,8 @@ bool CCompound::Update()
 // Return true iff compound has collided with the wall
 bool CCompound::WallCollideCheck()
 {
-	return WallCollideCheck(Position.x, Position.y);
+	//return WallCollideCheck(Position.x, Position.y);
+	return false;
 }
 
 bool CCompound::WallCollideCheck(int x, int y)
@@ -70,34 +71,34 @@ bool CCompound::WallCollideCheck(int x, int y)
 
 bool CCompound::CompoundCollideCheck()
 {
-	// Search the sprite list in the spritemanager for atoms/compounds
-	for (CSpriteManager::Iterator it = Parent->begin(); it != Parent->end(); ++it)
-	{
-		if ((*it)->getType() == ST_Compound)
-		{
-			CCompound* compound = (CCompound*)*it;
-			// Check to see if the compound sprite is within the range (radius) of another compound
-			int dx = compound->getPosition().x - Position.x;
-			if (dx < 0) dx = -dx;
-			if (dx < 64)
-			{
-				// Check to see if the compound sprite is within the range (radius) of another compound
-				int dy = compound->getPosition().y - Position.y;
-				if (dy < 0) dy = -dy;
-				if (dy < 64)
-				{
-					// HASAN TODO - Create new compound iff activation energy and angle are correct
+	//// Search the sprite list in the spritemanager for atoms/compounds
+	//for (CSpriteManager::Iterator it = Parent->begin(); it != Parent->end(); ++it)
+	//{
+	//	if ((*it)->getType() == ST_Compound)
+	//	{
+	//		CCompound* compound = (CCompound*)*it;
+	//		// Check to see if the compound sprite is within the range (radius) of another compound
+	//		int dx = compound->getPosition().x - Position.x;
+	//		if (dx < 0) dx = -dx;
+	//		if (dx < 64)
+	//		{
+	//			// Check to see if the compound sprite is within the range (radius) of another compound
+	//			int dy = compound->getPosition().y - Position.y;
+	//			if (dy < 0) dy = -dy;
+	//			if (dy < 64)
+	//			{
+	//				// HASAN TODO - Create new compound iff activation energy and angle are correct
 
-					// HASAN TESTING = set velocity to 0
-					Velocity.x = 0;
-					Velocity.y = 0;
+	//				// HASAN TESTING = set velocity to 0
+	//				Velocity.x = 0;
+	//				Velocity.y = 0;
 
-					// Tell the compound to destroy itself
-					//compound->Destroy();
-					return false;
-				}
-			}
-		}
-	}
+	//				// Tell the compound to destroy itself
+	//				//compound->Destroy();
+	//				return false;
+	//			}
+	//		}
+	//	}
+	//}
 	return true;
 }

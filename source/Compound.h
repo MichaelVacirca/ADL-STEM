@@ -11,7 +11,7 @@
 // CCompound - Compound objects are spawned as Atoms collide, bounce off walls, and attach to each other when the correct activation energy is provided.
 //
 // 
-class CCompound : public CSprite
+class CCompound
 {
 	/// Properties
 protected:
@@ -28,7 +28,7 @@ protected:
 	bool		CompoundCollideCheck();
 
 public:
-	CCompound() : CSprite() {}
+	CCompound()				{}
 	virtual ~CCompound()	{}
 
 	void	Init();				// Initialise the compound game object

@@ -48,7 +48,7 @@ files
 
 	[Data]
 	(data)
-	Level1.group
+	game.group
 }
 
 assets
@@ -58,7 +58,7 @@ assets
 	music.mp3
 
 	(data-ram/data-gles1, data)
-	level1.group.bin
+	game.group.bin
 }
 
 deployments
