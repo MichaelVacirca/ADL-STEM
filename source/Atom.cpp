@@ -25,8 +25,6 @@ void CAtom::Init(const char* i_strAtomSymbol)
 
 	file = s3eFileOpen("atoms.dat", "rb");
 	char *buffer = new char[filesize + 1];
-	char lineBuffer[256];
-	char *pch2;
 	int len = filesize;
 	if (file != NULL)
 	{
@@ -37,7 +35,8 @@ void CAtom::Init(const char* i_strAtomSymbol)
 		}
 
 		// HASAN - read file contents for atom data file and store in this object
-		char* pch = strtok(buffer, "\n\r");
+		// HASAN - Not the ideal way to parse, but can't get strtok("\n\r") and strtok(":") to work when called separately
+		char* pch = strtok(buffer, "\n\r:");
 		s3eDebugOutputString("Parsed file\n-----------\n");
 		while (pch != NULL)
 		{
@@ -52,19 +51,18 @@ void CAtom::Init(const char* i_strAtomSymbol)
 			else
 			{
 				// HASAN TODO - get the subsequent parsing to work (can't user 'strtok_r' b/c of linking error
-				strcpy(lineBuffer, pch);
-				pch2 = strtok(lineBuffer, ":");
-				if (!strcmp(pch2, "atom_symbol"))
+				if (!strcmp(pch, "atom_symbol"))
 				{
 					// HASAN - debug
 					s3eDebugOutputString("  -> atom_symbol");
 
-					pch2 = strtok(NULL, ":");
-					if (!strcmp(pch2, i_strAtomSymbol))
+					pch = strtok(NULL, "\n\r:");
+					if (!strcmp(pch, i_strAtomSymbol))
 					{
+						// HASAN - debug
 						s3eDebugOutputString("Atom symbol match found!");
 
-						// HASAN - more parsing needed here
+						// HASAN - more parsing needed here (move logic from Game.cpp Init() to here)
 
 
 						// early terminate out of loop when match is found
@@ -73,7 +71,7 @@ void CAtom::Init(const char* i_strAtomSymbol)
 				}
 			}
 
-			pch = strtok(NULL, "\n\r");
+			pch = strtok(NULL, "\n\r:");
 		}
 
 		s3eFileClose(file);

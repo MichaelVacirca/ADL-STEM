@@ -1,0 +1,16 @@
+# Data on levels
+
+level_num:1
+level_file:level1.dat
+level_locked:false
+level_high_score:0
+
+level_num:2
+level_file:level2.dat
+level_locked:false
+level_high_score:0
+
+level_num:3
+level_file:level3.dat
+level_locked:false
+level_high_score:0

@@ -1,4 +1,8 @@
 # Data for level 1
 
-goal_compound: CO
-inventory: C(1), O(1), H(1)
+level_name:Baby Steps
+level_goal_compound: CO
+level_inventory: C(1), O(1), H(1)
+# level_atoms format
+# <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
+level_atoms: C(0,0,0,0)
