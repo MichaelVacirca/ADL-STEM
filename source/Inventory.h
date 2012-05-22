@@ -27,6 +27,7 @@ public:
 	void Draw();
 };
 
+// HASAN TODO - replace global variable by makeing this class a member of the Level class
 extern CInventory g_Inventory;
 
 #endif // _INVENTORY_H_

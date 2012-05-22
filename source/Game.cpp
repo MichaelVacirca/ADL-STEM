@@ -25,8 +25,8 @@ void CGame::Init()
 	IwGetResManager()->SetCurrentGroup(gameGroup);		// Ensure that game is the current resource group
 
 	// HASAN - set initial game state
-	//m_nGameState = GS_Playing;
-	m_nGameState = GS_Welcome;
+	m_nGameState = GS_Playing;
+	//m_nGameState = GS_Welcome;
 
 	// HASAN - create & initialize inventory reference object
 	m_pInventory = new CInventory();
@@ -53,11 +53,6 @@ void CGame::Init()
 	SpriteManager = new CSpriteManager();
 
 	// Create images that we can use to render our objects
-	background_image	= Iw2DCreateImageResource("background");
-	atom_C_image		= Iw2DCreateImageResource("atom_c");
-	atom_H_image		= Iw2DCreateImageResource("atom_h");
-	atom_O_image		= Iw2DCreateImageResource("atom_o");
-	//atom_image			= Iw2DCreateImageResource("atom");
 	// HASAN - use the 'blank' atom as the image to associate with the box2d example
 	m_Image				= Iw2DCreateImageResource("atom");
 
@@ -122,49 +117,26 @@ void CGame::Init()
 	//-----------------------------------------------------------------------------
 
 
-	// Get screen dimensions
-	int screen_width = Iw2DGetSurfaceWidth();
-	int screen_height = Iw2DGetSurfaceHeight();
-
-	// Create background sprite
-	CSprite* background_sprite = new CSprite();
-	background_sprite->Init();
-	background_sprite->setPosAngScale(screen_width / 2, screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically & horizontally on screen
-	background_sprite->setImage(background_image);
-	background_sprite->setDestSize(screen_width, screen_height);
-	SpriteManager->addSprite(background_sprite);
-
-	// Create a bunch of atoms
-	CAtom* atom_sprite = new CAtom();
-	atom_sprite->Init("C");
-	atom_sprite->setPosAngScale(50, 50, 0, IW_GEOM_ONE);
-	atom_sprite->setImage(atom_C_image);
-	atom_sprite->setVelocity(1, 0);
-	SpriteManager->addSprite(atom_sprite);
-	
-	atom_sprite = new CAtom();
-	atom_sprite->Init("H");
-	atom_sprite->setPosAngScale(200, 150, 0, IW_GEOM_ONE);
-	atom_sprite->setImage(atom_H_image);
-	atom_sprite->setVelocity(0, 1);
-	SpriteManager->addSprite(atom_sprite);
-	
-	atom_sprite = new CAtom();
-	atom_sprite->Init("O");
-	atom_sprite->setPosAngScale(150, 200, 0, IW_GEOM_ONE);
-	atom_sprite->setImage(atom_O_image);
-	atom_sprite->setVelocity(1, 1);
-	SpriteManager->addSprite(atom_sprite);
-	
-	//atom_sprite = new CAtom();
-	//atom_sprite->Init();
-	//atom_sprite->setPosAngScale(200, 300, 0, IW_GEOM_ONE);
-	//atom_sprite->setImage(atom_image);
-	//SpriteManager->addSprite(atom_sprite);
 	
 	// For audio
 	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 	ExplosionSoundInstance = NULL;
+
+
+
+
+
+
+
+	// HASAN - new to load a level
+	// HASAN TODO - update to be data driven from the load level screen
+	LoadLevel("level_1.dat");
+
+
+
+
+
+
 
 
 	// HASAN - commenting out below for now b/c it's annoying
@@ -180,21 +152,6 @@ void CGame::Release()
 	{
 		delete background_image;
 		background_image = NULL;
-	}
-	if (atom_C_image != NULL)
-	{
-		delete atom_C_image;
-		atom_C_image = NULL;
-	}
-	if (atom_H_image != NULL)
-	{
-		delete atom_H_image;
-		atom_H_image = NULL;
-	}
-	if (atom_O_image != NULL)
-	{
-		delete atom_O_image;
-		atom_O_image = NULL;
 	}
 	if (m_Image != NULL)
 	{
@@ -253,6 +210,24 @@ void CGame::PlayExplosionSound()
 	}
 }
 
+// HASAN - new to load a level
+void CGame::LoadLevel(const char* i_strLevelFile)
+{
+	m_pLevel = new CLevel();
+	m_pLevel->Init(i_strLevelFile);
+}
+
+void CGame::UnloadLevel()
+{
+	if (m_pLevel != NULL)
+	{
+		m_pLevel->Release();
+		delete m_pLevel;
+		m_pLevel = NULL;
+	}
+}
+
+
 void CGame::Update()
 {
 	// Update the games sprite objects
@@ -279,6 +254,12 @@ void CGame::Update()
 		m_accumulator -= timeStep;
 	}
 	//-----------------------------------------------------------------------------
+
+	// HASAN - new to update level
+	if (m_pLevel != NULL)
+	{
+		m_pLevel->Update();
+	}
 }
 
 void CGame::Draw()
@@ -314,8 +295,14 @@ void CGame::Draw()
     Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
 	//-----------------------------------------------------------------------------
 
+	// HASAN - new to draw level
+	if (m_pLevel != NULL)
+	{
+		m_pLevel->Draw();
+	}
+
 	// HASAN - draw inventory
-	m_pInventory->Update();
+	m_pInventory->Draw();
 
 	// Show surface
 	Iw2DSurfaceShow();

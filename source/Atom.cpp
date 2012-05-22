@@ -16,33 +16,22 @@
 
 void CAtom::Init(const char* i_strAtomSymbol)
 {
+	char*	buffer = new char[MAX_STR_SIZE];
+	char*	pch;
+	bool	bMatchFound = false;
+
 	// HASAN - Lookup atom information to create the correct atom
 
-	s3eFile* file = s3eFileOpen("atoms.dat", "r");
-	int filesize = s3eFileGetSize(file);
-	//s3eFileClose(file);
-	s3eFileSeek(file, 0, S3E_FILESEEK_SET);
-
-	file = s3eFileOpen("atoms.dat", "rb");
-	char *buffer = new char[filesize + 1];
-	int len = filesize;
+	// HASAN - read file contents for atom data file and store in this object
+	s3eFile* file = s3eFileOpen("atoms.dat", "rb");
 	if (file != NULL)
 	{
-		if (s3eFileRead(buffer, len, 1, file) != 1)
-		{
-			s3eFileGetError();
-			s3eDebugOutputString(s3eFileGetErrorString());
-		}
-
-		// HASAN - read file contents for atom data file and store in this object
-		// HASAN - Not the ideal way to parse, but can't get strtok("\n\r") and strtok(":") to work when called separately
-		char* pch = strtok(buffer, "\n\r:");
 		s3eDebugOutputString("Parsed file\n-----------\n");
-		while (pch != NULL)
+		while (s3eFileReadString(buffer, MAX_STR_SIZE, file) != NULL)
 		{
 			// HASAN - debug
-			s3eDebugOutputString(pch);
-			if (pch[0] == '#')
+			s3eDebugOutputString(buffer);
+			if (buffer[0] == '#')
 			{
 				// ignore comments
 				// HASAN - debug
@@ -50,28 +39,55 @@ void CAtom::Init(const char* i_strAtomSymbol)
 			}
 			else
 			{
-				// HASAN TODO - get the subsequent parsing to work (can't user 'strtok_r' b/c of linking error
-				if (!strcmp(pch, "atom_symbol"))
+				pch = strtok(buffer, ":\n\r \t");
+				if (pch != NULL && !strcmp(pch, "atom_symbol"))
 				{
+					// when find next 'atom_symbol' definition after already having found a match, early terminate
+					if (bMatchFound)
+					{
+						break;
+					}
+
 					// HASAN - debug
 					s3eDebugOutputString("  -> atom_symbol");
 
-					pch = strtok(NULL, "\n\r:");
-					if (!strcmp(pch, i_strAtomSymbol))
+					pch = strtok(NULL, ":\n\r \t");
+					if (!strcmp(i_strAtomSymbol, pch))
 					{
 						// HASAN - debug
 						s3eDebugOutputString("Atom symbol match found!");
+						strcpy(m_strSymbol, pch);
 
-						// HASAN - more parsing needed here (move logic from Game.cpp Init() to here)
-
-
-						// early terminate out of loop when match is found
-						break;
+						bMatchFound = true;
 					}
 				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_name"))
+				{
+					pch = strtok(NULL, ":\n\r \t");
+					strcpy(m_strName, pch);
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_weight"))
+				{
+					pch = strtok(NULL, ":\n\r \t");
+					m_nWeight = atoi(pch);
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_image"))
+				{
+					pch = strtok(NULL, ":\n\r \t");
+					m_pImage = Iw2DCreateImageResource(pch);
+					setImage(m_pImage);
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_radius"))
+				{
+					pch = strtok(NULL, ":\n\r \t");
+					m_fRadius = atof(pch);
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_charge"))
+				{
+					pch = strtok(NULL, ":\n\r \t");
+					m_nCharge = atoi(pch);
+				}
 			}
-
-			pch = strtok(NULL, "\n\r:");
 		}
 
 		s3eFileClose(file);
@@ -84,14 +100,19 @@ void CAtom::Init(const char* i_strAtomSymbol)
 
 	delete [] buffer;
 
+	if (bMatchFound)
+		g_Game.getSpriteManager()->addSprite(this);
+
+
+
+
+
+
 	Destroyed = false;
 	Type = ST_Atom;
-	// HASAN - random velocity - may use later
-	//Velocity.x = 0;
-	//Velocity.y = 2 + (rand() * 6) / RAND_MAX;
 	Velocity.x = 0;
 	Velocity.y = 0;
-	Position.x = 20 + (rand() * (Iw2DGetSurfaceWidth() - 40)) / RAND_MAX;
+	Position.x = 20;
 	Position.y = -20;
 }
 
