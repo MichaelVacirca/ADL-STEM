@@ -1,5 +1,5 @@
 #include "IwResManager.h"
-#include "Input.h"
+//#include "Input.h"
 // For audio
 #include "IwSound.h"
 
@@ -167,6 +167,11 @@ void CGame::Init()
 	ExplosionSoundInstance = NULL;
 
 
+//	//Initialize input
+//	m_pInput = new CInput();
+//	m_bHasPointer = m_pInput->Init();
+
+
 	// HASAN - commenting out below for now b/c it's annoying
 	// Play some MP3 music using s3e Audio (if the codec is supported)
 	//if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
@@ -263,6 +268,9 @@ void CGame::Update()
 	
 	// HASAN - updated inventory
 	m_pInventory->Update();
+
+//	//Test out input
+//	m_pInput->Update();
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
