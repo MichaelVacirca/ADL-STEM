@@ -12,6 +12,8 @@
 // HASAN - for inventory
 #include "Inventory.h"
 
+#include "Input.h"
+
 enum eSpriteType
 {
 	ST_None,
@@ -57,6 +59,10 @@ protected:
 	int					m_nGameState;
 	// HASAN - inventory reference
 	CInventory*			m_pInventory;
+
+	//For input
+	CInput*				m_pInput;
+	bool				m_bHasPointer;
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------

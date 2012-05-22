@@ -34,17 +34,17 @@ int main()
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
 		// Update input system
-		g_Input.Update();
+//		g_Input.Update();
 
 		// If back button is pressed then exit the main loop
-		if (g_Input.isKeyDown(s3eKeyAbsBSK))
-			break;
+//		if (g_Input.isKeyDown(s3eKeyAbsBSK))
+//			break;
 
 		// HASAN - use touch input to trigger the explosion sound effect
-		if (g_Input.getTouchCount() != 0)
-		{
-			g_Game.PlayExplosionSound();
-		}
+//		if (g_Input.getTouchCount() != 0)
+//		{
+//			g_Game.PlayExplosionSound();
+//		}
 
 		// Update the game
 		g_Game.Update();
