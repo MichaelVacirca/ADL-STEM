@@ -90,8 +90,6 @@ void CInventory::Draw()
 			bBackgroundDisplayed = false;
 			g_Game.getSpriteManager()->removeSprite(inventory_sprite);
 		}
-
-		// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
 	}
 	else
 	{

@@ -45,6 +45,8 @@ files
 	Compound.cpp
 	Inventory.h
 	Inventory.cpp
+	Level.h
+	Level.cpp
 
 	[Data]
 	(data)

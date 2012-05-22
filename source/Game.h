@@ -11,6 +11,10 @@
 #include "Sprite.h"
 // HASAN - for inventory
 #include "Inventory.h"
+// HASAN - for level
+#include "Level.h"
+
+#define	MAX_STR_SIZE	255
 
 #include "Input.h"
 
@@ -59,6 +63,8 @@ protected:
 	int					m_nGameState;
 	// HASAN - inventory reference
 	CInventory*			m_pInventory;
+	// HASAN - level reference
+	CLevel*				m_pLevel;
 
 	//For input
 	CInput*				m_pInput;
@@ -86,10 +92,6 @@ protected:
 
 	// Shared images
 	CIw2DImage*					background_image;
-	CIw2DImage*					atom_C_image;
-	CIw2DImage*					atom_H_image;
-	CIw2DImage*					atom_O_image;
-	CIw2DImage*					atom_image;
 
 	// Font
 	CIw2DFont*					Font;
@@ -105,8 +107,13 @@ public:
 
 	void	Init();				// Initialise the game
 	void	Release();			// Release the game
+
 	// HASAN - new method to play explosion sound effect
 	void	PlayExplosionSound();
+	// HASAN - new to load a level
+	void	LoadLevel(const char* i_strLevelFile);
+	void	UnloadLevel();
+
 	void	Update();			// Update the game
 	void	Draw();				// Draw the game
 };

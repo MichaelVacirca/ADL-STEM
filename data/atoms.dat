@@ -1,25 +1,36 @@
 # Atom data
 
-atom_symbol:O
-atom_name:Oxygen
-atom_weight:10
-atom_image:atom_o.png
-atom_size:5
-#atom_radius:2.5
-atom_charge:+2
+atom_symbol:	O
+atom_name:		Oxygen
+atom_weight:	16
+atom_image:		atom_o
+atom_radius:	60
+atom_charge:	-2
 
-atom_symbol:C
-atom_name:Carbon
-atom_weight:12
-atom_image:atom_c.png
-atom_size:5
-#atom_radius:2.5
-atom_charge:+1
+atom_symbol:	C
+atom_name:		Carbon
+atom_weight:	12
+atom_image:		atom_c
+atom_radius:	70
+atom_charge:	+4
 
-atom_symbol:H
-atom_name:Hydrogen
-atom_weight:8
-atom_image:atom_h.png
-atom_size:5
-#atom_radius:2.5
-atom_charge:0
+atom_symbol:	H
+atom_name:		Hydrogen
+atom_weight:	1
+atom_image:		atom_h
+atom_radius:	25
+atom_charge:	+1
+
+atom_symbol:	N
+atom_name:		Nitrogen
+atom_weight:	14
+atom_image:		atom_n
+atom_radius:	65
+atom_charge:	-3
+
+atom_symbol:	S
+atom_name:		Sulfur
+atom_weight:	32
+atom_image:		atom_s
+atom_radius:	100
+atom_charge:	-2
