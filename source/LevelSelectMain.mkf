@@ -1,0 +1,23 @@
+option strict
+
+files
+{
+    levelselect.defines.txt
+    LevelSelectMain.cpp
+    LevelSelectMain.h
+    Buttons.cpp
+}
+
+if {{ not defined LEVELSELECT_OVERRIDE_MAIN }}
+{
+    files
+    {
+        Main.cpp
+    }
+}
+
+deployments
+{
+}
+
+includepath ./source

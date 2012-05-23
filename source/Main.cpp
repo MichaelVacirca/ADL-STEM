@@ -8,8 +8,24 @@
 #include "Input.h"
 #include "Game.h"
 
+// For Level Select
+#include "LevelSelectMain.h"
+
 int main()
 {
+
+	LevelSelectMainInit();
+    // Level Select Main  Loop 
+    while (!LevelSelectMainCheckQuit())
+    {
+        if (!LevelSelectMainUpdate())
+        break;
+    }
+    LevelSelectMainTerm();
+    return 0;
+}
+
+int test(){
 	// Initialise Marmalade 2D graphics system
     Iw2DInit();
 

@@ -1,0 +1,1 @@
+LEVELSELECT_OVERRIDE_MAIN	Define to allow the level select to use its own main() function

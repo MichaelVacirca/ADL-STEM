@@ -13,6 +13,8 @@ subprojects
 	libraries/box2d/box2d_library
 	# For audio
 	SoundEngine
+	./source/LevelSelectMain
+	iwutil
 }
 
 includepath
@@ -47,6 +49,7 @@ files
 	Inventory.cpp
 	Level.h
 	Level.cpp
+	LevelLauncher.cpp
 
 	[Data]
 	(data)
