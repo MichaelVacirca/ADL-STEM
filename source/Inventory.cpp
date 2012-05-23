@@ -4,24 +4,100 @@
 
 CInventory g_Inventory;
 
-void CInventory::AddAtom()
+void CInventory::AddAtom(char* i_strAtomSymbol)
 {
+	AddAtoms(i_strAtomSymbol, 1);
 }
-void CInventory::AddCompound()
+void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 {
+	for (int i = 0; i < MAX_COUNT; i++)
+	{
+		if (!strcmp(atoms[i], i_strAtomSymbol))
+		{
+			// match
+			atomCount[i] += i_nCount;
+
+
+
+
+
+
+
+
+
+
+
+			// HASAN - create larger inventory graphic to hold 4 atoms
+
+
+
+
+
+
+
+
+
+
+
+
+
+		}
+	}
 }
+void CInventory::AddCompound(char* i_strCompoundFormula)
+{
+	// HASAN TODO - use these later
+	AddCompounds(i_strCompoundFormula, 1);
+}
+void CInventory::AddCompounds(char* i_strCompoundFormula, int i_nCount)
+{
+	// HASAN TODO - use these later
+}
+
+void CInventory::RemoveAtom(char* i_strAtomSymbol)
+{
+	for (int i = 0; i < MAX_COUNT; i++)
+	{
+		if (!strcmp(atoms[i], i_strAtomSymbol))
+		{
+			// match
+			atomCount[i]--;
+		}
+	}
+}
+void CInventory::RemoveCompound(char* i_strCompoundFormula)
+{
+	// HASAN TODO - use these later
+}
+
 bool CInventory::IsEmpty()
 {
-	return true;
-}
-void CInventory::RemoveAtom()
-{
-}
-void CInventory::RemoveCompound()
-{
+	bool bResult = true;
+	for (int i = 0; i < MAX_COUNT; i++)
+	{
+		if (atomCount[i] != 0)
+		{
+			bResult = false;
+			break;
+		}
+		if (compoundCount[i] != 0)
+		{
+			bResult = false;
+			break;
+		}
+	}
+	return atomCount;
 }
 void CInventory::Clear()
 {
+	for (int i = 0; i < MAX_COUNT; i++)
+	{
+		atoms[i][0] = '\0';
+		compounds[i][0] = '\0';
+
+		atomCount[i] = 0;
+		compoundCount[i] = 0;
+	}
 }
 
 void CInventory::Init()
@@ -37,6 +113,9 @@ void CInventory::Init()
 	inventory_sprite->setPosAngScale(screen_width - (84 / 2), screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically on screen
 	inventory_sprite->setImage(inventory_image);
 	inventory_sprite->setDestSize(84, 163);
+
+	// HASAN - initialize inventory storage
+	Clear();
 
 	bBackgroundDisplayed = false;
 }

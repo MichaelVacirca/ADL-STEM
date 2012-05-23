@@ -6,5 +6,5 @@ level_goal_compound:		CO
 level_background_image:		background
 level_inventory:			C(1),O(1),H(1)
 # level_atoms format
-# <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
-level_atoms:				C(0,0,0,0)
+# <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>); ...
+level_atoms:				C(50,50,1,0);H(200,150,0,1);O(150,200,1,1)

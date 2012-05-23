@@ -3,11 +3,28 @@
 #include "Game.h"
 #include "Atom.h"
 
+#define MAX_COUNT	16
+
 void CLevel::Init(const char* i_strLevelFile)
 {
 	// HASAN - parse level file
 	char*	buffer = new char[MAX_STR_SIZE];
 	char*	pch;
+
+	CAtom*	atom;
+
+	// HASAN - store parsed values for the inventory
+	char	inventoryAtomSymbol[4];
+	int		inventoryAtomCount = 0;
+
+	// HASAN - need to cache the values while they are parsed because trying to create an CAtom instance causes another file to be parsed and the next
+	// 'strtok' call gets screwed up
+	char	atomSymbol[MAX_COUNT][4];
+	int		atomX[MAX_COUNT];
+	int		atomY[MAX_COUNT];
+	int		atomVelX[MAX_COUNT];
+	int		atomVelY[MAX_COUNT];
+	int		index = 0;
 
 	// HASAN - level atom information to create the correct atom
 
@@ -28,31 +45,68 @@ void CLevel::Init(const char* i_strLevelFile)
 			}
 			else
 			{
-				pch = strtok(buffer, ":\n\r\t");
+				pch = strtok(buffer, ":\n\r\t(),;");
 				if (pch != NULL && !strcmp(pch, "level_name"))
 				{
-					pch = strtok(NULL, ":\n\r\t");
+					pch = strtok(NULL, ":\n\r\t(),;");
 					strcpy(m_strName, pch);
 				}
 				else if (pch != NULL && !strcmp(pch, "level_goal_compound"))
 				{
-					pch = strtok(NULL, ":\n\r\t");
+					pch = strtok(NULL, ":\n\r\t(),;");
 					strcpy(m_strGoalCompound, pch);
 				}
 				else if (pch != NULL && !strcmp(pch, "level_background_image"))
 				{
-					pch = strtok(NULL, ":\n\r\t");
+					pch = strtok(NULL, ":\n\r\t(),;");
 					background_image = Iw2DCreateImageResource(pch);
 				}
 				else if (pch != NULL && !strcmp(pch, "level_inventory"))
 				{
-					pch = strtok(NULL, ":\n\r\t");
+					pch = strtok(NULL, ":\n\r\t(),");
 					// HASAN TODO - parse & create inventory
+					while (pch != NULL)
+					{
+						// inventory atom symbol
+						strcpy(inventoryAtomSymbol, pch);
+
+						pch = strtok(NULL, ":\n\r\t(),");
+						// inventory atom count
+						inventoryAtomCount = atoi(pch);
+
+						g_Inventory.AddAtoms(inventoryAtomSymbol, inventoryAtomCount);
+
+						pch = strtok(NULL, ":\n\r\t(),");
+					}
 				}
 				else if (pch != NULL && !strcmp(pch, "level_atoms"))
 				{
-					pch = strtok(NULL, ":\n\r\t");
-					// HASAN TODO - parse & create level atoms
+					pch = strtok(NULL, ":\n\r\t(),;");
+					// HASAN - parse & create level atoms
+					while (pch != NULL)
+					{
+						// symbol
+						strcpy(atomSymbol[index], pch);
+
+						pch = strtok(NULL, ":\n\r\t(),;");
+						// x-pox
+						atomX[index] = atoi(pch);
+
+						pch = strtok(NULL, ":\n\r\t(),;");
+						// y-pos
+						atomY[index] = atoi(pch);
+
+						pch = strtok(NULL, ":\n\r\t(),;");
+						// x-velocity
+						atomVelX[index] = atoi(pch);
+
+						pch = strtok(NULL, ":\n\r\t(),;");
+						// y-velocity
+						atomVelY[index] = atoi(pch);
+
+						index++;
+						pch = strtok(NULL, ":\n\r\t(),;");
+					}
 				}
 			}
 		}
@@ -83,21 +137,15 @@ void CLevel::Init(const char* i_strLevelFile)
 	background_sprite->setDestSize(screen_width, screen_height);
 	g_Game.getSpriteManager()->addSprite(background_sprite);
 
-	// Create a bunch of atoms
-	CAtom* atom_sprite = new CAtom();
-	atom_sprite->Init("C");
-	atom_sprite->setPosAngScale(50, 50, 0, IW_GEOM_ONE);
-	atom_sprite->setVelocity(1, 0);
-	
-	atom_sprite = new CAtom();
-	atom_sprite->Init("H");
-	atom_sprite->setPosAngScale(200, 150, 0, IW_GEOM_ONE);
-	atom_sprite->setVelocity(0, 1);
-	
-	atom_sprite = new CAtom();
-	atom_sprite->Init("O");
-	atom_sprite->setPosAngScale(150, 200, 0, IW_GEOM_ONE);
-	atom_sprite->setVelocity(1, 1);
+
+	// Created data parsed from above
+	for(int i = 0; i < index; i++) {
+		// create atom
+		atom = new CAtom();
+		atom->Init(atomSymbol[i]);
+		atom->setPosAngScale(atomX[i], atomY[i], 0, IW_GEOM_ONE);
+		atom->setVelocity(atomVelX[i], atomVelY[i]);
+	}
 }
 
 void CLevel::Release()
