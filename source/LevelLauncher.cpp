@@ -44,8 +44,21 @@
  * @include s3eLauncher.cpp
  */
 #include "LevelSelectMain.h"
+#include "Game.h"
+
+
+
+// Marmalade headers
+#include "s3e.h"
+#include "Iw2D.h"
+#include "IwResManager.h"
+// For audio
+#include "IwSound.h"
 #include "IwPath.h"
 #include "IwDebug.h"
+
+#include "Input.h"
+
 #include <sys/stat.h>
 #include <dirent.h>
 
@@ -88,7 +101,11 @@ void LevelInit()
             // Store user friendly descriptions to display. The button
             // code needs these strings to persist in memory
             char* description = new char[256];
-			sprintf(description, "Level %s", (FileName.substr(FileName.length()-5,2)));
+			sprintf(description, "Level %s", (FileName.substr(FileName.length()-6,2)));
+			if (description[6] == '0')
+			{
+				memmove(description+6, description+7, strlen(description));
+			}
             g_Desclist.push_back(description);
             NewButton(g_Desclist[g_Desclist.size()-1]);
         }
@@ -123,11 +140,69 @@ void LaunchGame()
     // Append folder name in which application resides
     IwPathJoin(folder, g_Applist[g_App].c_str(), S3E_FILE_MAX_PATH);
 
-    // Append filename of application
-    IwPathJoin(folder, g_Applist[g_App].c_str(), S3E_FILE_MAX_PATH);
+	// Initialise Marmalade 2D graphics system
+    Iw2DInit();
 
+	// Init IwSound
+	IwSoundInit();
+	
+#ifdef IW_BUILD_RESOURCES
+	// Tell resource system how to convert WAV files
+	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
+#endif
+
+	// Initialise the resource manager
+	IwResManagerInit();
+
+	// initialise the input system
+	g_Input.Init();
+
+	// Initialise the game object
+	g_Game.Init();
+	g_Game.LoadLevel(folder);
+
+	// Main Loop
+	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
+	{
+		// Update input system
+		g_Input.Update();
+
+		// If back button is pressed then exit the main loop
+		if (g_Input.isKeyDown(s3eKeyAbsBSK))
+			break;
+
+		// HASAN - use touch input to trigger the explosion sound effect
+		if (g_Input.getTouchCount() != 0)
+		{
+			g_Game.PlayExplosionSound();
+		}
+
+		// Update the game
+		g_Game.Update();
+
+		// Draw the game
+		g_Game.Draw();
+
+		// Yield to the operating system
+		s3eDeviceYield(0);
+	}
+
+	// Clean up game object
+	g_Game.Release();
+
+	// Shut down the input system
+	g_Input.Release();
+
+	// Shut down the resource manager
+	IwResManagerTerminate();
+
+	// Shutdown IwSound
+	IwSoundTerminate();
+
+	// Shut down Marmalade 2D graphics system
+	Iw2DTerminate();
     // Push the current application onto the device exec stack so it
-    // will be launched after sample application has quit.
+    /* will be launched after sample application has quit.
     s3eDeviceExecPushNext(NULL);
 
     // Specify which application to launch after s3eLauncher has quit
@@ -143,10 +218,10 @@ void LaunchGame()
         {
             IwError(("failed to launch app: %s", s3eDeviceGetErrorString()));
         }
-    }
+    } */
 
     // Quit this application in order to start the next one on the stack
-    s3eDeviceExit();
+   // s3eDeviceExit();
 }
 
 /*
