@@ -28,7 +28,7 @@ protected:
 	char*		m_strSymbol;
 	char*		m_strName;
 	int			m_nWeight;
-	float		m_fRadius;
+	double		m_fRadius;
 	int			m_nCharge;
 	CIw2DImage*	m_pImage;
 

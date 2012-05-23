@@ -123,7 +123,7 @@ void CGame::Init()
 
 	// HASAN - new to load a level
 	// HASAN TODO - update to be data driven from the load level screen
-	LoadLevel("level_1.dat");
+	//LoadLevel("level_1.dat");
 
 
 //	//Initialize input
