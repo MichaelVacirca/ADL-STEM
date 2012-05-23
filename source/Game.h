@@ -14,6 +14,10 @@
 // HASAN - for level
 #include "Level.h"
 
+#include "s3eKeyboard.h"
+#include "s3ePointer.h"
+
+
 #define	MAX_STR_SIZE	255
 
 #include "Input.h"
@@ -116,6 +120,7 @@ public:
 
 	void	Update();			// Update the game
 	void	Draw();				// Draw the game
+	void	UpdateInput();		// Update the input
 };
 
 extern CGame g_Game;

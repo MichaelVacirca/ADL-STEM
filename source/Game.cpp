@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Atom.h"
 
+
 //
 // Global declaration of the CGame class. Allows global access to the game class
 //
@@ -116,27 +117,13 @@ void CGame::Init()
 	m_body->SetLinearVelocity(b2Vec2(50, 20));
 	//-----------------------------------------------------------------------------
 
-
-	
 	// For audio
 	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 	ExplosionSoundInstance = NULL;
 
-
-
-
-
-
-
 	// HASAN - new to load a level
 	// HASAN TODO - update to be data driven from the load level screen
 	LoadLevel("level_1.dat");
-
-
-
-
-
-
 
 
 //	//Initialize input
@@ -244,6 +231,8 @@ void CGame::Update()
 	// HASAN - updated inventory
 	m_pInventory->Update();
 
+	UpdateInput();
+
 //	//Test out input
 //	m_pInput->Update();
 
@@ -268,6 +257,102 @@ void CGame::Update()
 	{
 		m_pLevel->Update();
 	}
+}
+
+void CGame::UpdateInput()
+{
+    s3ePointerUpdate();
+    s3eKeyboardUpdate();
+
+	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
+		PlayExplosionSound();
+
+	// HERE:
+	/*
+	   Need to define the location for touching (i.e. for buttons) - any touch that falls
+	     within that location then triggers whatever event needs to happen when the button
+		 is touched.
+
+	   Also need to figure out how to define the collisions (or whatever method will be used)
+	     for launching the atoms -- need to be able to drag/adjust the direction the flask is
+		 pointed and then need to be able to adjust the flame to heat the atom to the correct
+		 temperature.
+
+	   For detecting a slide, need to capture the two previous touch locations. If the x-delta
+	     is increasing (i.e. x1 = 4, x2 = 5) then slide is to the right. If the x-delta is
+		 decreasing (i.e. x1 = 4, x2 = 3) then the slide gesture is moving to the left and the
+		 flame intensity needs to decrease.
+		 First check if the gesture is being performed in the ...lower-left corner...
+	*/
+
+
+/*
+	//FROM THE blockslot_vc10 MARMALADE SAMPLE PROGRAM
+
+	int xMovement = 0;
+    if (s3eKeyboardGetState(s3eKeyAbsLeft) & S3E_KEY_STATE_DOWN)
+        xMovement--;
+    if (s3eKeyboardGetState(s3eKeyAbsRight) & S3E_KEY_STATE_DOWN)
+        xMovement++;
+
+    input_rotation = 0;
+    if (s3eKeyboardGetState(s3eKeyAbsGameA) & S3E_KEY_STATE_PRESSED)
+        input_rotation = -1;
+    if (s3eKeyboardGetState(s3eKeyAbsGameB) & S3E_KEY_STATE_PRESSED)
+        input_rotation = 1;
+    if (s3eKeyboardGetState(s3eKeyAbsUp) & S3E_KEY_STATE_PRESSED)
+        input_rotation = -1;
+
+    if (s3eKeyboardGetState(s3eKeyAbsDown) & S3E_KEY_STATE_DOWN)
+        input_y = 1;
+
+    if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
+    {
+        g_DrawTouchscreenButtons = 1;
+
+        int displayWidth = Iw2DGetSurfaceWidth();
+        int displayHeight = Iw2DGetSurfaceHeight();
+        int x = s3ePointerGetX() * 3 / displayWidth;
+        int y = s3ePointerGetY() * 4 / displayHeight;
+        if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
+        {
+            if (x==0 && y==2)
+                input_rotation = -1;
+            if (x==2 && y==2)
+                input_rotation = 1;
+        }
+        if (x==0 && y==3)
+            xMovement--;
+        if (x==2 && y==3)
+            xMovement++;
+        if (x==1 && y==3)
+            input_y = 1;
+    }
+
+    // Clamp xMovement to the range [-1,1]
+    if (ABS(xMovement) > 1)
+        xMovement = (xMovement < 0) ? -1 : 1;
+
+    if (xMovement != autoRepeatValue || xMovement == 0)
+    {
+        // Reset auto-repeat timer
+        autoRepeatValue = xMovement;
+        autoRepeatTimer = 0;
+        input_x = xMovement;
+    }
+    else
+    {
+        autoRepeatTimer += deltaTimeMs;
+        if (autoRepeatTimer >= 200)
+        {
+            // Faster auto-repeat after the first repeat
+            autoRepeatTimer = 100;
+            input_x = xMovement;
+        }
+        else
+            input_x = 0;
+    }
+*/
 }
 
 void CGame::Draw()
