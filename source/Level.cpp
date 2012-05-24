@@ -1,5 +1,4 @@
 #include "Level.h"
-
 #include "Game.h"
 #include "Atom.h"
 
@@ -154,6 +153,9 @@ void CLevel::Init(const char* i_strLevelFile)
 	{
 		g_Inventory.AddAtoms(inventoryAtomSymbol[i], inventoryAtomCount[i]);
 	}
+
+	//setup Beaker
+	g_Beaker.Init();
 }
 
 void CLevel::Release()

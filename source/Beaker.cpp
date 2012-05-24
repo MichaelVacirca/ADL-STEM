@@ -8,7 +8,7 @@ CBeaker g_Beaker;
 
 void CBeaker::Init()
 {
-	beaker_image = Iw2DCreateImage("beaker.png");
+	beaker_image = Iw2DCreateImageResource("beaker");
 
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
@@ -16,7 +16,7 @@ void CBeaker::Init()
 	// Create inventory sprite
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
-	beaker_sprite->setPosAngScale(screen_width - (IMAGE_SIZE_WIDTH / 2), screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically on screen
+	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, 0,IW_GEOM_ONE);  // center image vertically on screen
 	beaker_sprite->setImage(beaker_image);
 	beaker_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, BEAKER_IMAGE_SIZE_HEIGHT);
 

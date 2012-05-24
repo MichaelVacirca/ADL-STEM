@@ -70,6 +70,9 @@ protected:
 	int					m_nGameState;
 	// HASAN - inventory reference
 	CInventory*			m_pInventory;
+
+	// HASAN - inventory reference
+	CBeaker*			m_pBeaker;
 	// HASAN - level reference
 	CLevel*				m_pLevel;
 

@@ -3,8 +3,8 @@
 
 #include "s3e.h"
 #include "Sprite.h"
-
 #include "Inventory.h"
+#include "Beaker.h"
 
 #define	MAX_STR_SIZE	255
 
@@ -19,6 +19,7 @@ protected:
 	char*				m_strGoalCompound;
 
 	CInventory*			m_pInventory;
+	CBeaker*			m_pBeaker;
 
 public:
 	CLevel()
