@@ -57,8 +57,6 @@
 #include "IwPath.h"
 #include "IwDebug.h"
 
-#include "Input.h"
-
 #include <sys/stat.h>
 #include <dirent.h>
 
@@ -154,9 +152,6 @@ void LaunchGame()
 	// Initialise the resource manager
 	IwResManagerInit();
 
-	// initialise the input system
-	g_Input.Init();
-
 	// Initialise the game object
 	g_Game.Init();
 	g_Game.LoadLevel(folder);
@@ -164,19 +159,6 @@ void LaunchGame()
 	// Main Loop
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
-		// Update input system
-		g_Input.Update();
-
-		// If back button is pressed then exit the main loop
-		if (g_Input.isKeyDown(s3eKeyAbsBSK))
-			break;
-
-		// HASAN - use touch input to trigger the explosion sound effect
-		if (g_Input.getTouchCount() != 0)
-		{
-			g_Game.PlayExplosionSound();
-		}
-
 		// Update the game
 		g_Game.Update();
 
@@ -189,9 +171,6 @@ void LaunchGame()
 
 	// Clean up game object
 	g_Game.Release();
-
-	// Shut down the input system
-	g_Input.Release();
 
 	// Shut down the resource manager
 	IwResManagerTerminate();
