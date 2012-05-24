@@ -55,12 +55,12 @@ public:
 	void						updateScore(int amount);
 	// HASAN - new to expose the game state to other classes
 	int							getGameState();
+	// HASAN - expose so everything can use the same font
+	CIw2DFont*					getFont();
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
 	int					m_nGameState;
-	// HASAN - inventory reference
-	CInventory*			m_pInventory;
 	// HASAN - level reference
 	CLevel*				m_pLevel;
 

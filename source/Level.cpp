@@ -14,8 +14,9 @@ void CLevel::Init(const char* i_strLevelFile)
 	CAtom*	atom;
 
 	// HASAN - store parsed values for the inventory
-	char	inventoryAtomSymbol[4];
-	int		inventoryAtomCount = 0;
+	char	inventoryAtomSymbol[4][4];
+	int		inventoryAtomCount[4];
+	int		inventoryIndex = 0;
 
 	// HASAN - need to cache the values while they are parsed because trying to create an CAtom instance causes another file to be parsed and the next
 	// 'strtok' call gets screwed up
@@ -24,7 +25,7 @@ void CLevel::Init(const char* i_strLevelFile)
 	int		atomY[MAX_COUNT];
 	int		atomVelX[MAX_COUNT];
 	int		atomVelY[MAX_COUNT];
-	int		index = 0;
+	int		atomsIndex = 0;
 
 	// HASAN - level atom information to create the correct atom
 
@@ -65,17 +66,17 @@ void CLevel::Init(const char* i_strLevelFile)
 				{
 					pch = strtok(NULL, ":\n\r\t(),");
 					// HASAN TODO - parse & create inventory
+					inventoryIndex = 0;
 					while (pch != NULL)
 					{
 						// inventory atom symbol
-						strcpy(inventoryAtomSymbol, pch);
+						strcpy(inventoryAtomSymbol[inventoryIndex], pch);
 
 						pch = strtok(NULL, ":\n\r\t(),");
 						// inventory atom count
-						inventoryAtomCount = atoi(pch);
+						inventoryAtomCount[inventoryIndex] = atoi(pch);
 
-						g_Inventory.AddAtoms(inventoryAtomSymbol, inventoryAtomCount);
-
+						inventoryIndex++;
 						pch = strtok(NULL, ":\n\r\t(),");
 					}
 				}
@@ -83,28 +84,29 @@ void CLevel::Init(const char* i_strLevelFile)
 				{
 					pch = strtok(NULL, ":\n\r\t(),;");
 					// HASAN - parse & create level atoms
+					atomsIndex = 0;
 					while (pch != NULL)
 					{
 						// symbol
-						strcpy(atomSymbol[index], pch);
+						strcpy(atomSymbol[atomsIndex], pch);
 
 						pch = strtok(NULL, ":\n\r\t(),;");
 						// x-pox
-						atomX[index] = atoi(pch);
+						atomX[atomsIndex] = atoi(pch);
 
 						pch = strtok(NULL, ":\n\r\t(),;");
 						// y-pos
-						atomY[index] = atoi(pch);
+						atomY[atomsIndex] = atoi(pch);
 
 						pch = strtok(NULL, ":\n\r\t(),;");
 						// x-velocity
-						atomVelX[index] = atoi(pch);
+						atomVelX[atomsIndex] = atoi(pch);
 
 						pch = strtok(NULL, ":\n\r\t(),;");
 						// y-velocity
-						atomVelY[index] = atoi(pch);
+						atomVelY[atomsIndex] = atoi(pch);
 
-						index++;
+						atomsIndex++;
 						pch = strtok(NULL, ":\n\r\t(),;");
 					}
 				}
@@ -138,13 +140,19 @@ void CLevel::Init(const char* i_strLevelFile)
 	g_Game.getSpriteManager()->addSprite(background_sprite);
 
 
-	// Created data parsed from above
-	for(int i = 0; i < index; i++) {
+	// Created level atoms parsed from above
+	for(int i = 0; i < atomsIndex; i++) {
 		// create atom
 		atom = new CAtom();
 		atom->Init(atomSymbol[i]);
 		atom->setPosAngScale(atomX[i], atomY[i], 0, IW_GEOM_ONE);
 		atom->setVelocity(atomVelX[i], atomVelY[i]);
+	}
+
+	// Create inventory atoms parsed from above
+	for(int i = 0; i < inventoryIndex; i++)
+	{
+		g_Inventory.AddAtoms(inventoryAtomSymbol[i], inventoryAtomCount[i]);
 	}
 }
 

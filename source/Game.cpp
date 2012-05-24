@@ -28,9 +28,11 @@ void CGame::Init()
 	m_nGameState = GS_Playing;
 	//m_nGameState = GS_Welcome;
 
+	// Allocate the sprite manager
+	SpriteManager = new CSpriteManager();
+
 	// HASAN - create & initialize inventory reference object
-	m_pInventory = new CInventory();
-	m_pInventory->Init();
+	g_Inventory.Init();
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
@@ -48,9 +50,6 @@ void CGame::Init()
 	m_Image = NULL;
 	m_world = NULL;
 	//-----------------------------------------------------------------------------
-
-	// Allocate the sprite manager
-	SpriteManager = new CSpriteManager();
 
 	// Create images that we can use to render our objects
 	// HASAN - use the 'blank' atom as the image to associate with the box2d example
@@ -175,26 +174,25 @@ void CGame::Release()
 		Font = NULL;
 	}
 
+	// HASAN - clean-up inventory
+	g_Inventory.Release();
+
 	// Clean-up sprite manager
 	if (SpriteManager != NULL)
 	{
 		delete SpriteManager;
 		SpriteManager = NULL;
 	}
-
-	// HASAN - clean-up inventory
-	if (m_pInventory != NULL)
-	{
-		m_pInventory->Release();
-
-		delete m_pInventory;
-		m_pInventory = NULL;
-	}
 }
 
 int	CGame::getGameState()
 {
 	return m_nGameState;
+}
+
+CIw2DFont* CGame::getFont()
+{
+	return Font;
 }
 
 void CGame::PlayExplosionSound()
@@ -237,7 +235,7 @@ void CGame::Update()
 	IwGetSoundManager()->Update();
 	
 	// HASAN - updated inventory
-	m_pInventory->Update();
+	g_Inventory.Update();
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
@@ -302,7 +300,7 @@ void CGame::Draw()
 	}
 
 	// HASAN - draw inventory
-	m_pInventory->Draw();
+	g_Inventory.Draw();
 
 	// Show surface
 	Iw2DSurfaceShow();

@@ -2,26 +2,34 @@
 #define _INVENTORY_H_
 
 #include "s3e.h"
+#include "Atom.h"
 #include "Sprite.h"
 
-#define MAX_COUNT			16
-#define MAX_ATOM_STR_SIZE	4
-#define MAX_CMPND_STR_SIZE	16
+#define MAX_COUNT				4
+#define MAX_ATOM_STR_SIZE		4
+#define MAX_CMPND_STR_SIZE		16
+
+#define IMAGE_SIZE_WIDTH		84
+#define IMAGE_SIZE_HEIGHT		321
 
 class CInventory
 {
 protected:
 	CIw2DImage*			inventory_image;
-	bool				bBackgroundDisplayed;
 	CSprite*			inventory_sprite;
 
+	int		inventoryCount;
+	CAtom*	atomObjs[MAX_COUNT];
 	char	atoms[MAX_COUNT][MAX_ATOM_STR_SIZE];
 	int		atomCount[MAX_COUNT];
 	char	compounds[MAX_COUNT][MAX_CMPND_STR_SIZE];
 	int		compoundCount[MAX_COUNT];
 
 public:
-	CInventory()	{}
+	CInventory()
+	{
+		inventoryCount = 0;
+	}
 	~CInventory()	{}
 
 	void AddAtom(char* i_strAtomSymbol);
