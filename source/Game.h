@@ -14,7 +14,13 @@
 // HASAN - for level
 #include "Level.h"
 
+#include "s3eKeyboard.h"
+#include "s3ePointer.h"
+
+//#include "Input.h"
+
 #define	MAX_STR_SIZE	255
+
 
 enum eSpriteType
 {
@@ -64,6 +70,13 @@ protected:
 	// HASAN - level reference
 	CLevel*				m_pLevel;
 
+	//For input
+	//CInput*				m_pInput;
+	bool				m_bHasPointer;
+	int					xTouch1;
+	int					xTouch2;
+
+
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
 	b2Vec2					m_gravity;
@@ -110,6 +123,7 @@ public:
 
 	void	Update();			// Update the game
 	void	Draw();				// Draw the game
+	void	UpdateInput();		// Update the input
 };
 
 extern CGame g_Game;
