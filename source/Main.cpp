@@ -24,6 +24,8 @@ int main()
     return 0;
 }
 
+<<<<<<< HEAD
+=======
 int test(){
 	// Initialise Marmalade 2D graphics system
     Iw2DInit();
@@ -69,4 +71,5 @@ int test(){
 
     return 0;
 }
+>>>>>>> 10013f1823a2da2e43d34112172ae88977fa16b6
 
