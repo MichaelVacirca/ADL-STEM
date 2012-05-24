@@ -16,7 +16,7 @@ CIwResGroup
 	
 	// Fonts
 	"./trebuchet_12.gxfont"
-	"./trebuchet8.gxfont"
+	//"./trebuchet8.gxfont"
 	// -----------------------------------------------------------------------
 	
 	// Sound sample WAV files

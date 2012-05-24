@@ -21,7 +21,7 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 
 	if (inventoryCount > 0)
 	{
-		for (int i = 0; i < MAX_COUNT; i++)
+		for (int i = 0; i < MAX_ATOM_COUNT; i++)
 		{
 			if (!strcmp(atoms[i], i_strAtomSymbol))
 			{
@@ -76,7 +76,7 @@ void CInventory::AddCompounds(char* i_strCompoundFormula, int i_nCount)
 
 void CInventory::RemoveAtom(char* i_strAtomSymbol)
 {
-	for (int i = 0; i < MAX_COUNT; i++)
+	for (int i = 0; i < MAX_ATOM_COUNT; i++)
 	{
 		if (!strcmp(atoms[i], i_strAtomSymbol))
 		{
@@ -93,7 +93,7 @@ void CInventory::RemoveCompound(char* i_strCompoundFormula)
 bool CInventory::IsEmpty()
 {
 	bool bResult = true;
-	for (int i = 0; i < MAX_COUNT; i++)
+	for (int i = 0; i < MAX_ATOM_COUNT; i++)
 	{
 		if (atomCount[i] != 0)
 		{
@@ -106,11 +106,11 @@ bool CInventory::IsEmpty()
 			break;
 		}
 	}
-	return atomCount;
+	return bResult;
 }
 void CInventory::Clear()
 {
-	for (int i = 0; i < MAX_COUNT; i++)
+	for (int i = 0; i < MAX_ATOM_COUNT; i++)
 	{
 		atoms[i][0] = '\0';
 		compounds[i][0] = '\0';

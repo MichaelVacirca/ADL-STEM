@@ -5,7 +5,7 @@
 #include "Atom.h"
 #include "Sprite.h"
 
-#define MAX_COUNT				4
+#define MAX_ATOM_COUNT			4
 #define MAX_ATOM_STR_SIZE		4
 #define MAX_CMPND_STR_SIZE		16
 
@@ -19,11 +19,11 @@ protected:
 	CSprite*			inventory_sprite;
 
 	int		inventoryCount;
-	CAtom*	atomObjs[MAX_COUNT];
-	char	atoms[MAX_COUNT][MAX_ATOM_STR_SIZE];
-	int		atomCount[MAX_COUNT];
-	char	compounds[MAX_COUNT][MAX_CMPND_STR_SIZE];
-	int		compoundCount[MAX_COUNT];
+	CAtom*	atomObjs[MAX_ATOM_COUNT];
+	char	atoms[MAX_ATOM_COUNT][MAX_ATOM_STR_SIZE];
+	int		atomCount[MAX_ATOM_COUNT];
+	char	compounds[MAX_ATOM_COUNT][MAX_CMPND_STR_SIZE];
+	int		compoundCount[MAX_ATOM_COUNT];
 
 public:
 	CInventory()

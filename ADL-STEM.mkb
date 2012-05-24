@@ -13,8 +13,6 @@ subprojects
 	libraries/box2d/box2d_library
 	# For audio
 	SoundEngine
-	./source/LevelSelectMain
-	iwutil
 }
 
 includepath
@@ -31,12 +29,6 @@ files
 	Main.h
 	Game.cpp
 	Game.h
-#	Bucket.cpp
-#	Bucket.h
-#	WaterDrop.cpp
-#	WaterDrop.h
-#	Cloud.cpp
-#	Cloud.h
 	Atom.h
 	Atom.cpp
 	Input.cpp
@@ -49,7 +41,13 @@ files
 	Inventory.cpp
 	Level.h
 	Level.cpp
+	# below is new for level select
+    LevelSelectMain.cpp
+    LevelSelectMain.h
+    Buttons.cpp
+    levelselect.defines.txt
 	LevelLauncher.cpp
+
 
 	[Data]
 	(data)

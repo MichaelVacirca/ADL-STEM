@@ -38,7 +38,7 @@ void CGame::Init()
 	//-----------------------------------------------------------------------------
 	//m_gravity = b2Vec2(0.0f, -9.8f);
 	// HASAN - experimenting with different gravity settings
-	m_gravity = b2Vec2(0.0f, 9.8f);  // "falls" upward
+	//m_gravity = b2Vec2(0.0f, 9.8f);  // "falls" upward
 	m_gravity = b2Vec2(0.0f, 0.0f);  // 
 	m_doSleep = false;
 
