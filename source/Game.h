@@ -17,10 +17,10 @@
 #include "s3eKeyboard.h"
 #include "s3ePointer.h"
 
+//#include "Input.h"
 
 #define	MAX_STR_SIZE	255
 
-#include "Input.h"
 
 enum eSpriteType
 {
@@ -71,8 +71,11 @@ protected:
 	CLevel*				m_pLevel;
 
 	//For input
-	CInput*				m_pInput;
+	//CInput*				m_pInput;
 	bool				m_bHasPointer;
+	int					xTouch1;
+	int					xTouch2;
+
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------

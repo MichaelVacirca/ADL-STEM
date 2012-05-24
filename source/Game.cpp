@@ -1,5 +1,5 @@
 #include "IwResManager.h"
-//#include "Input.h"
+
 // For audio
 #include "IwSound.h"
 
@@ -127,8 +127,8 @@ void CGame::Init()
 
 
 //	//Initialize input
-//	m_pInput = new CInput();
-//	m_bHasPointer = m_pInput->Init();
+	xTouch1 = 0;
+	xTouch2 = 0;
 
 
 	// HASAN - commenting out below for now b/c it's annoying
@@ -233,9 +233,6 @@ void CGame::Update()
 
 	UpdateInput();
 
-//	//Test out input
-//	m_pInput->Update();
-
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
 	// timer
@@ -263,11 +260,25 @@ void CGame::UpdateInput()
 {
     s3ePointerUpdate();
     s3eKeyboardUpdate();
-
+	
 	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
-		PlayExplosionSound();
+	{
+		xTouch2 = s3ePointerGetX();
+	}
 
-	// HERE:
+	//Should place bounds around the location where the xTouches are valid
+	// - likely will want to make sure the initial touch falls within the bound
+	//   and then the user can slide their finger beyond the initial bound
+	if(xTouch1 < xTouch2)
+	{
+		s3eDebugOutputString("MOVING RIGHT");
+	}
+	else if (xTouch2 < xTouch1)
+	{
+		s3eDebugOutputString("MOVING LEFT");
+	}
+
+	xTouch1 = xTouch2;
 	/*
 	   Need to define the location for touching (i.e. for buttons) - any touch that falls
 	     within that location then triggers whatever event needs to happen when the button
@@ -277,12 +288,6 @@ void CGame::UpdateInput()
 	     for launching the atoms -- need to be able to drag/adjust the direction the flask is
 		 pointed and then need to be able to adjust the flame to heat the atom to the correct
 		 temperature.
-
-	   For detecting a slide, need to capture the two previous touch locations. If the x-delta
-	     is increasing (i.e. x1 = 4, x2 = 5) then slide is to the right. If the x-delta is
-		 decreasing (i.e. x1 = 4, x2 = 3) then the slide gesture is moving to the left and the
-		 flame intensity needs to decrease.
-		 First check if the gesture is being performed in the ...lower-left corner...
 	*/
 
 
