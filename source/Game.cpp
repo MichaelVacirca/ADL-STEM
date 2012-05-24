@@ -29,9 +29,11 @@ void CGame::Init()
 	m_nGameState = GS_Playing;
 	//m_nGameState = GS_Welcome;
 
+	// Allocate the sprite manager
+	SpriteManager = new CSpriteManager();
+
 	// HASAN - create & initialize inventory reference object
-	m_pInventory = new CInventory();
-	m_pInventory->Init();
+	g_Inventory.Init();
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
@@ -49,9 +51,6 @@ void CGame::Init()
 	m_Image = NULL;
 	m_world = NULL;
 	//-----------------------------------------------------------------------------
-
-	// Allocate the sprite manager
-	SpriteManager = new CSpriteManager();
 
 	// Create images that we can use to render our objects
 	// HASAN - use the 'blank' atom as the image to associate with the box2d example
@@ -117,9 +116,16 @@ void CGame::Init()
 	m_body->SetLinearVelocity(b2Vec2(50, 20));
 	//-----------------------------------------------------------------------------
 
+
+	
 	// For audio
 	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 	ExplosionSoundInstance = NULL;
+
+
+
+
+
 
 	// HASAN - new to load a level
 	// HASAN TODO - update to be data driven from the load level screen
@@ -129,6 +135,10 @@ void CGame::Init()
 //	//Initialize input
 	xTouch1 = 0;
 	xTouch2 = 0;
+
+
+
+
 
 
 	// HASAN - commenting out below for now b/c it's annoying
@@ -167,26 +177,25 @@ void CGame::Release()
 		Font = NULL;
 	}
 
+	// HASAN - clean-up inventory
+	g_Inventory.Release();
+
 	// Clean-up sprite manager
 	if (SpriteManager != NULL)
 	{
 		delete SpriteManager;
 		SpriteManager = NULL;
 	}
-
-	// HASAN - clean-up inventory
-	if (m_pInventory != NULL)
-	{
-		m_pInventory->Release();
-
-		delete m_pInventory;
-		m_pInventory = NULL;
-	}
 }
 
 int	CGame::getGameState()
 {
 	return m_nGameState;
+}
+
+CIw2DFont* CGame::getFont()
+{
+	return Font;
 }
 
 void CGame::PlayExplosionSound()
@@ -229,9 +238,7 @@ void CGame::Update()
 	IwGetSoundManager()->Update();
 	
 	// HASAN - updated inventory
-	m_pInventory->Update();
-
-	UpdateInput();
+	g_Inventory.Update();
 
 	UpdateInput();
 
@@ -402,7 +409,7 @@ void CGame::Draw()
 	}
 
 	// HASAN - draw inventory
-	m_pInventory->Draw();
+	g_Inventory.Draw();
 
 	// Show surface
 	Iw2DSurfaceShow();
