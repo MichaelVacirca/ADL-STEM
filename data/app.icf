@@ -16,19 +16,5 @@
 # Some conditional operations are also permitted, see the
 # S3E documentation for details.
 
-[S3E]
-MemSize=64000000
-#MemFlags0=USE_STACK_ALLOCATOR
-#SysStackSwitch=1
-#landscape
-DispFixRot="Landscape"
-#or portrait
-#DispFixRot=1
-#autorotate
-#DispFixRot=0
-# fix for new ati drivers in simulator
-#DisableGL=1
-MemTooSmallToLoadApp="Mem too small to load app"
-MemTooSmallToRunApp="Mem to small to run app"
-iPhoneErrorOnMemoryWarning="iphone memory warning"
-AudioAllowBackground=1
+[GX]
+DataCacheSize=80000

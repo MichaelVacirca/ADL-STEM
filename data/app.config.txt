@@ -8,7 +8,3 @@
 # e.g.
 # [MyApplicationGroup]
 # MySetting   Description of what MySetting is for, its default values, etc
-
-[S3E]
-DispFixRot Landscape keeps everything in landscape
-

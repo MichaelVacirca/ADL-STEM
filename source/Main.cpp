@@ -5,7 +5,6 @@
 // For audio
 #include "IwSound.h"
 
-#include "Input.h"
 #include "Game.h"
 
 // For Level Select
@@ -25,4 +24,49 @@ int main()
     return 0;
 }
 
+int test(){
+	// Initialise Marmalade 2D graphics system
+    Iw2DInit();
+
+	// Init IwSound
+	IwSoundInit();
+	
+#ifdef IW_BUILD_RESOURCES
+	// Tell resource system how to convert WAV files
+	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
+#endif
+
+	// Initialise the resource manager
+	IwResManagerInit();
+
+	// Initialise the game object
+	g_Game.Init();
+
+	// Main Loop
+	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
+	{
+		// Update the game
+		g_Game.Update();
+
+		// Draw the game
+		g_Game.Draw();
+
+		// Yield to the operating system
+		s3eDeviceYield(0);
+	}
+
+	// Clean up game object
+	g_Game.Release();
+
+	// Shut down the resource manager
+	IwResManagerTerminate();
+
+	// Shutdown IwSound
+	IwSoundTerminate();
+
+	// Shut down Marmalade 2D graphics system
+	Iw2DTerminate();
+
+    return 0;
+}
 
