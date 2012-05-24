@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Atom.h"
 
-#define MAX_COUNT	16
+#define MAX_LEVEL_COUNT	16
 
 void CLevel::Init(const char* i_strLevelFile)
 {
@@ -20,11 +20,11 @@ void CLevel::Init(const char* i_strLevelFile)
 
 	// HASAN - need to cache the values while they are parsed because trying to create an CAtom instance causes another file to be parsed and the next
 	// 'strtok' call gets screwed up
-	char	atomSymbol[MAX_COUNT][4];
-	int		atomX[MAX_COUNT];
-	int		atomY[MAX_COUNT];
-	int		atomVelX[MAX_COUNT];
-	int		atomVelY[MAX_COUNT];
+	char	atomSymbol[MAX_LEVEL_COUNT][4];
+	int		atomX[MAX_LEVEL_COUNT];
+	int		atomY[MAX_LEVEL_COUNT];
+	int		atomVelX[MAX_LEVEL_COUNT];
+	int		atomVelY[MAX_LEVEL_COUNT];
 	int		atomsIndex = 0;
 
 	// HASAN - level atom information to create the correct atom

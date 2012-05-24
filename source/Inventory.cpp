@@ -106,7 +106,7 @@ bool CInventory::IsEmpty()
 			break;
 		}
 	}
-	return atomCount;
+	return bResult;
 }
 void CInventory::Clear()
 {
