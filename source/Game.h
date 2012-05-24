@@ -14,6 +14,11 @@
 // HASAN - for level
 #include "Level.h"
 
+#include "s3eKeyboard.h"
+#include "s3ePointer.h"
+
+//#include "Input.h"
+
 #define	MAX_STR_SIZE	255
 
 enum eSpriteType
@@ -55,14 +60,23 @@ public:
 	void						updateScore(int amount);
 	// HASAN - new to expose the game state to other classes
 	int							getGameState();
-	// HASAN - expose so everything can use the same font
+// HASAN - expose so everything can use the same font
 	CIw2DFont*					getFont();
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
 	int					m_nGameState;
+	// HASAN - inventory reference
+	CInventory*			m_pInventory;
 	// HASAN - level reference
 	CLevel*				m_pLevel;
+
+	//For input
+	//CInput*				m_pInput;
+	bool				m_bHasPointer;
+	int					xTouch1;
+	int					xTouch2;
+
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
@@ -110,6 +124,7 @@ public:
 
 	void	Update();			// Update the game
 	void	Draw();				// Draw the game
+	void	UpdateInput();		// Update the input
 };
 
 extern CGame g_Game;
