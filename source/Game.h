@@ -11,6 +11,8 @@
 #include "Sprite.h"
 // HASAN - for inventory
 #include "Inventory.h"
+// For Beaker
+#include "Beaker.h"
 // HASAN - for level
 #include "Level.h"
 

@@ -8,14 +8,6 @@ files
     Buttons.cpp
 }
 
-if {{ not defined LEVELSELECT_OVERRIDE_MAIN }}
-{
-    files
-    {
-        Main.cpp
-    }
-}
-
 deployments
 {
 }

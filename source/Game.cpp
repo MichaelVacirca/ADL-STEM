@@ -35,13 +35,13 @@ void CGame::Init()
 	// HASAN - create & initialize inventory reference object
 	g_Inventory.Init();
 
+	// Create Beaker
+	g_Beaker.Init();
+
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
-	//m_gravity = b2Vec2(0.0f, -9.8f);
-	// HASAN - experimenting with different gravity settings
-	m_gravity = b2Vec2(0.0f, 9.8f);  // "falls" upward
 	m_gravity = b2Vec2(0.0f, 0.0f);  // 
-	m_doSleep = false;
+	m_doSleep = true;
 
 	physicsHz = 60;
 	timeStep = 1.0f / physicsHz;
@@ -57,7 +57,7 @@ void CGame::Init()
 	m_Image				= Iw2DCreateImageResource("atom");
 
 	// Create the font that is used to display the score
-	Font = Iw2DCreateFontResource("trebuchet_12");
+	Font = Iw2DCreateFontResource("trebuchet8");
 
 
 	// HASAN - new from box2d example
@@ -70,6 +70,19 @@ void CGame::Init()
 
 	// HASAN - new for collision callbacks
 	m_world->SetContactListener(&g_MyContactListener);
+
+	//adding a ground for the beaker to rest on
+	b2BodyDef groundBodyDef;
+	groundBodyDef.position.Set(0.0f,0.0f);
+	b2Body* groundBody = m_world->CreateBody(&groundBodyDef);
+	b2PolygonShape groundBox;
+	groundBox.SetAsBox(50.0f,10.0f);
+	groundBody->CreateFixture(&groundBox, 0.0f);
+
+	// Beaker Import and Setup
+
+
+
 
 	// add a boundary at the edge of the screen
 	b2BodyDef bodyDef;
@@ -111,7 +124,7 @@ void CGame::Init()
 
 	m_body->CreateFixture(&fd);
 
-	m_body->SetAngularVelocity(2.15f);		// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
+	m_body->SetAngularVelocity(66.15f);		// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
 	// HASAN - when in zero gravity, Set an initial linear velocity.
 	m_body->SetLinearVelocity(b2Vec2(50, 20));
 	//-----------------------------------------------------------------------------
@@ -180,6 +193,9 @@ void CGame::Release()
 	// HASAN - clean-up inventory
 	g_Inventory.Release();
 
+	// Clean  Up Beaker
+	g_Beaker.Release();
+
 	// Clean-up sprite manager
 	if (SpriteManager != NULL)
 	{
@@ -239,6 +255,9 @@ void CGame::Update()
 	
 	// HASAN - updated inventory
 	g_Inventory.Update();
+
+	//Update Beaker
+	g_Beaker.Update();
 
 	UpdateInput();
 
@@ -411,6 +430,9 @@ void CGame::Draw()
 	// HASAN - draw inventory
 	g_Inventory.Draw();
 
+	// Draw Beaker
+	g_Beaker.Draw();
+
 	// Show surface
 	Iw2DSurfaceShow();
 }
@@ -445,9 +467,9 @@ void CGame::DrawScore()
 	//// Draw the score number
 	//Iw2DDrawString(str, CIwSVec2(100, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 	// HASAN - display target & current compound, not score
-	Iw2DDrawString("Target Compound: C0", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 
-	Iw2DDrawString("Current Compound: ___", CIwSVec2(200, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
+	//Iw2DDrawString("Target Compound: C0", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
+	//Iw2DDrawString("Current Compound: ___", CIwSVec2(200, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 }
 
 
