@@ -1,25 +1,33 @@
+/****************************************************************************************
+* Game:			 Compound Collider														*
+* Description:   This game is educational to teach children about compound creation.	*
+* Authors:       Danielle Holstine, Hasan Schwandes, and Michael Vacirca				*
+****************************************************************************************/
+
 #if !defined(_C_GAME_H_)
 #define _C_GAME_H_
 
-#include "s3e.h"
+
+//Marmalade SDK Components Utilized
+#include "IwResManager.h"
+#include "IwSound.h"
 #include "Iw2D.h"
 #include "IwGxFont.h"
-// For physics
-#include "Box2D/Box2D.h"
 #include "IwSound.h"
-
-#include "Sprite.h"
-// HASAN - for inventory
-#include "Inventory.h"
-// For Beaker
-#include "Beaker.h"
-// HASAN - for level
-#include "Level.h"
-
+#include "s3e.h"
 #include "s3eKeyboard.h"
 #include "s3ePointer.h"
 
-//#include "Input.h"
+//Box2D Physics Engine
+#include "Box2D/Box2D.h"
+
+//Compound Collider Header Files
+#include "Sprite.h"
+#include "Atom.h"
+#include "Inventory.h"
+#include "Beaker.h"
+#include "Level.h"
+
 
 #define	MAX_STR_SIZE	255
 

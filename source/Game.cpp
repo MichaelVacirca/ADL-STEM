@@ -1,10 +1,10 @@
-#include "IwResManager.h"
-
-// For audio
-#include "IwSound.h"
+/****************************************************************************************
+* Game:			 Compound Collider														*
+* Description:   This game is educational to teach children about compound creation.	*
+* Authors:       Danielle Holstine, Hasan Schwandes, and Michael Vacirca				*
+****************************************************************************************/
 
 #include "Game.h"
-#include "Atom.h"
 
 
 //
@@ -21,99 +21,59 @@ MyContactListener g_MyContactListener;
 //
 void CGame::Init()
 {
-	// Load the resource group that contains our graphics
-	CIwResGroup* gameGroup = IwGetResManager()->LoadGroup("game.group");
-	IwGetResManager()->SetCurrentGroup(gameGroup);		// Ensure that game is the current resource group
+	// This section sets up major global environment variables needed for gameplay
+		CIwResGroup* gameGroup = IwGetResManager()->LoadGroup("game.group");	// Load the resource group that contains our graphics
+		IwGetResManager()->SetCurrentGroup(gameGroup);							// Ensure that game is the current resource group
+		m_nGameState = GS_Playing;												// HASAN - set initial game state
+		SpriteManager = new CSpriteManager();									// Allocate the sprite manager
 
-	// HASAN - set initial game state
-	m_nGameState = GS_Playing;
-	//m_nGameState = GS_Welcome;
+	// This section sets up major Box2D Physical World Parameters
+		m_gravity = b2Vec2(0.0f, 0.0f);											// Setups up Gravity of the World.  
+		m_doSleep = true;														// If an object is rendered but not currently being affected, skip it until contact occurs from an active element.
 
-	// Allocate the sprite manager
-	SpriteManager = new CSpriteManager();
+		physicsHz = 60;															// Game physics update rate
+		timeStep = 1.0f / physicsHz;											// How many times a second the game is updated (in this case 60 times a second)
+		velocityIterations = 10;												// How often velocity is recalculated for an object in motion based on world physics
+		positionIterations = 8;													// How often the position is recalculated for an object in motion
+		m_accumulator = 0.0f;													// Initial Time of Game Start
+		m_prevTime = s3eTimerGetMs();											// Used to grab time for updates
 
-	// HASAN - create & initialize inventory reference object
-	g_Inventory.Init();
+	// This section sets up initialization of game elements 
+		g_Inventory.Init();														// Create Inventory 
+		g_Beaker.Init();														// Create Beaker
+		m_Image = Iw2DCreateImageResource("atom");								// Default Atom Image
+		m_world = new b2World(m_gravity, m_doSleep);							// Initialization of a Box2D World 
+		Font = Iw2DCreateFontResource("trebuchet8");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
+		
+   // This section sets up callbacks used within the game
+		m_world->SetContactListener(&g_MyContactListener);						// Sets up Contact Listener within the Box2D World
 
-	// Create Beaker
-	g_Beaker.Init();
+   // This section is used to add elements to the Box2D World
+		b2BodyDef bodyDef;														// This object is used to create the boundary edge of a Box2d World
+		bodyDef.type = b2_staticBody;											// that is set to the width and height of the screen device
+		bodyDef.position.Set(0, 0);												// and then adds this fixture to the Box2D World as a loop around the screen.
+		b2Body* boundaryBody = m_world->CreateBody(&bodyDef);
+		const float hw = (float)Iw2DGetSurfaceWidth() * 0.5f / 8;
+		const float hh = (float)Iw2DGetSurfaceHeight() * 0.5f / 8;
+		b2Vec2 list[] = { b2Vec2(-hw, -hh), b2Vec2(hw, -hh), b2Vec2(hw, hh), b2Vec2(-hw, hh) };
+		const int numVerts = sizeof(list) / sizeof(b2Vec2);
+		b2LoopShape loopShape;
+		loopShape.Create(list, numVerts);
+		boundaryBody->CreateFixture(&loopShape, 0.0f);							// Screen Boundary completed
 
-	// HASAN - new values from box2d example
-	//-----------------------------------------------------------------------------
-	m_gravity = b2Vec2(0.0f, 0.0f);  // 
-	m_doSleep = true;
-
-	physicsHz = 60;
-	timeStep = 1.0f / physicsHz;
-	velocityIterations = 10;
-	positionIterations = 8;
-
-	m_Image = NULL;
-	m_world = NULL;
-	//-----------------------------------------------------------------------------
-
-	// Create images that we can use to render our objects
-	// HASAN - use the 'blank' atom as the image to associate with the box2d example
-	m_Image				= Iw2DCreateImageResource("atom");
-
-	// Create the font that is used to display the score
-	Font = Iw2DCreateFontResource("trebuchet8");
-
-
-	// HASAN - new from box2d example
-	//-----------------------------------------------------------------------------
-	m_accumulator = 0.0f;
-	m_prevTime = s3eTimerGetMs();
-
-	// create a box2d world
-	if( !(m_world = new b2World(m_gravity, m_doSleep)) )		{ /*error*/	}
-
-	// HASAN - new for collision callbacks
-	m_world->SetContactListener(&g_MyContactListener);
-
-	// add a boundary at the edge of the screen
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
-	bodyDef.position.Set(0, 0);
-	b2Body* boundaryBody = m_world->CreateBody(&bodyDef);
-
-	const float hw = (float)Iw2DGetSurfaceWidth() * 0.5f / 8;
-	const float hh = (float)Iw2DGetSurfaceHeight() * 0.5f / 8;
-	b2Vec2 list[] = { b2Vec2(-hw, -hh), b2Vec2(hw, -hh), b2Vec2(hw, hh), b2Vec2(-hw, hh) };
-
-	const int numVerts = sizeof(list) / sizeof(b2Vec2);
-	b2LoopShape loopShape;
-	loopShape.Create(list, numVerts);
-	boundaryBody->CreateFixture(&loopShape, 0.0f);
-
-	// add a dynamic body
-//	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0, 0);
-	m_body = m_world->CreateBody(&bodyDef);
-	m_body->SetLinearDamping(0.1f);
-
-	b2PolygonShape polygonShape;
-	//polygonShape.SetAsBox(0.5f * (8/2), 0.5f * (8/2));
-	// HASAN - use circle instead of a box
-	b2CircleShape circleShape;
-	circleShape.m_radius = 5.0f;
-
-	b2FixtureDef fd;
-	//fd.shape = &polygonShape;
-	// HASAN - use circle instead of a box 
-	fd.shape = &circleShape;
-	fd.friction = 0.5f;
-	fd.density = 10.0f;
-	//fd.restitution = 0.5f;
-	// HASAN - more bouncy
-	fd.restitution = 0.95f;   // between 0 & 1 (1 = most bouncy)
-
-	m_body->CreateFixture(&fd);
-
-	m_body->SetAngularVelocity(66.15f);		// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
-	// HASAN - when in zero gravity, Set an initial linear velocity.
-	m_body->SetLinearVelocity(b2Vec2(50, 20));
+		bodyDef.type = b2_dynamicBody;											// This object is now defined to create a dynamicBody.
+		m_body = m_world->CreateBody(&bodyDef);									// Circle Shape used to represent the atom dynamicBody.
+		m_body->SetLinearDamping(0.1f);			
+		b2CircleShape circleShape;												
+		circleShape.m_radius = 5.0f;
+		b2FixtureDef fd;
+		fd.shape = &circleShape;
+		fd.friction = 0.5f;
+		fd.density = 10.0f;
+		fd.restitution = 0.95f;													// between 0 & 1 (1 = most bouncy)
+		m_body->CreateFixture(&fd);
+		m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
+		m_body->SetLinearVelocity(b2Vec2(50, 20));								// HASAN - when in zero gravity, Set an initial linear velocity.
 	//-----------------------------------------------------------------------------
 
 
@@ -121,15 +81,6 @@ void CGame::Init()
 	// For audio
 	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 	ExplosionSoundInstance = NULL;
-
-
-
-
-
-
-	// HASAN - new to load a level
-	// HASAN TODO - update to be data driven from the load level screen
-	//LoadLevel("level_1.dat");
 
 
 //	//Initialize input
