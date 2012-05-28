@@ -30,10 +30,9 @@ void CGame::Init()
 	// This section sets up major Box2D Physical World Parameters
 		m_gravity = b2Vec2(0.0f, 0.0f);											// Setups up Gravity of the World.  
 		m_doSleep = true;														// If an object is rendered but not currently being affected, skip it until contact occurs from an active element.
-
 		physicsHz = 60;															// Game physics update rate
 		timeStep = 1.0f / physicsHz;											// How many times a second the game is updated (in this case 60 times a second)
-		velocityIterations = 10;												// How often velocity is recalculated for an object in motion based on world physics
+		velocityIterations = 8;													// How often velocity is recalculated for an object in motion based on world physics
 		positionIterations = 8;													// How often the position is recalculated for an object in motion
 		m_accumulator = 0.0f;													// Initial Time of Game Start
 		m_prevTime = s3eTimerGetMs();											// Used to grab time for updates
@@ -61,31 +60,27 @@ void CGame::Init()
 		loopShape.Create(list, numVerts);
 		boundaryBody->CreateFixture(&loopShape, 0.0f);							// Screen Boundary completed
 
-		bodyDef.type = b2_dynamicBody;											// This object is now defined to create a dynamicBody.
-		m_body = m_world->CreateBody(&bodyDef);									// Circle Shape used to represent the atom dynamicBody.
-		m_body->SetLinearDamping(0.1f);			
+		bodyDef.type = b2_dynamicBody;											//  Object is redefined to create a dynamicBody.
 		b2CircleShape circleShape;												
-		circleShape.m_radius = 5.0f;
+		circleShape.m_radius = 1.0f;
 		b2FixtureDef fd;
 		fd.shape = &circleShape;
 		fd.friction = 0.5f;
 		fd.density = 10.0f;
 		fd.restitution = 0.95f;													// between 0 & 1 (1 = most bouncy)
+		m_body = m_world->CreateBody(&bodyDef);									// Circle Shape used to represent the atom dynamicBody.
+		m_body->SetLinearDamping(0.1f);			
 		m_body->CreateFixture(&fd);
 		m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
 		m_body->SetLinearVelocity(b2Vec2(50, 20));								// HASAN - when in zero gravity, Set an initial linear velocity.
-	//-----------------------------------------------------------------------------
-
-
 	
-	// For audio
-	ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
-	ExplosionSoundInstance = NULL;
+	// This section sets up Audio Initial Parameters
+		ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
+		ExplosionSoundInstance = NULL;
 
-
-//	//Initialize input
-	xTouch1 = 0;
-	xTouch2 = 0;
+	// This section sets up Touch Initial Parameters
+		xTouch1 = 0;
+		xTouch2 = 0;
 
 
 
