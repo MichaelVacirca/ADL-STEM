@@ -18,6 +18,7 @@
 
 [S3E]
 MemSize=64000000
+MemSizeDebug=64000000
 #MemFlags0=USE_STACK_ALLOCATOR
 #SysStackSwitch=1
 #landscape
