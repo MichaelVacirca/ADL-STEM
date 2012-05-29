@@ -15,6 +15,7 @@
 #include "LevelSelectMain.h"
 #include <malloc.h>
 #include "Iw2D.h"
+#include "IwGx.h"
 
 
 #define FRAMETIME  30
@@ -30,8 +31,6 @@ bool            g_HideDisabledButtons = false;
 
 bool LevelSelectMainUpdate()
 {
-    s3eKeyboardUpdate();
-    s3ePointerUpdate();
 
     if (!LevelUpdate())
     {
@@ -40,16 +39,11 @@ bool LevelSelectMainUpdate()
     }
 
     if (g_ClearScreen)
-        s3eSurfaceClear(0xff,0xff,0xff);
+	{
 
     LevelRender();
-    ButtonsRender();
-    SoftkeysRender();
-
-    if (g_DrawCursor)
-        CursorRender();
-
-    s3eSurfaceShow();
+	}
+   // s3eSurfaceShow();
     s3eDeviceYield(FRAMETIME);
     return true;
 }

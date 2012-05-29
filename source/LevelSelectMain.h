@@ -16,6 +16,7 @@
 #include "s3e.h"
 #include <string.h>
 #include <stdio.h>
+#include "Iw2D.h"
 
 typedef void (*ButtonCallback)(struct Button* button);
 
@@ -37,6 +38,7 @@ struct Button
     int     m_YPos;
     int     m_Width;
     int     m_Height;
+	CIw2DImage*	 m_ButtonImage;
     ButtonCallback m_Callback;
 };
 
@@ -60,7 +62,7 @@ void DontDrawCursor();
 /**
  * Create and new button and return a pointer to it.
  */
-Button* NewButton(const char *name, ButtonCallback callback=NULL);
+Button* NewButton(const char *name, ButtonCallback callback=NULL, CIw2DImage* image=NULL);
 
 /**
  * Delete all buttons and free memory allocated for them.

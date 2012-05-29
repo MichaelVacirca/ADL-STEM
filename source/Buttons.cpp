@@ -17,6 +17,7 @@
  */
 #include "LevelSelectMain.h"
 #include <malloc.h>
+#include "IwGx.h"
 
 static Button* g_SelectedButton = 0;
 static Button* g_ButtonsHead = 0;
@@ -24,8 +25,9 @@ static Button* g_ButtonsTail = 0;
 static int     g_NumButtons = 0;
 static uint    g_ButtonScale = 1;
 static int     g_YBelowButtons = 50;
+static bool    evenSet = false;
 
-Button* NewButton(const char *name, ButtonCallback callback)
+Button* NewButton(const char *name, ButtonCallback callback, CIw2DImage* buttonImage)
 {
     Button* button = (Button*)malloc(sizeof(Button));
 
@@ -40,6 +42,7 @@ Button* NewButton(const char *name, ButtonCallback callback)
     button->m_YPos = 0;
     button->m_Width = 0;
     button->m_Height = 0;
+	button->m_ButtonImage = buttonImage;
 
     if (g_NumButtons < 10)
     {
@@ -106,6 +109,7 @@ void SetButtonName(Button* button, const char *name)
 
 void ButtonsRender()
 {
+	IwGxSetScreenSpaceSlot(1);
     int previousDebugTextSize = s3eDebugGetInt(S3E_DEBUG_FONT_SCALE);
     int fontScale = g_ButtonScale;
     char buf[128];
@@ -123,8 +127,8 @@ void ButtonsRender()
     int pointerY = s3ePointerGetY();
     s3ePointerState pointerState = s3ePointerGetState(S3E_POINTER_BUTTON_SELECT);
 
-    int x = 10;
-    int y = 50;
+    int x = 35;
+    int y = 165;
 
     g_SelectedButton = 0;
 
@@ -171,16 +175,25 @@ void ButtonsRender()
         int len = strlen(buf) - 8;
         int _x0 = x - 2;
         int _y0 = y - 4;
-        int _h = textHeight + 4;
+        int _h = 144;
         int _y1 = _y0 + _h;
-        int _w;
+        int _w = 419;
         int _x1;
         int textOffset = 0;
+		int xOffset = 420;
 
         // Scale down font size if button contents are too long for screen
         while (true)
         {
-            _w = (textWidth * len) + 8;
+            _w = 419;
+			if (evenSet){
+				_x0 = _x0 + xOffset;
+				evenSet = false;
+				}
+				else if (!evenSet){
+				evenSet = true;
+				}
+
             _x1 = _x0 + _w;
 
             if (fontScale == 1 || _x1 <= s3eSurfaceGetInt(S3E_SURFACE_WIDTH))
@@ -196,9 +209,9 @@ void ButtonsRender()
             pointerY >= _y0 && pointerY <= _y1 && iter->m_Enabled)
         {
             if (pointerState & S3E_POINTER_STATE_DOWN)
-                DrawRect(_x0, _y0, _w, _h, 0, 255, 0);
+                DrawRect(_x0, _y0, 419, _h, 0, 255, 0);
             else
-                DrawRect(_x0, _y0, _w, _h, 255, 0, 0);
+                DrawRect(_x0, _y0, 419, _h, 255, 0, 0);
 
             if (pointerState & S3E_POINTER_STATE_RELEASED)
                 g_SelectedButton = iter;
@@ -206,9 +219,9 @@ void ButtonsRender()
         else
         {
             if (iter->m_Enabled)
-                DrawRect(_x0, _y0, _w, _h, 255, 0, 0);
+                DrawRect(_x0, _y0, 419, _h, 255, 0, 0);
             else
-                DrawRect(_x0, _y0, _w, _h, 127, 0, 0);
+                DrawRect(_x0, _y0, 419, _h, 127, 0, 0);
         }
 
         s3eDebugPrint(x, y+textOffset,  buf, 0);
@@ -216,10 +229,10 @@ void ButtonsRender()
         // Store button's position and size
         iter->m_XPos = _x0;
         iter->m_YPos = _y0;
-        iter->m_Width = _w;
+        iter->m_Width = 419;
         iter->m_Height = _h;
 
-        y = y + textHeight * 2;
+        y = y + 133;
     }
 
     if (g_SelectedButton && g_SelectedButton->m_Callback)

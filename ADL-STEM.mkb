@@ -53,6 +53,9 @@ files
 	(data)
 	game.group
 	WelcomeScreen.png
+	LevelSelectCarbon.png
+	LevelSelectHydrogen.png
+	LevelSelectNitrogen.png
 }
 
 assets
@@ -61,6 +64,9 @@ assets
 	# For audio
 	music.mp3
 	WelcomeScreen.png
+	LevelSelectCarbon.png
+	LevelSelectHydrogen.png
+	LevelSelectNitrogen.png
 
 	(data-ram/data-gles1, data)
 	game.group.bin
