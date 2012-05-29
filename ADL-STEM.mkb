@@ -52,6 +52,7 @@ files
 	[Data]
 	(data)
 	game.group
+	WelcomeScreen.png
 }
 
 assets
@@ -59,6 +60,7 @@ assets
 	(data)
 	# For audio
 	music.mp3
+	WelcomeScreen.png
 
 	(data-ram/data-gles1, data)
 	game.group.bin

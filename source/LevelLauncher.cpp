@@ -56,6 +56,8 @@
 #include "IwSound.h"
 #include "IwPath.h"
 #include "IwDebug.h"
+#include "IwGx.h"
+#include "s3ePointer.h"
 
 #include <sys/stat.h>
 #include <dirent.h>
@@ -76,6 +78,26 @@ static unsigned int               g_App = 0;  //Index into list of applications
  */
 void LevelInit()
 {
+	Iw2DInit();
+	int screen_width = Iw2DGetSurfaceWidth();
+	int screen_height = Iw2DGetSurfaceHeight();
+	CIw2DImage*	 welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
+	int keyPressed = 0;
+
+	while(keyPressed == 0){
+	s3eKeyboardUpdate();
+    s3ePointerUpdate();
+	Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
+	IwGxClear(IW_GX_DEPTH_BUFFER_F);
+	IwGxFlush();
+	Iw2DSurfaceShow();
+	s3eDeviceYield(30);
+	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
+		{
+			keyPressed = 1;
+
+		}
+	}
     // Navigate to basedirectory were launch applications are situated
     if (chdir(APP_FOLDER))
     {
@@ -224,8 +246,6 @@ bool LevelUpdate()
  */
 void LevelRender()
 {
-    const int textHeight = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT);
-    int ypos = GetYBelowButtons() + textHeight * 2;
 
-    s3eDebugPrint((s3eSurfaceGetInt(S3E_SURFACE_WIDTH)-strlen("Launch an application")*6)/2, ypos, "`x666666Launch an application", 0);
+
 }
