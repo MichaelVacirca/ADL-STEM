@@ -14,6 +14,7 @@
  */
 #include "LevelSelectMain.h"
 #include <malloc.h>
+#include "Iw2D.h"
 
 
 #define FRAMETIME  30
@@ -81,7 +82,6 @@ void LevelSelectMainInit()
     // Scale font up to be easier to read
     int fontScale = scale > 1 ? scale-1 : 1;
     s3eDebugSetInt(S3E_DEBUG_FONT_SCALE, fontScale);
-
     LevelInit();
 }
 
