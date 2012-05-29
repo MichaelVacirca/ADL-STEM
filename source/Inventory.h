@@ -9,8 +9,8 @@
 #define MAX_ATOM_STR_SIZE		4
 #define MAX_CMPND_STR_SIZE		16
 
-#define IMAGE_SIZE_WIDTH		84
-#define IMAGE_SIZE_HEIGHT		321
+#define IMAGE_SIZE_WIDTH		321
+#define IMAGE_SIZE_HEIGHT		84
 
 class CInventory
 {

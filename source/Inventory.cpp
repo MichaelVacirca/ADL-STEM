@@ -42,14 +42,15 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 		atom->Init(i_strAtomSymbol);
 
 		// horizontal center, same as inventory graphic
-		int posX = Iw2DGetSurfaceWidth() - (IMAGE_SIZE_WIDTH / 2);
-		int posY = (Iw2DGetSurfaceHeight() / 2) - ( IMAGE_SIZE_HEIGHT / 2);
+		int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162;
+		int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
+
 
 		// offset inventory vertically to fit in the container
-		posY = posY + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing
+		posX = posX + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing
 		if (inventoryCount > 0)
 		{
-			posY = posY + (inventoryCount * (64 + 15));  // NOTE: 64 = atom size, 15 = spacing + border + spacing
+			posX = posX + (inventoryCount * (64 + 15));  // NOTE: 64 = atom size, 15 = spacing + border + spacing
 		}
 
 		atom->setPosAngScale(posX, posY, 0, IW_GEOM_ONE);
@@ -138,7 +139,7 @@ void CInventory::Init()
 	// Create inventory sprite
 	inventory_sprite = new CSprite();
 	inventory_sprite->Init();
-	inventory_sprite->setPosAngScale(screen_width - (IMAGE_SIZE_WIDTH / 2), screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically on screen
+	inventory_sprite->setPosAngScale((screen_width - (screen_width/2)), screen_height - (IMAGE_SIZE_HEIGHT / 2), 0, IW_GEOM_ONE);  // center image vertically on screen
 	inventory_sprite->setImage(inventory_image);
 	inventory_sprite->setDestSize(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT);
 
@@ -278,14 +279,14 @@ void CInventory::Draw()
 			snprintf(str, 32, "%d", atomCount[i]);
 
 			// horizontal center, same as inventory graphic
-			int posX = Iw2DGetSurfaceWidth() - (IMAGE_SIZE_WIDTH / 2) + 15;
-			int posY = (Iw2DGetSurfaceHeight() / 2) - ( IMAGE_SIZE_HEIGHT / 2);
+		int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162 + 19;
+		int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
 
 			// offset inventory vertically to fit in the container
-			posY = posY + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing
+			posX = posX + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing
 			if (i > 0)
 			{
-				posY = posY + (i * (64 + 15));  // NOTE: 64 = atom size, 15 = spacing + border + spacing
+				posX = posX + (i * (64 + 15));  // NOTE: 64 = atom size, 15 = spacing + border + spacing
 			}
 
 			// Draw the atom count in the appropriate location
