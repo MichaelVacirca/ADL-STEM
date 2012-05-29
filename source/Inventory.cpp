@@ -158,6 +158,72 @@ void CInventory::Release()
 
 void CInventory::Update()
 {
+	// HASAN - new to add an atom to the beaker when selected from the inventory
+	int touchX = 0;
+	int touchY = 0;
+	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
+	{
+		touchX = s3ePointerGetX();
+		touchY = s3ePointerGetY();
+
+		for (int i = 0; i < inventoryCount; i++)
+		{
+			if (atomObjs[i]->isTouched(touchX, touchY))
+			{
+				if (g_Beaker.getAtomSymbol() != NULL && !strcmp(atomObjs[i]->getSymbol(), g_Beaker.getAtomSymbol()))
+				{
+					// Early-terminate because the same inventory item was clicked more than once & can be ignored
+					break;
+				}
+
+				if (atomCount[i] == 1)
+				{
+					// hide atom to indicate zero are left
+					atomObjs[i]->setVisible(false);
+				}
+
+				// create new CAtom object to be held in the beaker, so inventory atom can remain unchanged
+				// ****************************************************************************************
+				// *** HASAN - BE SURE TO DELETE THIS OBJECT UPON GAME RESTART/COMPLETION
+				// ****************************************************************************************
+				CAtom* newAtom = new CAtom();
+				newAtom->Init(atomObjs[i]->getSymbol());
+
+				CAtom* prevAtom = g_Beaker.setAtom(newAtom);
+				if (prevAtom != NULL)
+				{
+					// replacing previously selected atom in the beaker, so moving previous one back into this inventory
+					// 1 - find previous atom slot in inventory
+					// 2 - if previously zero count, then set back to visible
+					// 3 - increment the atom counter
+					for (int j = 0; j < inventoryCount; j++)
+					{
+						if (!strcmp(prevAtom->getSymbol(), atomObjs[j]->getSymbol()))
+						{
+							// match found
+							if (atomCount[j] <= 0)
+								atomObjs[j]->setVisible(true);
+
+							atomCount[j]++;
+
+							// This was a clone of the object in the inventory, need to delete it (happens inside the sprite manager) when it's being replaced and not shot into the environment
+							g_Game.getSpriteManager()->removeSprite(prevAtom);
+
+							break;
+						}
+					}
+				}
+
+				atomCount[i]--;
+				//break;
+			}
+		}
+	}
+
+
+
+
+
 	// HASAN - STRANGE .... When not displaying inventory and have the below code un-commented (& Draw() function code commented out), the white circle (atom) appears as expected.  But, when moved
 	// to the Draw() method, it only appears black.  Wonder if it might be a red herring for a synchronization issue b/w update() & draw() calls ... ?
 	//// Only display inventory in certain game states
@@ -205,6 +271,10 @@ void CInventory::Draw()
 		char str[32];
 		for (int i = 0; i < inventoryCount; i++)
 		{
+			// skip to the next if count is zero - and atom is hidden (i.e. - it was originally in the inventory, but now is fully used and no longer available)
+			if (atomCount[i] <= 0)
+				continue;
+
 			snprintf(str, 32, "%d", atomCount[i]);
 
 			// horizontal center, same as inventory graphic

@@ -20,13 +20,14 @@ void CAtom::Init(const char* i_strAtomSymbol)
 	char*	pch;
 	bool	bMatchFound = false;
 
-	// HASAN - Lookup atom information to create the correct atom
+	// lookup atom information to create the correct atom
 
-	// HASAN - read file contents for atom data file and store in this object
+	// read file contents for atom data file and store in this object
 	s3eFile* file = s3eFileOpen("atoms.dat", "rb");
 	if (file != NULL)
 	{
-		s3eDebugOutputString("Parsed file\n-----------\n");
+		// HASAN - debug
+		//s3eDebugOutputString("Parsed file\n-----------\n");
 		while (s3eFileReadString(buffer, MAX_STR_SIZE, file) != NULL)
 		{
 			// HASAN - debug
@@ -35,7 +36,7 @@ void CAtom::Init(const char* i_strAtomSymbol)
 			{
 				// ignore comments
 				// HASAN - debug
-				s3eDebugOutputString("  -> comment");
+				//s3eDebugOutputString("  -> comment");
 			}
 			else
 			{
@@ -49,13 +50,13 @@ void CAtom::Init(const char* i_strAtomSymbol)
 					}
 
 					// HASAN - debug
-					s3eDebugOutputString("  -> atom_symbol");
+					//s3eDebugOutputString("  -> atom_symbol");
 
 					pch = strtok(NULL, ":\n\r \t");
 					if (!strcmp(i_strAtomSymbol, pch))
 					{
 						// HASAN - debug
-						s3eDebugOutputString("Atom symbol match found!");
+						//s3eDebugOutputString("Atom symbol match found!");
 						strcpy(m_strSymbol, pch);
 
 						bMatchFound = true;
@@ -125,12 +126,6 @@ bool CAtom::Update()
 
 	Position.x += Velocity.x;
 	Position.y += Velocity.y;
-
-	// HASAN - if the atom is below the screen, remove it - may use later
-	//if (Position.y >= Iw2DGetSurfaceHeight() + 20)
-	//{
-	//	return false;	// Tell the sprite manager to remove this atom
-	//}
 
 	// If atom is at any edge of the screen, give new random velocity to 'bounce' it out of subsequent collisions
 	if (WallCollideCheck())

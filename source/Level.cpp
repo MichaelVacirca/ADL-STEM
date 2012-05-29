@@ -123,9 +123,6 @@ void CLevel::Init(const char* i_strLevelFile)
 	delete [] buffer;
 
 
-	// HASAN TODO - update the below to use the info parsed from the level file above
-
-
 	// Get screen dimensions
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
@@ -154,7 +151,7 @@ void CLevel::Init(const char* i_strLevelFile)
 		g_Inventory.AddAtoms(inventoryAtomSymbol[i], inventoryAtomCount[i]);
 	}
 
-	//setup Beaker
+	// Setup Beaker
 	g_Beaker.Init();
 }
 
@@ -165,6 +162,9 @@ void CLevel::Release()
 		delete background_image;
 		background_image = NULL;
 	}
+
+	// Clean up Beaker
+	g_Beaker.Release();
 }
 
 void CLevel::Update()
@@ -172,6 +172,9 @@ void CLevel::Update()
 	if (g_Game.getGameState() == GS_Playing)
 	{
 		// Update
+
+		// Update Beaker
+		g_Beaker.Update();
 	}
 	else
 	{
@@ -190,7 +193,8 @@ void CLevel::Draw()
 			g_Game.getSpriteManager()->addSprite(background_sprite);
 		}
 
-		// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
+		// Draw Beaker
+		g_Beaker.Draw();
 	}
 	else
 	{

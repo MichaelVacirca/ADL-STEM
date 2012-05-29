@@ -13,7 +13,7 @@ void CBeaker::Init()
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
 
-	// Create inventory sprite
+	// Create beaker sprite
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
 	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, 0,IW_GEOM_ONE);  // center image vertically on screen
@@ -25,11 +25,11 @@ void CBeaker::Init()
 
 void CBeaker::Draw()
 {
-	// Only display inventory in certain game states
+	// Only display breaker in certain game states
 	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
 	{
 		// Reset the visual transform
-		Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
+		//Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
 	}
 }
 
@@ -46,6 +46,34 @@ void CBeaker::Release()
 void CBeaker::Clear()
 {
 	g_Game.getSpriteManager()->removeSprite(beaker_sprite);
+}
+
+
+CAtom* CBeaker::setAtom(CAtom* newAtom)
+{
+	CAtom* prevAtom = NULL;
+
+	if (currentAtom != NULL)
+	{
+		prevAtom = currentAtom;
+	}
+	currentAtom = newAtom;
+
+	// set atom position to the center of the beaker
+	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2);
+	currentAtom->setVelocity(0, 0);
+
+	return prevAtom;
+}
+
+bool CBeaker::shootAtom()
+{
+	if (isEmpty())
+		return false;
+
+	// HASAN TODO - instrument shooting the atom somehow
+
+	return true;
 }
 
 void CBeaker::Update()

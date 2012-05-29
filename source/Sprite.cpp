@@ -19,6 +19,7 @@
 //
 //
 
+
 void CSprite::Init()
 {
 	Type = 0;
@@ -60,6 +61,27 @@ void CSprite::Draw()
 	int x = -(Width / 2);
 	int y = -(Height / 2);
 	Iw2DDrawImage(Image, CIwSVec2(x, y), CIwSVec2(Width, Height));
+}
+
+// HASAN - new for touch check
+// HASAN - NOTE: Does not take rotation & scale into account
+bool CSprite::isTouched(int touchX, int touchY)
+{
+	if (!Visible)
+		return false;
+
+	int dx = touchX - getPosition().x;
+	if (dx < 0) dx = -dx;
+	if (dx < Width / 2)
+	{
+		int dy = touchY - getPosition().y;
+		if (dy < 0) dy = -dy;
+		if (dy < Height / 2)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 //

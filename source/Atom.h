@@ -64,6 +64,11 @@ public:
 		}
 	}
 
+	const char* getSymbol()
+	{
+		return m_strSymbol;
+	}
+
 	void	Init(const char* i_strAtomSymbol);				// Initialise the atom game object
 	bool	Update();			// Update our atom object
 };

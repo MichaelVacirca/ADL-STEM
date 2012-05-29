@@ -40,10 +40,10 @@ void CGame::Init()
 
 	// This section sets up initialization of game elements 
 		g_Inventory.Init();														// Create Inventory 
-		g_Beaker.Init();														// Create Beaker
 		m_Image = Iw2DCreateImageResource("atom");								// Default Atom Image
 		m_world = new b2World(m_gravity, m_doSleep);							// Initialization of a Box2D World 
-		Font = Iw2DCreateFontResource("trebuchet8");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
+		//Font = Iw2DCreateFontResource("trebuchet8");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
+		Font = Iw2DCreateFontResource("trebuchet_12");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
 		
    // This section sets up callbacks used within the game
 		m_world->SetContactListener(&g_MyContactListener);						// Sets up Contact Listener within the Box2D World
@@ -62,9 +62,9 @@ void CGame::Init()
 		boundaryBody->CreateFixture(&loopShape, 0.0f);							// Screen Boundary completed
 
 		bodyDef.type = b2_dynamicBody;											// This object is now defined to create a dynamicBody.
-		m_body = m_world->CreateBody(&bodyDef);									// Circle Shape used to represent the atom dynamicBody.
+		m_body = m_world->CreateBody(&bodyDef);
 		m_body->SetLinearDamping(0.1f);			
-		b2CircleShape circleShape;												
+		b2CircleShape circleShape;												// Circle Shape used to represent the atom dynamicBody.								
 		circleShape.m_radius = 5.0f;
 		b2FixtureDef fd;
 		fd.shape = &circleShape;
@@ -83,7 +83,7 @@ void CGame::Init()
 	ExplosionSoundInstance = NULL;
 
 
-//	//Initialize input
+	//Initialize input
 	xTouch1 = 0;
 	xTouch2 = 0;
 
@@ -128,11 +128,8 @@ void CGame::Release()
 		Font = NULL;
 	}
 
-	// HASAN - clean-up inventory
+	// Clean up inventory
 	g_Inventory.Release();
-
-	// Clean  Up Beaker
-	g_Beaker.Release();
 
 	// Clean-up sprite manager
 	if (SpriteManager != NULL)
@@ -165,7 +162,7 @@ void CGame::PlayExplosionSound()
 	}
 }
 
-// HASAN - new to load a level
+// load a level
 void CGame::LoadLevel(const char* i_strLevelFile)
 {
 	m_pLevel = new CLevel();
@@ -191,11 +188,8 @@ void CGame::Update()
 	// Update Iw Sound Manager
 	IwGetSoundManager()->Update();
 	
-	// HASAN - updated inventory
+	// Update inventory
 	g_Inventory.Update();
-
-	//Update Beaker
-	g_Beaker.Update();
 
 	UpdateInput();
 
@@ -215,7 +209,7 @@ void CGame::Update()
 	}
 	//-----------------------------------------------------------------------------
 
-	// HASAN - new to update level
+	// Update level
 	if (m_pLevel != NULL)
 	{
 		m_pLevel->Update();
@@ -334,9 +328,6 @@ void CGame::Draw()
 	// Draw the games sprite objects
 	SpriteManager->Draw();
 
-	// Draw the score text
-	DrawScore();
-
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
 	//static const CIwSVec2 imageSize(m_Image->GetWidth() >> 3, m_Image->GetHeight() >> 3);
@@ -359,55 +350,17 @@ void CGame::Draw()
     Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
 	//-----------------------------------------------------------------------------
 
-	// HASAN - new to draw level
+	// Draw level
 	if (m_pLevel != NULL)
 	{
 		m_pLevel->Draw();
 	}
 
-	// HASAN - draw inventory
+	// Draw inventory
 	g_Inventory.Draw();
-
-	// Draw Beaker
-	g_Beaker.Draw();
 
 	// Show surface
 	Iw2DSurfaceShow();
-}
-
-void CGame::updateScore(int amount)
-{
-	// Adjust score
-	Score += amount;
-}
-
-void CGame::DrawScore()
-{
-	if(m_nGameState == GS_Welcome || m_nGameState == GS_LevelSelect)
-		return;
-
-	// Set the current font
-	Iw2DSetFont(Font);
-
-	// Reset the visual transform
-	Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-
-	// Set teh texts colour to black
-	Iw2DSetColour(0xff000000);
-
-	//// Draw the score label
-	//Iw2DDrawString("Score:", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
-
-	//// Convert the score number to text
-	//char str[32];
-	//snprintf(str, 32, "%d", Score);
-
-	//// Draw the score number
-	//Iw2DDrawString(str, CIwSVec2(100, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
-	// HASAN - display target & current compound, not score
-
-	//Iw2DDrawString("Target Compound: C0", CIwSVec2(10, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
-	//Iw2DDrawString("Current Compound: ___", CIwSVec2(200, 10), CIwSVec2(200, 30), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
 }
 
 

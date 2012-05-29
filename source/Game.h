@@ -62,7 +62,6 @@ class CGame
 	/// Properties
 protected:
 	CSpriteManager*				SpriteManager;					// The sprite manager handles a collection of game sprites
-	int							Score;							// Game score
 public:
 	CSpriteManager*				getSpriteManager()				{ return SpriteManager; }
 	void						addSprite(CSprite* sprite)		{ SpriteManager->addSprite(sprite); }
@@ -70,18 +69,14 @@ public:
 	void						updateScore(int amount);
 	// HASAN - new to expose the game state to other classes
 	int							getGameState();
-// HASAN - expose so everything can use the same font
+	// HASAN - expose so everything can use the same font
 	CIw2DFont*					getFont();
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
 	int					m_nGameState;
-	// HASAN - inventory reference
 	CInventory*			m_pInventory;
-
-	// HASAN - inventory reference
 	CBeaker*			m_pBeaker;
-	// HASAN - level reference
 	CLevel*				m_pLevel;
 
 	//For input
@@ -121,17 +116,13 @@ protected:
 	CIwSoundSpec*				ExplosionSoundSpec;
 	CIwSoundInst*				ExplosionSoundInstance;
 
-	void	DrawScore();		// Draw the score on screen
-
 public:
 	CGame() : SpriteManager(NULL)	{}
 
 	void	Init();				// Initialise the game
 	void	Release();			// Release the game
 
-	// HASAN - new method to play explosion sound effect
 	void	PlayExplosionSound();
-	// HASAN - new to load a level
 	void	LoadLevel(const char* i_strLevelFile);
 	void	UnloadLevel();
 

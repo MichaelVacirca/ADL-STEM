@@ -62,6 +62,9 @@ public:
 	}
 	void		setType(int type)			{ Type = type; }
 	int			getType() const				{ return Type; }
+	// HASAN - new for touch check
+	// HASAN - NOTE: Does not take rotation & scale into account
+	bool		isTouched(int touchX, int touchY);
 	/// Properties End
 protected:
 	CIwMat2D	Transform;				// Transform
