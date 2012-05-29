@@ -5,8 +5,8 @@
 #include "Sprite.h"
 #include "Atom.h"
 
-#define BEAKER_IMAGE_SIZE_WIDTH			32
-#define BEAKER_IMAGE_SIZE_HEIGHT		65
+#define BEAKER_IMAGE_SIZE_WIDTH			64
+#define BEAKER_IMAGE_SIZE_HEIGHT		130
 
 class CBeaker
 {

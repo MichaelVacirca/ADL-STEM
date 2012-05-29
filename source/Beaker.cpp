@@ -60,7 +60,7 @@ CAtom* CBeaker::setAtom(CAtom* newAtom)
 	currentAtom = newAtom;
 
 	// set atom position to the center of the beaker
-	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2);
+	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)+30);
 	currentAtom->setVelocity(0, 0);
 
 	return prevAtom;
