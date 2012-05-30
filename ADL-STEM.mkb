@@ -69,7 +69,7 @@ assets
 	LevelSelectNitrogen.png
 
 	(data-ram/data-gles1, data)
-	game.group.bin
+	#game.group.bin
 }
 
 deployments

@@ -206,3 +206,8 @@ void CLevel::Draw()
 		}
 	}
 }
+
+void CLevel::RotateBeaker(int rotateScale)
+{
+ g_Beaker.RotateBeaker(rotateScale);
+}

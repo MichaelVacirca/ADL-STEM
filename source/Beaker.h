@@ -43,6 +43,7 @@ public:
 	void Update();
 	void Release();
 	void Clear();
+	void RotateBeaker(int rotateScale);
 };
 
 // HASAN TODO - replace global variable by makeing this class a member of the Level class

@@ -41,6 +41,7 @@ public:
 
 	void Update();
 	void Draw();
+	void RotateBeaker(int rotationScale);
 };
 
 #endif // _LEVEL_H_

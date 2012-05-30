@@ -227,10 +227,12 @@ void CGame::UpdateInput()
 	if(xTouch1 < xTouch2)
 	{
 		s3eDebugOutputString("MOVING RIGHT");
+		m_pLevel->RotateBeaker(15);
 	}
 	else if (xTouch2 < xTouch1)
 	{
 		s3eDebugOutputString("MOVING LEFT");
+		m_pLevel->RotateBeaker(-15);
 	}
 
 	xTouch1 = xTouch2;

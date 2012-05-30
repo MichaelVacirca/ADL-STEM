@@ -2,16 +2,18 @@
 #include "Game.h"
 
 CBeaker g_Beaker;
-
-
+static int m_rotateScale = 0;
+static int screen_width;
+static int screen_height;
 
 
 void CBeaker::Init()
 {
 	beaker_image = Iw2DCreateImageResource("beaker");
+	screen_width = Iw2DGetSurfaceWidth();
+	screen_height = Iw2DGetSurfaceHeight();
+	
 
-	int screen_width = Iw2DGetSurfaceWidth();
-	int screen_height = Iw2DGetSurfaceHeight();
 
 	// Create beaker sprite
 	beaker_sprite = new CSprite();
@@ -78,30 +80,16 @@ bool CBeaker::shootAtom()
 
 void CBeaker::Update()
 {
-	// HASAN - STRANGE .... When not displaying inventory and have the below code un-commented (& Draw() function code commented out), the white circle (atom) appears as expected.  But, when moved
-	// to the Draw() method, it only appears black.  Wonder if it might be a red herring for a synchronization issue b/w update() & draw() calls ... ?
-	//// Only display inventory in certain game states
-	//if (g_Game.getGameState() == GS_Welcome || g_Game.getGameState() == GS_LevelSelect || g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = false;
-	//		g_Game.getSpriteManager()->removeSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
-	//else
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (!bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = true;
-	//		g_Game.getSpriteManager()->addSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
+	/*CIwMat2D rot;
+	rot.SetRot(m_rotateScale, mCenter);
+	Iw2DSetTransformMatrix(rot);
+	Iw2DDrawImage(redBallImage, CIwSVec2(mXPos - mRadius, mYPos - mRadius), mSize);
+	Iw2DSetTransformMatrix(CIwMat2D::g_Identity);*/
+	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, m_rotateScale,IW_GEOM_ONE);
+	//currentAtom->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, (screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2)+30, m_rotateScale,IW_GEOM_ONE);
 }
 
+void CBeaker::RotateBeaker(int rotateScale)
+{
+	m_rotateScale = m_rotateScale + rotateScale;
+}

@@ -94,18 +94,19 @@ void LevelInit()
 	int keyPressed = 0;
 
 	while(keyPressed == 0){
-		s3eKeyboardUpdate();
-		s3ePointerUpdate();
 		Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
 		IwGxClear(IW_GX_DEPTH_BUFFER_F);
 		IwGxFlush();
 		Iw2DSurfaceShow();
+		s3eKeyboardUpdate();
+		s3ePointerUpdate();
 		s3eDeviceYield(0);
-		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
+		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_RELEASED)
 		{
 			keyPressed = 1;
 
 		}
+
 	}
 
 
