@@ -109,7 +109,18 @@ void CBeaker::Update()
 void CBeaker::RotateBeaker(int rotateScale)
 {
 	m_prevRotate = m_rotateScale;
-	m_rotateScale = m_rotateScale + rotateScale*3;
+	if (m_rotateScale > (IW_ANGLE_PI/2))
+	{
+		m_rotateScale = IW_ANGLE_PI/2;
+	}
+	else if (m_rotateScale < -(IW_ANGLE_PI/2))
+	{
+		m_rotateScale = -(IW_ANGLE_PI/2);
+	}
+	else 
+	{
+		m_rotateScale = m_rotateScale + rotateScale;
+	}
 }
 
 void CBeaker::increaseFlame(float flamePower)
