@@ -57,6 +57,7 @@ files
 	LevelSelectHydrogen.png
 	LevelSelectNitrogen.png
 	flame.png
+	bunsen.png
 }
 
 assets
@@ -71,6 +72,8 @@ assets
 	LevelSelectCarbon.png
 	LevelSelectHydrogen.png
 	LevelSelectNitrogen.png
+	flame.png
+	bunsen.png
 
 	(data-ram/data-gles1, data)
 	#game.group.bin

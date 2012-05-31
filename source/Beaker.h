@@ -6,8 +6,8 @@
 #include "Atom.h"
 #include "IwGx.h"
 
-#define BEAKER_IMAGE_SIZE_WIDTH			128
-#define BEAKER_IMAGE_SIZE_HEIGHT		128
+#define BEAKER_IMAGE_SIZE_WIDTH			164
+#define BEAKER_IMAGE_SIZE_HEIGHT		164
 
 #define FLAME_IMAGE_SIZE_WIDTH			64
 #define FLAME_IMAGE_SIZE_HEIGHT			64
@@ -18,6 +18,9 @@ class CBeaker
 protected:
 	CIw2DImage*			beaker_image;
 	CSprite*			beaker_sprite;
+
+	CIw2DImage*			bunsen_image;
+	CSprite*			bunsen_sprite;
 
 	CIw2DImage*			flame_image;
 	CSprite*			flame_sprite;
