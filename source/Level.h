@@ -19,7 +19,6 @@ protected:
 	char*				m_strGoalCompound;
 
 	CInventory*			m_pInventory;
-	CBeaker*			m_pBeaker;
 
 public:
 	CLevel()
@@ -42,6 +41,8 @@ public:
 	void Update();
 	void Draw();
 	void RotateBeaker(int rotationScale);
+	CBeaker*			m_pBeaker;
+
 };
 
 #endif // _LEVEL_H_

@@ -5,6 +5,7 @@ CBeaker g_Beaker;
 static int m_rotateScale = 0;
 static int screen_width;
 static int screen_height;
+static int m_prevRotate = 0;
 
 
 void CBeaker::Init()
@@ -12,27 +13,19 @@ void CBeaker::Init()
 	beaker_image = Iw2DCreateImageResource("beaker");
 	screen_width = Iw2DGetSurfaceWidth();
 	screen_height = Iw2DGetSurfaceHeight();
-	
-
-
 	// Create beaker sprite
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
 	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, 0,IW_GEOM_ONE);  // center image vertically on screen
 	beaker_sprite->setImage(beaker_image);
 	beaker_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, BEAKER_IMAGE_SIZE_HEIGHT);
-
 	g_Game.getSpriteManager()->addSprite(beaker_sprite);
 }
 
 void CBeaker::Draw()
 {
-	// Only display breaker in certain game states
-	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
-	{
-		// Reset the visual transform
-		//Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-	}
+
+
 }
 
 void CBeaker::Release()
@@ -62,9 +55,10 @@ CAtom* CBeaker::setAtom(CAtom* newAtom)
 	currentAtom = newAtom;
 
 	// set atom position to the center of the beaker
-	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)+30);
+	IwGxSetScreenSpaceSlot(10);
+	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2));
 	currentAtom->setVelocity(0, 0);
-
+	IwGxSetScreenSpaceSlot(-1);
 	return prevAtom;
 }
 
@@ -80,16 +74,19 @@ bool CBeaker::shootAtom()
 
 void CBeaker::Update()
 {
-	/*CIwMat2D rot;
-	rot.SetRot(m_rotateScale, mCenter);
-	Iw2DSetTransformMatrix(rot);
-	Iw2DDrawImage(redBallImage, CIwSVec2(mXPos - mRadius, mYPos - mRadius), mSize);
-	Iw2DSetTransformMatrix(CIwMat2D::g_Identity);*/
-	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, m_rotateScale,IW_GEOM_ONE);
-	//currentAtom->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, (screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2)+30, m_rotateScale,IW_GEOM_ONE);
+	// Only display breaker in certain game states
+	if (g_Game.getGameState() == GS_Playing)
+	{
+		if (m_prevRotate != m_rotateScale)
+{
+
+			beaker_sprite->setAngle(m_rotateScale);
+		}
+	}
 }
 
 void CBeaker::RotateBeaker(int rotateScale)
 {
-	m_rotateScale = m_rotateScale + rotateScale;
+	m_prevRotate = m_rotateScale;
+	m_rotateScale = m_rotateScale + rotateScale*3;
 }

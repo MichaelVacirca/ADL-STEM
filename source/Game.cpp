@@ -186,7 +186,7 @@ void CGame::Update()
 	// Update inventory
 	g_Inventory.Update();
 
-	UpdateInput();
+	
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
@@ -207,6 +207,7 @@ void CGame::Update()
 	// Update level
 	if (m_pLevel != NULL)
 	{
+		UpdateInput();
 		m_pLevel->Update();
 	}
 }
@@ -228,11 +229,15 @@ void CGame::UpdateInput()
 	{
 		s3eDebugOutputString("MOVING RIGHT");
 		m_pLevel->RotateBeaker(15);
+		//m_pLevel->m_pBeaker->Update();
+		//Iw2DFinishDrawing();
 	}
 	else if (xTouch2 < xTouch1)
 	{
 		s3eDebugOutputString("MOVING LEFT");
 		m_pLevel->RotateBeaker(-15);
+		//m_pLevel->m_pBeaker->Update();
+		//Iw2DFinishDrawing();
 	}
 
 	xTouch1 = xTouch2;

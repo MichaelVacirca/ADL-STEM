@@ -26,6 +26,7 @@ protected:
 	CIw2DImage*	Image;					// Bitmapped image that represents this sprite
 	int			Width, Height;			// Destination width and height
 	int			Type;					// Sprite type
+	CIwVec2		Center;					// Center of Rotation
 public:
 	void		setParent(CSpriteManager* parent) { Parent = parent; }
 	void		setPosAngScale(int x, int y, iwangle angle, iwfixed scale)
@@ -35,6 +36,13 @@ public:
 		Angle = angle;
 		Scale = scale;
 	}
+	void		setPosAngCenter(int x, int y, iwangle angle, CIwVec2 center)
+	{
+		Position.x = x;
+		Position.y = y;
+		Angle = angle;
+		Center = center;
+	}
 	void		setPosition(int x, int y)
 	{
 		Position.x = x;
@@ -42,7 +50,9 @@ public:
 	}
 	CIwSVec2	getPosition() const			{ return Position; }
 	void		setAngle(iwangle angle)		{ Angle = angle; }
-	iwangle		getAngle() const			{ return Angle; }		
+	iwangle		getAngle() const			{ return Angle; }
+	void		setCenter(CIwVec2 center)		{ Center = center; }
+	CIwVec2		getCenter() const			{ return Center; }
 	void		setScale(iwfixed scale)		{ Scale = scale; }
 	iwfixed		getScale() const			{ return Scale; }
 	void		setColour(CIwColour colour) { Colour = colour; }

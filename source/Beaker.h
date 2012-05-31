@@ -4,9 +4,10 @@
 #include "s3e.h"
 #include "Sprite.h"
 #include "Atom.h"
+#include "IwGx.h"
 
-#define BEAKER_IMAGE_SIZE_WIDTH			64
-#define BEAKER_IMAGE_SIZE_HEIGHT		130
+#define BEAKER_IMAGE_SIZE_WIDTH			128
+#define BEAKER_IMAGE_SIZE_HEIGHT		128
 
 class CBeaker
 {
