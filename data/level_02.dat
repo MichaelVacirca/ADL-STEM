@@ -8,3 +8,4 @@ level_inventory:			C(1),O(1),H(1)
 # level_atoms format
 # <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
 level_atoms:				C(0,0,0,0)
+level_music:	emergence.mp3

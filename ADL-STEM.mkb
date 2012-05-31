@@ -64,6 +64,9 @@ assets
 	(data)
 	# For audio
 	music.mp3
+	emergence.mp3
+	hero.mp3
+	droidmarch.mp3
 	WelcomeScreen.png
 	LevelSelectCarbon.png
 	LevelSelectHydrogen.png
