@@ -41,6 +41,8 @@ public:
 	void Update();
 	void Draw();
 	void RotateBeaker(int rotationScale);
+	void increaseFlame(float flamePower);
+	void decreaseFlame(float flamePower);
 	CBeaker*			m_pBeaker;
 
 };

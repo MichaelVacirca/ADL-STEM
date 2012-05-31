@@ -84,7 +84,8 @@ protected:
 	bool				m_bHasPointer;
 	int					xTouch1;
 	int					xTouch2;
-
+	float					yTouch1;
+	float					yTouch2;
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------

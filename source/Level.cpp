@@ -211,3 +211,13 @@ void CLevel::RotateBeaker(int rotateScale)
 {
  g_Beaker.RotateBeaker(rotateScale);
 }
+
+void CLevel::increaseFlame(float flamePower)
+{
+ g_Beaker.increaseFlame(flamePower);
+}
+
+void CLevel::decreaseFlame(float flamePower)
+{
+ g_Beaker.decreaseFlame(flamePower);
+}
