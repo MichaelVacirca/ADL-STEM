@@ -24,7 +24,7 @@ void CBeaker::Init()
 	beaker_image = Iw2DCreateImageResource("beaker");
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
-	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, 0,IW_GEOM_ONE);  // center image vertically on screen
+	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2-15, 0,IW_GEOM_ONE);  // center image vertically on screen
 	beaker_sprite->setImage(beaker_image);
 	beaker_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, BEAKER_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(beaker_sprite);
@@ -33,16 +33,16 @@ void CBeaker::Init()
 	bunsen_image = Iw2DCreateImageResource("bunsen");
 	bunsen_sprite = new CSprite();
 	bunsen_sprite->Init();
-	bunsen_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - FLAME_IMAGE_SIZE_HEIGHT/2, 0, IW_GEOM_ONE);  // center image vertically on screen
+	bunsen_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_WIDTH/2, 0, IW_GEOM_ONE);  // center image vertically on screen
 	bunsen_sprite->setImage(bunsen_image);
-	bunsen_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, FLAME_IMAGE_SIZE_HEIGHT);
+	bunsen_sprite->setDestSize(BUNSEN_IMAGE_SIZE_WIDTH, BUNSEN_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(bunsen_sprite);
 
 	// Create flame sprite
 	flame_image = Iw2DCreateImageResource("flame");
 	flame_sprite = new CSprite();
 	flame_sprite->Init();
-	flame_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - FLAME_IMAGE_SIZE_HEIGHT/2 -25, 0, (iwfixed)(0.25f*IW_GEOM_ONE));  // center image vertically on screen
+	flame_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - FLAME_IMAGE_SIZE_HEIGHT/2 -20, 0, (iwfixed)(0.25f*IW_GEOM_ONE));  // center image vertically on screen
 	flame_sprite->setImage(flame_image);
 	flame_sprite->setDestSize(FLAME_IMAGE_SIZE_WIDTH, FLAME_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(flame_sprite);
@@ -88,7 +88,7 @@ CAtom* CBeaker::setAtom(CAtom* newAtom)
 
 	// set atom position to the center of the beaker
 	IwGxSetScreenSpaceSlot(10);
-	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2));
+	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)-15);
 	currentAtom->setVelocity(0, 0);
 	IwGxSetScreenSpaceSlot(-1);
 	return prevAtom;
