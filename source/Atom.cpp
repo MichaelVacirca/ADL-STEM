@@ -123,7 +123,7 @@ void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 			m_body->CreateFixture(&fd);
 			// HASAN TODO - update below to use actual values
 			//m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
-			//m_body->SetLinearVelocity(b2Vec2(50, 20));								// HASAN - when in zero gravity, Set an initial linear velocity.
+			m_body->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	}
 
@@ -179,8 +179,8 @@ void CAtom::setAngularVelocity(float angularVelocity)
 {
 	if (m_body != NULL)
 	{
-		m_body->SetAngularVelocity(angularVelocity);
 		// HASAN TODO - update to convert from degrees to radians and invert y value
+		m_body->SetAngularVelocity(angularVelocity);
 	}
 }
 void CAtom::setPosition(int posX, int posY)
@@ -206,7 +206,7 @@ void CAtom::setPosAngScale(int x, int y, iwangle angle, iwfixed scale)
 	if (m_body != NULL)
 	{
 		float newX = DISPLAY_TO_BOX_2D_CONV * (float)x;
-		float newY = DISPLAY_TO_BOX_2D_CONV * (float)(Iw2DGetSurfaceHeight() - (float)y);
+		float newY = DISPLAY_TO_BOX_2D_CONV * (float)(Iw2DGetSurfaceHeight() - y);
 
 		// HASAN - debug
 		//char temp[128];
