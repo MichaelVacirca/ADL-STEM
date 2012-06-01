@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Atom.h"
 
+
 #define MAX_LEVEL_COUNT	16
 
 void CLevel::Init(const char* i_strLevelFile)
@@ -25,6 +26,9 @@ void CLevel::Init(const char* i_strLevelFile)
 	int		atomVelX[MAX_LEVEL_COUNT];
 	int		atomVelY[MAX_LEVEL_COUNT];
 	int		atomsIndex = 0;
+	char	levelMusic[100];
+
+	
 
 	// HASAN - level atom information to create the correct atom
 
@@ -56,6 +60,11 @@ void CLevel::Init(const char* i_strLevelFile)
 				{
 					pch = strtok(NULL, ":\n\r\t(),;");
 					strcpy(m_strGoalCompound, pch);
+				}
+				else if (pch != NULL && !strcmp(pch, "level_music"))
+				{
+					pch = strtok(NULL, ":\n\r\t(),;");
+					strcpy(levelMusic, pch);
 				}
 				else if (pch != NULL && !strcmp(pch, "level_background_image"))
 				{
@@ -157,6 +166,9 @@ void CLevel::Init(const char* i_strLevelFile)
 
 	// Setup Beaker
 	g_Beaker.Init();
+
+	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
+	s3eAudioPlay(levelMusic, 1);
 }
 
 void CLevel::Release()
@@ -209,4 +221,19 @@ void CLevel::Draw()
 			g_Game.getSpriteManager()->removeSprite(background_sprite);
 		}
 	}
+}
+
+void CLevel::RotateBeaker(int rotateScale)
+{
+ g_Beaker.RotateBeaker(rotateScale);
+}
+
+void CLevel::increaseFlame(float flamePower)
+{
+ g_Beaker.increaseFlame(flamePower);
+}
+
+void CLevel::decreaseFlame(float flamePower)
+{
+ g_Beaker.decreaseFlame(flamePower);
 }

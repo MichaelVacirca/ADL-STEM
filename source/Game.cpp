@@ -67,6 +67,8 @@ void CGame::Init()
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
 		xTouch2 = 0;
+		yTouch1 = 0;
+		yTouch2 = 0;
 
 
 
@@ -161,7 +163,7 @@ void CGame::Update()
 	// Update inventory
 	g_Inventory.Update();
 
-	UpdateInput();
+	
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
@@ -182,6 +184,7 @@ void CGame::Update()
 	// Update level
 	if (m_pLevel != NULL)
 	{
+		UpdateInput();
 		m_pLevel->Update();
 	}
 }
@@ -194,6 +197,7 @@ void CGame::UpdateInput()
 	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_DOWN)
 	{
 		xTouch2 = s3ePointerGetX();
+		yTouch2 = (float)s3ePointerGetY();
 	}
 
 	//Should place bounds around the location where the xTouches are valid
@@ -202,13 +206,33 @@ void CGame::UpdateInput()
 	if(xTouch1 < xTouch2)
 	{
 		s3eDebugOutputString("MOVING RIGHT");
+		m_pLevel->RotateBeaker(30);
+		//m_pLevel->m_pBeaker->Update();
+		//Iw2DFinishDrawing();
 	}
 	else if (xTouch2 < xTouch1)
 	{
 		s3eDebugOutputString("MOVING LEFT");
+		m_pLevel->RotateBeaker(-30);
+		//m_pLevel->m_pBeaker->Update();
+		//Iw2DFinishDrawing();
+	}
+
+	if(yTouch1 < yTouch2)
+	{
+		s3eDebugOutputString("MOVING DOWN");
+		m_pLevel->decreaseFlame(.97f);
+
+	}
+	else if (yTouch2 < yTouch1)
+	{
+		s3eDebugOutputString("MOVING UP");
+		m_pLevel->increaseFlame(1.03f);
+
 	}
 
 	xTouch1 = xTouch2;
+	yTouch1 = yTouch2;
 	/*
 	   Need to define the location for touching (i.e. for buttons) - any touch that falls
 	     within that location then triggers whatever event needs to happen when the button

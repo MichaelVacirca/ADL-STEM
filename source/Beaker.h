@@ -4,15 +4,29 @@
 #include "s3e.h"
 #include "Sprite.h"
 #include "Atom.h"
+#include "IwGx.h"
 
-#define BEAKER_IMAGE_SIZE_WIDTH			64
-#define BEAKER_IMAGE_SIZE_HEIGHT		130
+#define BEAKER_IMAGE_SIZE_WIDTH			164
+#define BEAKER_IMAGE_SIZE_HEIGHT		164
+
+#define BUNSEN_IMAGE_SIZE_WIDTH			164
+#define BUNSEN_IMAGE_SIZE_HEIGHT		184
+
+#define FLAME_IMAGE_SIZE_WIDTH			64
+#define FLAME_IMAGE_SIZE_HEIGHT			64
+
 
 class CBeaker
 {
 protected:
 	CIw2DImage*			beaker_image;
 	CSprite*			beaker_sprite;
+
+	CIw2DImage*			bunsen_image;
+	CSprite*			bunsen_sprite;
+
+	CIw2DImage*			flame_image;
+	CSprite*			flame_sprite;
 
 	CAtom*				currentAtom;
 
@@ -28,6 +42,7 @@ public:
 	{
 		return currentAtom == NULL;
 	}
+
 	CAtom*	setAtom(CAtom* newAtom);
 	const char* getAtomSymbol()
 	{
@@ -43,6 +58,9 @@ public:
 	void Update();
 	void Release();
 	void Clear();
+	void RotateBeaker(int rotateScale);
+	void increaseFlame(float flamePower);
+	void decreaseFlame(float flamePower);
 };
 
 // HASAN TODO - replace global variable by makeing this class a member of the Level class

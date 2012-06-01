@@ -12,7 +12,9 @@ CIwResGroup
 	"./atom_o.png"
 	"./inventory.png"
 	"./beaker.png"
-    	"./WelcomeScreen.png"
+    "./WelcomeScreen.png"
+	"./flame.png"
+	"./bunsen.png"
 
 	// -----------------------------------------------------------------------
 	

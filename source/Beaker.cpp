@@ -2,35 +2,56 @@
 #include "Game.h"
 
 CBeaker g_Beaker;
+static int screen_width;
+static int screen_height;
 
+// Beaker Rotation Angle Data
+static int m_prevRotate = 0;
+static int m_rotateScale = 0;
+
+// Flame Intensity
+static float m_flamePower = (iwfixed)(0.25f*IW_GEOM_ONE);
 
 
 
 void CBeaker::Init()
 {
-	beaker_image = Iw2DCreateImageResource("beaker");
+	screen_width = Iw2DGetSurfaceWidth();
+	screen_height = Iw2DGetSurfaceHeight();
 
-	int screen_width = Iw2DGetSurfaceWidth();
-	int screen_height = Iw2DGetSurfaceHeight();
 
 	// Create beaker sprite
+	beaker_image = Iw2DCreateImageResource("beaker");
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
-	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2, 0,IW_GEOM_ONE);  // center image vertically on screen
+	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2-15, 0,IW_GEOM_ONE);  // center image vertically on screen
 	beaker_sprite->setImage(beaker_image);
 	beaker_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, BEAKER_IMAGE_SIZE_HEIGHT);
-
 	g_Game.getSpriteManager()->addSprite(beaker_sprite);
+
+	// Create bunsen burner sprite
+	bunsen_image = Iw2DCreateImageResource("bunsen");
+	bunsen_sprite = new CSprite();
+	bunsen_sprite->Init();
+	bunsen_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_WIDTH/2, 0, IW_GEOM_ONE);  // center image vertically on screen
+	bunsen_sprite->setImage(bunsen_image);
+	bunsen_sprite->setDestSize(BUNSEN_IMAGE_SIZE_WIDTH, BUNSEN_IMAGE_SIZE_HEIGHT);
+	g_Game.getSpriteManager()->addSprite(bunsen_sprite);
+
+	// Create flame sprite
+	flame_image = Iw2DCreateImageResource("flame");
+	flame_sprite = new CSprite();
+	flame_sprite->Init();
+	flame_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - FLAME_IMAGE_SIZE_HEIGHT/2 -20, 0, (iwfixed)(0.25f*IW_GEOM_ONE));  // center image vertically on screen
+	flame_sprite->setImage(flame_image);
+	flame_sprite->setDestSize(FLAME_IMAGE_SIZE_WIDTH, FLAME_IMAGE_SIZE_HEIGHT);
+	g_Game.getSpriteManager()->addSprite(flame_sprite);
 }
 
 void CBeaker::Draw()
 {
-	// Only display breaker in certain game states
-	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
-	{
-		// Reset the visual transform
-		//Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-	}
+
+
 }
 
 void CBeaker::Release()
@@ -41,11 +62,17 @@ void CBeaker::Release()
 		delete beaker_image;
 		beaker_image = NULL;
 	}
+	if (flame_image != NULL)
+	{
+		delete flame_image;
+		flame_image = NULL;
+	}
 }
 
 void CBeaker::Clear()
 {
 	g_Game.getSpriteManager()->removeSprite(beaker_sprite);
+	g_Game.getSpriteManager()->removeSprite(flame_sprite);
 }
 
 
@@ -60,9 +87,10 @@ CAtom* CBeaker::setAtom(CAtom* newAtom)
 	currentAtom = newAtom;
 
 	// set atom position to the center of the beaker
-	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)+30);
+	IwGxSetScreenSpaceSlot(10);
+	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)-15);
 	currentAtom->setVelocity(0, 0);
-
+	IwGxSetScreenSpaceSlot(-1);
 	return prevAtom;
 }
 
@@ -78,30 +106,46 @@ bool CBeaker::shootAtom()
 
 void CBeaker::Update()
 {
-	// HASAN - STRANGE .... When not displaying inventory and have the below code un-commented (& Draw() function code commented out), the white circle (atom) appears as expected.  But, when moved
-	// to the Draw() method, it only appears black.  Wonder if it might be a red herring for a synchronization issue b/w update() & draw() calls ... ?
-	//// Only display inventory in certain game states
-	//if (g_Game.getGameState() == GS_Welcome || g_Game.getGameState() == GS_LevelSelect || g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = false;
-	//		g_Game.getSpriteManager()->removeSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
-	//else
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (!bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = true;
-	//		g_Game.getSpriteManager()->addSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
+	// Only display breaker in certain game states
+	if (g_Game.getGameState() == GS_Playing)
+	{
+			beaker_sprite->setAngle(m_rotateScale);
+			flame_sprite->setScale((iwfixed)m_flamePower);
+		
+	}
 }
 
+void CBeaker::RotateBeaker(int rotateScale)
+{
+	m_prevRotate = m_rotateScale;
+	if (m_rotateScale > (IW_ANGLE_PI/2))
+	{
+		m_rotateScale = IW_ANGLE_PI/2;
+	}
+	else if (m_rotateScale < -(IW_ANGLE_PI/2))
+	{
+		m_rotateScale = -(IW_ANGLE_PI/2);
+	}
+	else 
+	{
+		m_rotateScale = m_rotateScale + rotateScale;
+	}
+}
+
+void CBeaker::increaseFlame(float flamePower)
+{
+	if (2000 > m_flamePower)
+	{
+		m_flamePower = m_flamePower * flamePower;
+	}
+
+}
+
+void CBeaker::decreaseFlame(float flamePower)
+{
+	if (1000 < m_flamePower)
+	{
+		m_flamePower = m_flamePower * flamePower;
+	}
+
+}
