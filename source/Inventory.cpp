@@ -42,11 +42,11 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 		atom->Init(i_strAtomSymbol);
 
 		// horizontal center, same as inventory graphic
-		int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162;
-		int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
+		int posX = (Iw2DGetSurfaceWidth() / 2) - (IMAGE_SIZE_WIDTH / 2);
+		int posY = (Iw2DGetSurfaceHeight() - (IMAGE_SIZE_HEIGHT / 2));
 
 
-		// offset inventory vertically to fit in the container
+		// offset inventory horizontally to fit in the container
 		posX = posX + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing
 		if (inventoryCount > 0)
 		{
@@ -139,7 +139,7 @@ void CInventory::Init()
 	// Create inventory sprite
 	inventory_sprite = new CSprite();
 	inventory_sprite->Init();
-	inventory_sprite->setPosAngScale((screen_width - (screen_width/2)), screen_height - (IMAGE_SIZE_HEIGHT / 2), 0, IW_GEOM_ONE);  // center image vertically on screen
+	inventory_sprite->setPosAngScale(screen_width/2, screen_height - (IMAGE_SIZE_HEIGHT / 2), 0, IW_GEOM_ONE);  // center image vertically on screen
 	inventory_sprite->setImage(inventory_image);
 	inventory_sprite->setDestSize(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT);
 
@@ -220,36 +220,6 @@ void CInventory::Update()
 			}
 		}
 	}
-
-
-
-
-
-	// HASAN - STRANGE .... When not displaying inventory and have the below code un-commented (& Draw() function code commented out), the white circle (atom) appears as expected.  But, when moved
-	// to the Draw() method, it only appears black.  Wonder if it might be a red herring for a synchronization issue b/w update() & draw() calls ... ?
-	//// Only display inventory in certain game states
-	//if (g_Game.getGameState() == GS_Welcome || g_Game.getGameState() == GS_LevelSelect || g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = false;
-	//		g_Game.getSpriteManager()->removeSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
-	//else
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (!bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = true;
-	//		g_Game.getSpriteManager()->addSprite(inventory_sprite);
-	//	}
-
-	//	// HASAN TODO - Display inventory contents (atoms/compounds) on every draw
-	//}
 }
 
 void CInventory::Draw()
@@ -279,8 +249,8 @@ void CInventory::Draw()
 			snprintf(str, 32, "%d", atomCount[i]);
 
 			// horizontal center, same as inventory graphic
-		int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162 + 19;
-		int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
+			int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162 + 19;
+			int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
 
 			// offset inventory vertically to fit in the container
 			posX = posX + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing

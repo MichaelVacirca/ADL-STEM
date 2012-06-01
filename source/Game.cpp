@@ -60,20 +60,6 @@ void CGame::Init()
 		loopShape.Create(list, numVerts);
 		boundaryBody->CreateFixture(&loopShape, 0.0f);							// Screen Boundary completed
 
-		bodyDef.type = b2_dynamicBody;											//  Object is redefined to create a dynamicBody.
-		b2CircleShape circleShape;												
-		circleShape.m_radius = 1.0f;
-		b2FixtureDef fd;
-		fd.shape = &circleShape;
-		fd.friction = 0.5f;
-		fd.density = 10.0f;
-		fd.restitution = 0.95f;													// between 0 & 1 (1 = most bouncy)
-		m_body = m_world->CreateBody(&bodyDef);									// Circle Shape used to represent the atom dynamicBody.
-		m_body->SetLinearDamping(0.1f);			
-		m_body->CreateFixture(&fd);
-		m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
-		m_body->SetLinearVelocity(b2Vec2(50, 20));								// HASAN - when in zero gravity, Set an initial linear velocity.
-	
 	// This section sets up Audio Initial Parameters
 		ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 		ExplosionSoundInstance = NULL;
@@ -134,16 +120,6 @@ void CGame::Release()
 	}
 }
 
-int	CGame::getGameState()
-{
-	return m_nGameState;
-}
-
-CIw2DFont* CGame::getFont()
-{
-	return Font;
-}
-
 void CGame::PlayExplosionSound()
 {
 	// For audio
@@ -173,7 +149,6 @@ void CGame::UnloadLevel()
 		m_pLevel = NULL;
 	}
 }
-
 
 void CGame::Update()
 {
@@ -322,28 +297,6 @@ void CGame::Draw()
 
 	// Draw the games sprite objects
 	SpriteManager->Draw();
-
-	// HASAN - new from box2d example
-	//-----------------------------------------------------------------------------
-	//static const CIwSVec2 imageSize(m_Image->GetWidth() >> 3, m_Image->GetHeight() >> 3);
-	// HASAN - don't want the image size reduced
-	static const CIwSVec2 imageSize(m_Image->GetWidth() , m_Image->GetHeight());
-	static const CIwSVec2 halfImageSize = imageSize >> 1;
-
-	const CIwSVec2 screenCentre = CIwSVec2((int16)Iw2DGetSurfaceWidth() >> 1, (int16)Iw2DGetSurfaceHeight() >> 1);
-
-	const b2Transform t = m_body->GetTransform();
-	const CIwSVec2 pos = screenCentre + (CIwSVec2(int16(t.p.x*8), -int16(t.p.y*8)));
-	const float angle = -t.q.GetAngle() * (180.0f/3.14159f);	// reverse angle as our screen-Y coord is reversed
-
-	CIwMat2D rot;
-	rot.SetRot(iwangle(angle * 1024 / 90), CIwVec2(pos) << 3);
-	Iw2DSetTransformMatrixSubPixel(rot);
-
-	Iw2DDrawImage(m_Image, pos - halfImageSize, imageSize);
-
-    Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-	//-----------------------------------------------------------------------------
 
 	// Draw level
 	if (m_pLevel != NULL)

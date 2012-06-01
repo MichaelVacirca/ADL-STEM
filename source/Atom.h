@@ -5,6 +5,8 @@
 #include "Iw2D.h"
 
 #include "Sprite.h"
+//Box2D Physics Engine
+#include "Box2D/Box2D.h"
 
 #define ATOM_RADIUS		64
 #define MAX_STR_SIZE	255
@@ -20,11 +22,8 @@ class CAtom : public CSprite
 	/// Properties
 protected:
 	bool		Destroyed;		// If true then the atom will destroy itself
-	CIwSVec2	Velocity;		// Velocity of atom
-	// HASAN - new values for box2d collision
-	bool		m_bContacting;
 
-	// HASAN - new values read from data file
+	// values read from data file
 	char*		m_strSymbol;
 	char*		m_strName;
 	int			m_nWeight;
@@ -32,18 +31,25 @@ protected:
 	int			m_nCharge;
 	CIw2DImage*	m_pImage;
 
+	// below used for physics representation
+	bool		m_bContacting;
+	b2Body*		m_body;
 
 public:
-	void		setVelocity(int vx, int vy)	{ Velocity.x = vx; Velocity.y = vy; }
+	// NOTE: Method is ignored when the atom was not created to use physics
+	void		setVelocity(int vx, int vy);
+	// NOTE: Method is ignored when the atom was not created to use physics
+	void		setAngularVelocity(float angularVelocity);
+	void		setPosition(int posX, int posY);
+	// over-ride the Sprite implementation of the method to update m_body
+	void		setPosAngScale(int x, int y, iwangle angle, iwfixed scale);
+
 	void		Destroy()					{ Destroyed = true; }
 	// HASAN - new values for box2d collision
 	void		startContact()				{ m_bContacting = true; }
 	void		endContact()				{ m_bContacting = false; }
 	/// Properties End
 protected:
-	bool		WallCollideCheck();
-	bool		WallCollideCheck(int x, int y);
-	bool		CompoundCollideCheck();
 
 public:
 	CAtom() : CSprite()
@@ -51,6 +57,9 @@ public:
 		m_strSymbol = new char[4];
 		m_strName = new char[MAX_STR_SIZE];
 		m_bContacting = false;
+
+		m_body = NULL;
+		m_pImage = NULL;
 	}
 	virtual ~CAtom()
 	{
@@ -69,8 +78,10 @@ public:
 		return m_strSymbol;
 	}
 
-	void	Init(const char* i_strAtomSymbol);				// Initialise the atom game object
-	bool	Update();			// Update our atom object
+	// Initialize the atom game object to a specific atom defined by the atom symbol argument.  And, if 
+	// the use physics argument is true, then setup a box2d representation of the atom
+	void	Init(const char* i_strAtomSymbol, bool i_bUsePhysics = false);
+	bool	Update();									// Update our atom object
 };
 
 

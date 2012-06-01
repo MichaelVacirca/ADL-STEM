@@ -32,16 +32,17 @@ void CLevel::Init(const char* i_strLevelFile)
 	s3eFile* file = s3eFileOpen(i_strLevelFile, "rb");
 	if (file != NULL)
 	{
-		s3eDebugOutputString("Parsed file\n-----------\n");
+		// HASAN - debug
+		//s3eDebugOutputString("Parsed file\n-----------\n");
 		while (s3eFileReadString(buffer, MAX_STR_SIZE, file) != NULL)
 		{
 			// HASAN - debug
-			s3eDebugOutputString(buffer);
+			//s3eDebugOutputString(buffer);
 			if (buffer[0] == '#')
 			{
 				// ignore comments
 				// HASAN - debug
-				s3eDebugOutputString("  -> comment");
+				//s3eDebugOutputString("  -> comment");
 			}
 			else
 			{
@@ -140,9 +141,12 @@ void CLevel::Init(const char* i_strLevelFile)
 	for(int i = 0; i < atomsIndex; i++) {
 		// create atom
 		atom = new CAtom();
-		atom->Init(atomSymbol[i]);
-		atom->setPosAngScale(atomX[i], atomY[i], 0, IW_GEOM_ONE);
+		atom->Init(atomSymbol[i], true);
+		atom->setPosition(atomX[i], atomY[i]);
 		atom->setVelocity(atomVelX[i], atomVelY[i]);
+		// use a random angular velocity
+		// HASAN - not using right now
+		//atom->setAngularVelocity((float)IwRandMinMax(-90, 90));
 	}
 
 	// Create inventory atoms parsed from above
