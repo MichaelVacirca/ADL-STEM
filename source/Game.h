@@ -36,6 +36,9 @@
 #define BOX_2D_TO_DISPLAY_CONV		40.0f
 #define DISPLAY_TO_BOX_2D_CONV		(1.0f/BOX_2D_TO_DISPLAY_CONV)
 
+// HASAN - new to exclude bottom portion of the screen for the controls (menu & inventory)
+#define CONTROL_REGION_HEIGHT		100
+
 enum eSpriteType
 {
 	ST_None,
