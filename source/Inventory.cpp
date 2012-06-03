@@ -43,7 +43,7 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 
 		// horizontal center, same as inventory graphic
 		int posX = (Iw2DGetSurfaceWidth() / 2) - (IMAGE_SIZE_WIDTH / 2);
-		int posY = (Iw2DGetSurfaceHeight() - (IMAGE_SIZE_HEIGHT / 2));
+		int posY = Iw2DGetSurfaceHeight() - (IMAGE_SIZE_HEIGHT / 2);
 
 
 		// offset inventory horizontally to fit in the container
@@ -55,6 +55,18 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 
 		atom->setPosAngScale(posX, posY, 0, IW_GEOM_ONE);
 		atom->setVelocity(0,0);
+
+
+		// HASAN - new to create/show the inventory count images
+		CIw2DImage* inventoryCountImage = Iw2DCreateImageResource("inventory_number");
+		CSprite* inventoryCountSprite = new CSprite();
+		inventoryCountSprite->setImage(inventoryCountImage);
+		// NOTE: image width & height = 25 & font width & height = 30
+		inventoryCountSprite->setPosition(posX + 13 + (30 / 2), posY + (30 / 2) + 3);
+		inventoryCountSprite->setDestSize(30, 30);  // make larger than source to fit behind the text properly
+		g_Game.getSpriteManager()->addSprite(inventoryCountSprite);
+		atomCountImages[inventoryCount] = inventoryCountSprite;
+
 
 		atomObjs[inventoryCount] = atom;
 
@@ -159,7 +171,7 @@ void CInventory::Release()
 
 void CInventory::Update()
 {
-	// HASAN - new to add an atom to the beaker when selected from the inventory
+	// add an atom to the beaker when selected from the inventory
 	int touchX = 0;
 	int touchY = 0;
 	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
@@ -181,12 +193,11 @@ void CInventory::Update()
 				{
 					// hide atom to indicate zero are left
 					atomObjs[i]->setVisible(false);
+					// HASAN - new to display the inventory count image
+					atomCountImages[i]->setVisible(false);
 				}
 
 				// create new CAtom object to be held in the beaker, so inventory atom can remain unchanged
-				// ****************************************************************************************
-				// *** HASAN - BE SURE TO DELETE THIS OBJECT UPON GAME RESTART/COMPLETION
-				// ****************************************************************************************
 				CAtom* newAtom = new CAtom();
 				newAtom->Init(atomObjs[i]->getSymbol());
 
@@ -203,7 +214,10 @@ void CInventory::Update()
 						{
 							// match found
 							if (atomCount[j] <= 0)
+							{
 								atomObjs[j]->setVisible(true);
+								atomCountImages[j]->setVisible(true);
+							}
 
 							atomCount[j]++;
 
@@ -216,7 +230,6 @@ void CInventory::Update()
 				}
 
 				atomCount[i]--;
-				//break;
 			}
 		}
 	}
@@ -227,8 +240,6 @@ void CInventory::Draw()
 	// Only display inventory in certain game states
 	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
 	{
-		// HASAN TODO - draw text for number of atoms
-
 		// Set the current font
 		Iw2DSetFont(g_Game.getFont());
 
@@ -249,8 +260,8 @@ void CInventory::Draw()
 			snprintf(str, 32, "%d", atomCount[i]);
 
 			// horizontal center, same as inventory graphic
-			int posX = (Iw2DGetSurfaceWidth() - (Iw2DGetSurfaceWidth() / 2)) - 162 + 19;
-			int posY = (Iw2DGetSurfaceHeight()) - ( IMAGE_SIZE_HEIGHT / 2);
+			int posX = (Iw2DGetSurfaceWidth() / 2) - ( IMAGE_SIZE_WIDTH / 2 ) + 19;
+			int posY = Iw2DGetSurfaceHeight() - ( IMAGE_SIZE_HEIGHT / 2);
 
 			// offset inventory vertically to fit in the container
 			posX = posX + (10 + (64 / 2));  // NOTE: 64 = atom size, 10 = border + spacing

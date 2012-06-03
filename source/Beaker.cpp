@@ -134,6 +134,9 @@ bool CBeaker::shootAtom()
 	int power = (int)(m_flamePower * 0.001f);
 	newAtom->setVelocity(xOffset * power, yOffset * power);
 
+	// Play sound-effect when shoot an atom
+	g_Game.PlayPopSound();
+
 	return true;
 }
 

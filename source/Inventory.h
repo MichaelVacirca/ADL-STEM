@@ -18,12 +18,14 @@ protected:
 	CIw2DImage*			inventory_image;
 	CSprite*			inventory_sprite;
 
-	int		inventoryCount;
-	CAtom*	atomObjs[MAX_COUNT];
-	char	atoms[MAX_COUNT][MAX_ATOM_STR_SIZE];
-	int		atomCount[MAX_COUNT];
-	char	compounds[MAX_COUNT][MAX_CMPND_STR_SIZE];
-	int		compoundCount[MAX_COUNT];
+	int			inventoryCount;
+	CAtom*		atomObjs[MAX_COUNT];
+	// HASAN - new to track images used for displaying inventory counts
+	CSprite*	atomCountImages[MAX_COUNT];
+	char		atoms[MAX_COUNT][MAX_ATOM_STR_SIZE];
+	int			atomCount[MAX_COUNT];
+	char		compounds[MAX_COUNT][MAX_CMPND_STR_SIZE];
+	int			compoundCount[MAX_COUNT];
 
 public:
 	CInventory()

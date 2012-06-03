@@ -164,6 +164,7 @@ void CLevel::Init(const char* i_strLevelFile)
 	// Setup Beaker
 	g_Beaker.Init();
 
+	// Play level music
 	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
 		s3eAudioPlay(levelMusic, 1);
 }

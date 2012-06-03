@@ -88,9 +88,9 @@ protected:
 
 	//For input
 	//CInput*				m_pInput;
-	bool				m_bHasPointer;
-	int					xTouch1;
-	int					xTouch2;
+	bool					m_bHasPointer;
+	int						xTouch1;
+	int						xTouch2;
 	float					yTouch1;
 	float					yTouch2;
 
@@ -121,6 +121,8 @@ protected:
 	// Audio
 	CIwSoundSpec*				ExplosionSoundSpec;
 	CIwSoundInst*				ExplosionSoundInstance;
+	CIwSoundSpec*				PopSoundSpec;
+	CIwSoundInst*				PopSoundInstance;
 
 public:
 	CGame() : SpriteManager(NULL)	{}
@@ -129,6 +131,7 @@ public:
 	void	Release();			// Release the game
 
 	void	PlayExplosionSound();
+	void	PlayPopSound();
 	void	LoadLevel(const char* i_strLevelFile);
 	void	UnloadLevel();
 
@@ -166,14 +169,14 @@ class MyContactListener : public b2ContactListener
 			sprintf(strTemp, "Approach velocity : %f", approachVelocity);
 			s3eDebugOutputString(strTemp);
 
-			//if (approachVelocity > 1.0f)
-			//{
-			//	// HASAN - debug
-			//	s3eDebugOutputString("");
+			if (approachVelocity > 1.0f)
+			{
+				// HASAN - debug
+				s3eDebugOutputString("");
 
-			//	// HASAN - for simplicity, just play a sound regardless of what's hitting
-			//	//g_Game.PlayExplosionSound();
-			//}
+				// HASAN - for simplicity, just play a sound regardless of what's hitting
+				g_Game.PlayExplosionSound();
+			}
 		//}
 	}
 

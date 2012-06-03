@@ -63,22 +63,14 @@ void CGame::Init()
 	// This section sets up Audio Initial Parameters
 		ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 		ExplosionSoundInstance = NULL;
+		PopSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("pop", IW_SOUND_RESTYPE_SPEC);
+		PopSoundInstance = NULL;
 
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
 		xTouch2 = 0;
 		yTouch1 = 0;
 		yTouch2 = 0;
-
-
-
-
-
-
-	// HASAN - commenting out below for now b/c it's annoying
-	// Play some MP3 music using s3e Audio (if the codec is supported)
-	//if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
-	//	s3eAudioPlay("music.mp3", 1);
 }
 
 void CGame::Release()
@@ -124,14 +116,17 @@ void CGame::Release()
 
 void CGame::PlayExplosionSound()
 {
-	// For audio
-	if (ExplosionSoundInstance == NULL)
+	if (ExplosionSoundInstance == NULL || !ExplosionSoundInstance->IsPlaying())
 	{
 		ExplosionSoundInstance = ExplosionSoundSpec->Play();
 	}
-	else if (!ExplosionSoundInstance->IsPlaying())
+}
+
+void CGame::PlayPopSound()
+{
+	if (PopSoundInstance == NULL || !PopSoundInstance->IsPlaying())
 	{
-		ExplosionSoundInstance = NULL;
+		PopSoundInstance = PopSoundSpec->Play();
 	}
 }
 
@@ -163,17 +158,23 @@ void CGame::Update()
 	// Update inventory
 	g_Inventory.Update();
 
-	
-
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
-	// timer
-	m_timeNow = s3eTimerGetMs();
-	m_deltaTime = float( (m_timeNow - m_prevTime) * 0.001 );
-	m_prevTime = m_timeNow;
+	if (m_nGameState == GS_Playing)
+	{
+		// timer
+		m_timeNow = s3eTimerGetMs();
+		m_deltaTime = float( (m_timeNow - m_prevTime) * 0.001 );
+		m_prevTime = m_timeNow;
 
-	// physics loop (fixed timing at 60Hz)
-	m_accumulator += m_deltaTime;
+		// physics loop (fixed timing at 60Hz)
+		m_accumulator += m_deltaTime;
+	}
+	else
+	{
+		timeStep = 0;
+	}
+
 	while(m_accumulator > 0.0f)
 	{
 		m_world->Step(timeStep, velocityIterations, positionIterations);
@@ -203,43 +204,45 @@ void CGame::UpdateInput()
 	//Should place bounds around the location where the xTouches are valid
 	// - likely will want to make sure the initial touch falls within the bound
 	//   and then the user can slide their finger beyond the initial bound
-	if(xTouch1 < xTouch2)
+	if (m_nGameState == GS_Playing)
 	{
-		s3eDebugOutputString("MOVING RIGHT");
-		m_pLevel->RotateBeaker(2);
+		if(xTouch1 < xTouch2)
+		{
+			s3eDebugOutputString("MOVING RIGHT");
+			m_pLevel->RotateBeaker(2);
+		}
+		else if (xTouch2 < xTouch1)
+		{
+			s3eDebugOutputString("MOVING LEFT");
+			m_pLevel->RotateBeaker(-2);
+		}
+
+		if(yTouch1 < yTouch2)
+		{
+			s3eDebugOutputString("MOVING DOWN");
+			m_pLevel->decreaseFlame(.97f);
+
+		}
+		else if (yTouch2 < yTouch1)
+		{
+			s3eDebugOutputString("MOVING UP");
+			m_pLevel->increaseFlame(1.03f);
+
+		}
+
+		xTouch1 = xTouch2;
+		yTouch1 = yTouch2;
+		/*
+		   Need to define the location for touching (i.e. for buttons) - any touch that falls
+			 within that location then triggers whatever event needs to happen when the button
+			 is touched.
+
+		   Also need to figure out how to define the collisions (or whatever method will be used)
+			 for launching the atoms -- need to be able to drag/adjust the direction the flask is
+			 pointed and then need to be able to adjust the flame to heat the atom to the correct
+			 temperature.
+		*/
 	}
-	else if (xTouch2 < xTouch1)
-	{
-		s3eDebugOutputString("MOVING LEFT");
-		m_pLevel->RotateBeaker(-2);
-	}
-
-	if(yTouch1 < yTouch2)
-	{
-		s3eDebugOutputString("MOVING DOWN");
-		m_pLevel->decreaseFlame(.97f);
-
-	}
-	else if (yTouch2 < yTouch1)
-	{
-		s3eDebugOutputString("MOVING UP");
-		m_pLevel->increaseFlame(1.03f);
-
-	}
-
-	xTouch1 = xTouch2;
-	yTouch1 = yTouch2;
-	/*
-	   Need to define the location for touching (i.e. for buttons) - any touch that falls
-	     within that location then triggers whatever event needs to happen when the button
-		 is touched.
-
-	   Also need to figure out how to define the collisions (or whatever method will be used)
-	     for launching the atoms -- need to be able to drag/adjust the direction the flask is
-		 pointed and then need to be able to adjust the flame to heat the atom to the correct
-		 temperature.
-	*/
-
 
 /*
 	//FROM THE blockslot_vc10 MARMALADE SAMPLE PROGRAM
