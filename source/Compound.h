@@ -5,6 +5,7 @@
 #include "Iw2D.h"
 
 #include "Sprite.h"
+#include "Atom.h"
 
 //
 //
@@ -15,23 +16,17 @@ class CCompound
 {
 	/// Properties
 protected:
-	bool		Destroyed;		// If true then the compound will destroy itself
-	CIwSVec2	Velocity;		// Velocity of compound
 
 public:
-	void		setVelocity(int vx, int vy)	{ Velocity.x = vx; Velocity.y = vy; }
-	void		Destroy()					{ Destroyed = true; }
 	/// Properties End
-protected:
-	bool		WallCollideCheck();
-	bool		WallCollideCheck(int x, int y);
-	bool		CompoundCollideCheck();
+	// HASAN - new for checking for level completion
+	const char*	getFormula();
 
 public:
 	CCompound()				{}
 	virtual ~CCompound()	{}
 
-	void	Init();				// Initialise the compound game object
+	void	Init(CAtom* atom1, CAtom* atom2);				// Initialise the compound game object
 	bool	Update();			// Update our compound object
 };
 

@@ -71,6 +71,11 @@ public:
 			delete m_pImage;
 			m_pImage = NULL;
 		}
+
+		//if (m_body != NULL)
+		//{
+		//	g_Game.getBox2dWorld()->DestroyBody(m_body);
+		//}
 	}
 
 	const char* getSymbol()

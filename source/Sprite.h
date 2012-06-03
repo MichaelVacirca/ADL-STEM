@@ -51,7 +51,7 @@ public:
 	CIwSVec2	getPosition() const			{ return Position; }
 	void		setAngle(iwangle angle)		{ Angle = angle; }
 	iwangle		getAngle() const			{ return Angle; }
-	void		setCenter(CIwVec2 center)		{ Center = center; }
+	void		setCenter(CIwVec2 center)	{ Center = center; }
 	CIwVec2		getCenter() const			{ return Center; }
 	void		setScale(iwfixed scale)		{ Scale = scale; }
 	iwfixed		getScale() const			{ return Scale; }

@@ -112,18 +112,28 @@ void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 			bodyDef.type = b2_dynamicBody;											//  Object is redefined to create a dynamicBody.
 			b2CircleShape circleShape;												
 			// HASAN TODO - update below to use actual atom radius loaded from file (FOR NOW, just using iamge size)
-			circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 2.0f);
+			//circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 2.0f);
+			circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 4.0f);  // HASAN - DO NOT CHECK THIS IN, for testing to approximate accounting for the empty space around the atom icons
 			b2FixtureDef fd;
 			fd.shape = &circleShape;
-			fd.friction = 0.5f;
-			fd.density = 10.0f;
+
+			//fd.friction = 0.5f;
+			//fd.density = 10.0f;
+			// HASAN - update to try values that look better now that am properly considering scale
+			fd.friction = 0.1f;
+			fd.density = 0.1f;
+
 			fd.restitution = 0.95f;													// between 0 & 1 (1 = most bouncy)
 			m_body = g_Game.getBox2dWorld()->CreateBody(&bodyDef);					// Circle Shape used to represent the atom dynamicBody.
-			m_body->SetLinearDamping(0.1f);			
+			m_body->SetLinearDamping(0.0f);
+			m_body->SetAngularDamping(0.1f);
 			m_body->CreateFixture(&fd);
 			// HASAN TODO - update below to use actual values
 			//m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
 			m_body->SetLinearVelocity(b2Vec2(0, 0));
+
+			// HASAN - add user data for collision
+			m_body->SetUserData(this);
 		}
 	}
 

@@ -52,9 +52,9 @@ void CGame::Init()
 		bodyDef.type = b2_staticBody;											// that is set to the width and height of the screen device
 		bodyDef.position.Set(0, 0);												// and then adds this fixture to the Box2D World as a loop around the screen.
 		b2Body* boundaryBody = m_world->CreateBody(&bodyDef);
-		const float hw = (float)Iw2DGetSurfaceWidth() * 0.5f / 8;
-		const float hh = (float)Iw2DGetSurfaceHeight() * 0.5f / 8;
-		b2Vec2 list[] = { b2Vec2(-hw, -hh), b2Vec2(hw, -hh), b2Vec2(hw, hh), b2Vec2(-hw, hh) };
+		const float hw = DISPLAY_TO_BOX_2D_CONV * (float)Iw2DGetSurfaceWidth();
+		const float hh = DISPLAY_TO_BOX_2D_CONV * (float)Iw2DGetSurfaceHeight();
+		b2Vec2 list[] = { b2Vec2(0, 0), b2Vec2(0, hh), b2Vec2(hw, hh), b2Vec2(hw, 0) };
 		const int numVerts = sizeof(list) / sizeof(b2Vec2);
 		b2LoopShape loopShape;
 		loopShape.Create(list, numVerts);
@@ -206,16 +206,12 @@ void CGame::UpdateInput()
 	if(xTouch1 < xTouch2)
 	{
 		s3eDebugOutputString("MOVING RIGHT");
-		m_pLevel->RotateBeaker(30);
-		//m_pLevel->m_pBeaker->Update();
-		//Iw2DFinishDrawing();
+		m_pLevel->RotateBeaker(2);
 	}
 	else if (xTouch2 < xTouch1)
 	{
 		s3eDebugOutputString("MOVING LEFT");
-		m_pLevel->RotateBeaker(-30);
-		//m_pLevel->m_pBeaker->Update();
-		//Iw2DFinishDrawing();
+		m_pLevel->RotateBeaker(-2);
 	}
 
 	if(yTouch1 < yTouch2)

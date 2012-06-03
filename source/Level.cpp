@@ -153,9 +153,6 @@ void CLevel::Init(const char* i_strLevelFile)
 		atom->Init(atomSymbol[i], true);
 		atom->setPosition(atomX[i], atomY[i]);
 		atom->setVelocity(atomVelX[i], atomVelY[i]);
-		// use a random angular velocity
-		// HASAN - not using right now
-		//atom->setAngularVelocity((float)IwRandMinMax(-90, 90));
 	}
 
 	// Create inventory atoms parsed from above
@@ -168,7 +165,7 @@ void CLevel::Init(const char* i_strLevelFile)
 	g_Beaker.Init();
 
 	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
-	s3eAudioPlay(levelMusic, 1);
+		s3eAudioPlay(levelMusic, 1);
 }
 
 void CLevel::Release()
@@ -225,15 +222,30 @@ void CLevel::Draw()
 
 void CLevel::RotateBeaker(int rotateScale)
 {
- g_Beaker.RotateBeaker(rotateScale);
+	g_Beaker.RotateBeaker(rotateScale);
 }
 
 void CLevel::increaseFlame(float flamePower)
 {
- g_Beaker.increaseFlame(flamePower);
+	g_Beaker.increaseFlame(flamePower);
 }
 
 void CLevel::decreaseFlame(float flamePower)
 {
- g_Beaker.decreaseFlame(flamePower);
+	g_Beaker.decreaseFlame(flamePower);
+}
+
+// HASAN - new method for determining for when level is complete
+int CLevel::IsComplete()
+{
+	if (m_pCurrentCompound == NULL)
+		return 0;
+
+	if (strcmp(m_pCurrentCompound->getFormula(), m_strGoalCompound))
+		return 1;
+
+	// HASAN TODO - how to determine failure ... ???
+	//  - 5 seconds after final atom is shot into the scene and no goal compound is created
+
+	return 0;
 }
