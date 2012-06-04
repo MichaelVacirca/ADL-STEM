@@ -193,19 +193,34 @@ void CGame::Update()
 		// HASAN - check to see if this collision meets the next step in the compound creation
 		void* bodyUserDataA = curCollisionInfo->atom1Body->GetUserData();
 		void* bodyUserDataB = curCollisionInfo->atom2Body->GetUserData();
-		if (m_pLevel->CompoundCollisionCheck(static_cast<CAtom*>( bodyUserDataA ), static_cast<CAtom*>( bodyUserDataB ), curCollisionInfo->energy))
+		int collisionAngle = m_pLevel->CompoundCollisionCheck(static_cast<CAtom*>( bodyUserDataA ), static_cast<CAtom*>( bodyUserDataB ), curCollisionInfo->energy);
+		if (collisionAngle != -1)
 		{
 			// HASAN - debug
 			s3eDebugOutputString("Creating weld joint between 2 atoms");
 
 			b2Vec2 worldCoordinateAnchorPoint = curCollisionInfo->atom1Body->GetWorldPoint( b2Vec2(0.5f, 0) );
+			// HASAN - RABB to try to setup rotations
+			//float collisionAngleRadians = (float)collisionAngle * PI / 180;
+			//float worldPointX = (0.5f * cosf(collisionAngleRadians)) - (0.0f * sinf(collisionAngleRadians));
+			//float worldPointY = (0.0f * cosf(collisionAngleRadians)) + (0.5f * sinf(collisionAngleRadians));
+			//b2Vec2 worldCoordinateAnchorPoint = curCollisionInfo->atom1Body->GetWorldPoint( b2Vec2(worldPointX, worldPointY) );
+
 			b2WeldJointDef weldJointDef;
 			weldJointDef.bodyA = curCollisionInfo->atom1Body;
 			weldJointDef.bodyB = curCollisionInfo->atom2Body;
 			weldJointDef.localAnchorA = weldJointDef.bodyA->GetLocalPoint(worldCoordinateAnchorPoint);
 			weldJointDef.localAnchorB = weldJointDef.bodyB->GetLocalPoint(worldCoordinateAnchorPoint);
+
 			weldJointDef.referenceAngle = weldJointDef.bodyB->GetAngle() - weldJointDef.bodyA->GetAngle();
-			g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
+			// HASAN - RABB to try to use our own custom-defined angle from the data file
+			//weldJointDef.referenceAngle = collisionAngle * (PI / 180.0f);
+
+			b2Joint* tempJoint = g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
+			
+			// HASAN - for testing
+			//curCollisionInfo->atom1Body->SetLinearVelocity(b2Vec2(0, 0));
+			//curCollisionInfo->atom2Body->SetLinearVelocity(b2Vec2(0, 0));
 
 			// HASAN - debug
 			s3eDebugOutputString("Created weld joint between 2 atoms");

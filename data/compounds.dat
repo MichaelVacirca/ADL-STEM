@@ -14,8 +14,8 @@ compound_root:N
 # the sequence of atoms required to create the compound with the associated max/min power to create the bond
 # energy is a percentage of the min & max values
 # <atom_symbol>(<min_impact_energy,max_impact_energy)
-compound_step:O(40,70)
-compound_step:O(40,70)@134
+compound_step:O(30,70)
+compound_step:O(30,70)@134
 
 compound_formula:CH4
 # root atom
@@ -24,7 +24,11 @@ compound_root:C
 # energy is a percentage of the min & max values
 # <atom_symbol>(<min_impact_energy,max_impact_energy)
 # NOTE: This atom forms in 3-dimensions which are challenging to represent in 2D, so just doing something simple
-compound_step:H(20,60)
-compound_step:H(20,60)@90
-compound_step:H(20,60)@90
-compound_step:H(20,60)@90
+#compound_step:H(20,60)
+#compound_step:H(20,60)@90
+#compound_step:H(20,60)@90
+#compound_step:H(20,60)@90
+compound_step:H(0,100)
+compound_step:H(0,100)@90
+compound_step:H(0,100)@90
+compound_step:H(0,100)@90

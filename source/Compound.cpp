@@ -85,10 +85,12 @@ void CCompound::Init(const char* i_strFormula)
 						m_pCreationSteps[nStepCount].maxAtomImpactEnergy = atoi(pch);
 
 						// angle (optional)
+						m_pCreationSteps[nStepCount].angleBetweenPrevAtom = 0;
 						pch = strtok(NULL, ":\n\r \t(),@");
 						if(pch)
 						{
 							m_pCreationSteps[nStepCount].angleBetweenPrevAtom = atoi(pch);
+							pch = strtok(NULL, ":\n\r \t(),@");
 						}
 					}
 
@@ -132,16 +134,17 @@ CAtom* CCompound::GetRootAtom()
 	return m_pRootAtom;
 }
 
-bool CCompound::AddAtom(CAtom* i_pAtom, int i_nEnergy)
+// Return -1 to indicate failure, otherwise, return the angle to add the atom
+int CCompound::AddAtom(CAtom* i_pAtom, int i_nEnergy)
 {
 	if (m_pRootAtom != NULL && !strcmp( m_pCreationSteps[m_nCurrentCreationStep].atomSymbol, i_pAtom->getSymbol()) &&
 		i_nEnergy >= m_pCreationSteps[m_nCurrentCreationStep].minAtomImpactEnergy &&
 		i_nEnergy <= m_pCreationSteps[m_nCurrentCreationStep].maxAtomImpactEnergy)
 	{
 		m_nCurrentCreationStep++;
-		return true;
+		return m_pCreationSteps[m_nCurrentCreationStep - 1].angleBetweenPrevAtom;
 	}
-	return false;
+	return -1;
 }
 
 bool CCompound::IsComplete()

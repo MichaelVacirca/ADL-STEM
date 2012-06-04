@@ -74,8 +74,8 @@ public:
 	// Return true to indicate that setting the root atom was successful
 	bool		SetRootAtom(CAtom* i_pAtom);
 	CAtom*		GetRootAtom();
-	// Return true to indicate that the atom addition was successful
-	bool		AddAtom(CAtom* i_pAtom, int i_nEnergy);
+	// Return -1 to indicate failure, otherwise, return the angle to add the atom (in degrees)
+	int			AddAtom(CAtom* i_pAtom, int i_nEnergy);
 	bool		IsComplete();
 
 	void	Init(const char* i_strFormula);				// Initialise the compound game object
