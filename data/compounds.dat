@@ -1,0 +1,30 @@
+# Compound creation data file
+
+compound_formula:CO
+# root atom
+compound_root:O
+# the sequence of atoms required to create the compound with the associated max/min power to create the bond
+# energy is a percentage of the min & max values
+# <atom_symbol>(<min_impact_energy,max_impact_energy)
+compound_step:C(50,100)
+
+compound_formula:NO2
+# root atom
+compound_root:N
+# the sequence of atoms required to create the compound with the associated max/min power to create the bond
+# energy is a percentage of the min & max values
+# <atom_symbol>(<min_impact_energy,max_impact_energy)
+compound_step:O(40,70)
+compound_step:O(40,70)@134
+
+compound_formula:CH4
+# root atom
+compound_root:C
+# the sequence of atoms required to create the compound with the associated max/min power to create the bond
+# energy is a percentage of the min & max values
+# <atom_symbol>(<min_impact_energy,max_impact_energy)
+# NOTE: This atom forms in 3-dimensions which are challenging to represent in 2D, so just doing something simple
+compound_step:H(20,60)
+compound_step:H(20,60)@90
+compound_step:H(20,60)@90
+compound_step:H(20,60)@90

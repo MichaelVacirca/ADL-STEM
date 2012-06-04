@@ -15,6 +15,14 @@
 #define FLAME_IMAGE_SIZE_WIDTH			64
 #define FLAME_IMAGE_SIZE_HEIGHT			64
 
+#define MAX_BEAKER_ANGLE				90		// In screen coordinates (positive y is down)
+#define MIN_BEAKER_ANGLE				-45		// In screen coordinates (positive y is down)
+
+#define MAX_BEAKER_POWER				100
+#define MIN_BEAKER_POWER				20
+
+#define MAX_FLAME_POWER					2000.0f
+#define MIN_FLAME_POWER					1000.0f
 
 class CBeaker
 {
@@ -50,8 +58,6 @@ public:
 			return currentAtom->getSymbol();
 		return NULL;
 	}
-	// HASAN TODO - implement and use the below method
-	bool	shootAtom();
 
 	void Init();
 	void Draw();
@@ -61,6 +67,9 @@ public:
 	void RotateBeaker(int rotateScale);
 	void increaseFlame(float flamePower);
 	void decreaseFlame(float flamePower);
+
+protected:
+	bool	shootAtom();
 };
 
 // HASAN TODO - replace global variable by makeing this class a member of the Level class

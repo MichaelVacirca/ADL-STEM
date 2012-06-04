@@ -1,36 +1,49 @@
 # Atom data
 
-atom_symbol:	O
-atom_name:		Oxygen
-atom_weight:	16
-atom_image:		atom_o
-atom_radius:	60
-atom_charge:	-2
+atom_symbol:				O
+atom_name:					Oxygen
+# weight not currently being using
+atom_weight:				16
+atom_image:					atom_o
+# radius not currently being used
+atom_radius:				60
+# atom charge relates to valence electons for compound formation
+atom_charge:				-2
+atom_single_bond_power:		10
+atom_double_bond_power:		25
 
-atom_symbol:	C
-atom_name:		Carbon
-atom_weight:	12
-atom_image:		atom_c
-atom_radius:	70
-atom_charge:	+4
+atom_symbol:				C
+atom_name:					Carbon
+atom_weight:				12
+atom_image:					atom_c
+atom_radius:				70
+atom_charge:				+4
+atom_single_bond_power:		10
+atom_double_bond_power:		25
 
-atom_symbol:	H
-atom_name:		Hydrogen
-atom_weight:	1
-atom_image:		atom_h
-atom_radius:	25
-atom_charge:	+1
+atom_symbol:				H
+atom_name:					Hydrogen
+atom_weight:				1
+atom_image:					atom_h
+atom_radius:				25
+atom_charge:				+1
+atom_single_bond_power:		10
+atom_double_bond_power:		25
 
-atom_symbol:	N
-atom_name:		Nitrogen
-atom_weight:	14
-atom_image:		atom_n
-atom_radius:	65
-atom_charge:	-3
+atom_symbol:				N
+atom_name:					Nitrogen
+atom_weight:				14
+atom_image:					atom_n
+atom_radius:				65
+atom_charge:				-3
+atom_single_bond_power:		10
+atom_double_bond_power:		25
 
-atom_symbol:	S
-atom_name:		Sulfur
-atom_weight:	32
-atom_image:		atom_s
-atom_radius:	100
-atom_charge:	-2
+atom_symbol:				S
+atom_name:					Sulfur
+atom_weight:				32
+atom_image:					atom_s
+atom_radius:				100
+atom_charge:				-2
+atom_single_bond_power:		10
+atom_double_bond_power:		25

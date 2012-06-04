@@ -1,4 +1,12 @@
 # Data for level 3
 
-level_name:Covalent Challenge
-level_music:	droidmarch.mp3
+# NOTE: Only use tabs after the key and color before the value (<key>:<value>)
+level_name:					Covalent Challenge
+level_goal_compound:		CH4
+level_background_image:		background_ch4
+level_inventory:			H(5)
+# level_atoms format
+# <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
+# The first atom is the root of the target compound
+level_atoms:				C(300,50,-20,5),N(250,100,-15,-10)
+level_music:				droidmarch.mp3

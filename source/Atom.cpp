@@ -14,7 +14,7 @@
 //
 //
 
-void CAtom::Init(const char* i_strAtomSymbol)
+void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 {
 	char*	buffer = new char[MAX_STR_SIZE];
 	char*	pch;
@@ -22,7 +22,7 @@ void CAtom::Init(const char* i_strAtomSymbol)
 
 	// lookup atom information to create the correct atom
 
-	// read file contents for atom data file and store in this object
+	// read file contents for atom data file and store in this object 
 	s3eFile* file = s3eFileOpen("atoms.dat", "rb");
 	if (file != NULL)
 	{
@@ -31,7 +31,7 @@ void CAtom::Init(const char* i_strAtomSymbol)
 		while (s3eFileReadString(buffer, MAX_STR_SIZE, file) != NULL)
 		{
 			// HASAN - debug
-			s3eDebugOutputString(buffer);
+			//s3eDebugOutputString(buffer);
 			if (buffer[0] == '#')
 			{
 				// ignore comments
@@ -102,19 +102,45 @@ void CAtom::Init(const char* i_strAtomSymbol)
 	delete [] buffer;
 
 	if (bMatchFound)
+	{
 		g_Game.getSpriteManager()->addSprite(this);
 
+		if (i_bUsePhysics)
+		{
+			// setup box2d physics representation for atom
+			b2BodyDef bodyDef;	
+			bodyDef.type = b2_dynamicBody;											//  Object is redefined to create a dynamicBody.
+			b2CircleShape circleShape;												
+			// HASAN TODO - update below to use actual atom radius loaded from file (FOR NOW, just using iamge size)
+			//circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 2.0f);
+			circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 4.0f);  // HASAN - DO NOT CHECK THIS IN, for testing to approximate accounting for the empty space around the atom icons
+			b2FixtureDef fd;
+			fd.shape = &circleShape;
 
+			//fd.friction = 0.5f;
+			//fd.density = 10.0f;
+			// HASAN - update to try values that look better now that am properly considering scale
+			fd.friction = 0.1f;
+			fd.density = 0.1f;
 
+			fd.restitution = 0.85f;													// between 0 & 1 (1 = most bouncy)
+			m_body = g_Game.getBox2dWorld()->CreateBody(&bodyDef);					// Circle Shape used to represent the atom dynamicBody.
+			m_body->SetLinearDamping(0.0f);
+			m_body->SetAngularDamping(0.1f);
+			m_body->CreateFixture(&fd);
+			// HASAN TODO - update below to use actual values
+			//m_body->SetAngularVelocity(66.15f);										// set the dynamic object initially spinning, so that it bounces more interestingly on the 'ground'
+			m_body->SetLinearVelocity(b2Vec2(0, 0));
 
-
+			// HASAN - add user data for collision
+			m_body->SetUserData(this);
+		}
+	}
 
 	Destroyed = false;
 	Type = ST_Atom;
-	Velocity.x = 0;
-	Velocity.y = 0;
 	Position.x = 20;
-	Position.y = -20;
+	Position.y = 20;
 }
 
 bool CAtom::Update()
@@ -124,79 +150,81 @@ bool CAtom::Update()
 
 	CSprite::Update();
 
-	Position.x += Velocity.x;
-	Position.y += Velocity.y;
-
-	// If atom is at any edge of the screen, give new random velocity to 'bounce' it out of subsequent collisions
-	if (WallCollideCheck())
+	// HASAN - new from box2d example
+	//-----------------------------------------------------------------------------
+	if (m_body != NULL)
 	{
-		//do
-		//{
-		//	Velocity.x = 2 + (rand() * 6) / RAND_MAX;
-		//	Velocity.y = 2 + (rand() * 6) / RAND_MAX;
-		//} while (WallCollideCheck(Position.x + Velocity.x, Position.y + Velocity.y));
-		// for now, just reverse the velocity
-		Velocity.x = -Velocity.x;
-		Velocity.y = -Velocity.y;
-	}
+		// Set atom position from box2d physics model
+		const b2Transform t = m_body->GetTransform();
+		int16 screenPosX = int16(BOX_2D_TO_DISPLAY_CONV * t.p.x);
+		int16 screenPosY = Iw2DGetSurfaceHeight() - int16(BOX_2D_TO_DISPLAY_CONV * t.p.y);
 
-	// atom/compound collision
-	return CompoundCollideCheck();
+		// HASAN - debug
+		//char temp[128];
+		//sprintf(temp, "box2d posX/posY => screen posX/posY : %f/%f => %d/%d", t.p.x, t.p.y, screenPosX, screenPosY);
+		//s3eDebugOutputString(temp);
+
+		const CIwSVec2 pos = CIwSVec2(screenPosX, screenPosY);	// scrren-Y coord is reversed
+		const float angle = -t.q.GetAngle() * (180.0f/3.14159f);	// reverse angle as our screen-Y coord is reversed
+	 
+		CIwMat2D rot;
+		rot.SetRot(iwangle(angle), CIwVec2(pos));
+		Iw2DSetTransformMatrixSubPixel(rot);
+
+		Position = pos;
+	}
+	//-----------------------------------------------------------------------------
 
 	return true;
 }
 
-// Return true iff atom has collided with the wall
-bool CAtom::WallCollideCheck()
+void CAtom::setVelocity(int vx, int vy)
 {
-	return WallCollideCheck(Position.x, Position.y);
-}
-
-bool CAtom::WallCollideCheck(int x, int y)
-{
-	return y < (ATOM_RADIUS / 2) || y >= Iw2DGetSurfaceHeight() - (ATOM_RADIUS / 2) || x < (ATOM_RADIUS / 2) || x >= Iw2DGetSurfaceWidth() - (ATOM_RADIUS / 2);
-}
-
-bool CAtom::CompoundCollideCheck()
-{
-	// HASAN TODO - THIS IS BAD.  Each Atom will check all atoms for collisions.  Should just be a single collision checker that checks all atoms OR use 'box2d'
-	// Search the sprite list in the spritemanager for atoms/compounds
-	for (CSpriteManager::Iterator it = Parent->begin(); it != Parent->end(); ++it)
+	if (m_body != NULL)
 	{
-		if ((*it)->getType() == ST_Atom)
-		{
-			CAtom* atom = (CAtom*)*it;
-
-			// Exclude this atom from the check
-			if (atom->getPosition().x == Position.x && atom->getPosition().y == Position.y)
-				continue;
-
-			// Check to see if the atom sprite is within the range (radius) of another atom
-			int dx = atom->getPosition().x - Position.x;
-			if (dx < 0) dx = -dx;
-			if (dx < ATOM_RADIUS)
-			{
-				// Check to see if the atom sprite is within the range (radius) of another atom
-				int dy = atom->getPosition().y - Position.y;
-				if (dy < 0) dy = -dy;
-				if (dy < ATOM_RADIUS)
-				{
-					// HASAN TODO - Create new compound iff activation energy and angle are correct
-
-					// HASAN TESTING = set velocity to 0 on collision
-					Velocity.x = 0;
-					Velocity.y = 0;
-
-					// play sound effect
-					//g_Game.PlayExplosionSound();  // play constantly unless the objects are destroyed below
-
-					// HASAN - do not use below to destroy atoms, but combine them into a compound
-					// Tell the atom to destroy itself
-					//atom->Destroy();
-					//return false;
-				}
-			}
-		}
+		m_body->SetLinearVelocity(b2Vec2(DISPLAY_TO_BOX_2D_CONV * (float)vx, DISPLAY_TO_BOX_2D_CONV * -(float)vy));
 	}
-	return true;
+}
+void CAtom::setAngularVelocity(float angularVelocity)
+{
+	if (m_body != NULL)
+	{
+		// HASAN TODO - update to convert from degrees to radians and invert y value
+		m_body->SetAngularVelocity(angularVelocity);
+	}
+}
+void CAtom::setPosition(int posX, int posY)
+{
+	if (m_body != NULL)
+	{
+		float x = DISPLAY_TO_BOX_2D_CONV * (float)posX;
+		float y = DISPLAY_TO_BOX_2D_CONV * (float)(Iw2DGetSurfaceHeight() - posY);
+
+		// HASAN - debug
+		//char temp[128];
+		//sprintf(temp, "screen posX/posY => box2d posX/posY : %d/%d => %f/%f", posX, posY, x, y);
+		//s3eDebugOutputString(temp);
+	
+		m_body->SetTransform(b2Vec2(x, y), 0.0f);
+	}
+
+	CSprite::setPosition(posX, posY);
+}
+// over-ride the Sprite implementation of the method to update m_body
+void CAtom::setPosAngScale(int x, int y, iwangle angle, iwfixed scale)
+{
+	if (m_body != NULL)
+	{
+		float newX = DISPLAY_TO_BOX_2D_CONV * (float)x;
+		float newY = DISPLAY_TO_BOX_2D_CONV * (float)(Iw2DGetSurfaceHeight() - y);
+
+		// HASAN - debug
+		//char temp[128];
+		//sprintf(temp, "screen posX/posY => box2d posX/posY : %d/%d => %f/%f", x, y, newX, newY);
+		//s3eDebugOutputString(temp);
+	
+		m_body->SetTransform(b2Vec2(newX, newY), 0.0f);
+	}
+
+	CSprite::setPosAngScale(x, y, angle, scale);
 }

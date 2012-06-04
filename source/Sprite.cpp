@@ -45,14 +45,6 @@ void CSprite::Draw()
 	if (Image == NULL || !Visible || Colour.a == 0)
 		return;
 
-
-
-	//Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-	
-
-
-
-
 	// Build the transform
 	// Set the rotation transform
 	Transform.SetRot(Angle,Center);
@@ -69,21 +61,9 @@ void CSprite::Draw()
 	// Render the sprite (centered)
 	int x = -(Width / 2);
 	int y = -(Height / 2);
-	//if (Angle != 0)
-	//{
-	//	Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
-	//	Transform.SetRot(Angle,Center);
-	//	Transform.SetTrans(CIwVec2(Position.x,Position.y));
-	//	Iw2DSetTransformMatrix(Transform);
-	//	x = Position.x - (Width / 2);
-	//	y = Position.y - (Height / 2);
-	//	//x = -(Width / 2);
-	//	//y = -(Height / 2);
-	//}
 	Iw2DDrawImage(Image, CIwSVec2(x, y), CIwSVec2(Width, Height));
 }
 
-// HASAN - new for touch check
 // HASAN - NOTE: Does not take rotation & scale into account
 bool CSprite::isTouched(int touchX, int touchY)
 {

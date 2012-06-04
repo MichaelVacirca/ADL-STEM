@@ -29,7 +29,20 @@
 #include "Level.h"
 
 
-#define	MAX_STR_SIZE	255
+#define	MAX_STR_SIZE				255
+
+// 40 screen pixels to 1 box2d unit (meter)
+// Multiply these constants against the corresponding source values to get the desired conversion
+#define BOX_2D_TO_DISPLAY_CONV		40.0f
+#define DISPLAY_TO_BOX_2D_CONV		(1.0f/BOX_2D_TO_DISPLAY_CONV)
+
+// HASAN - new to exclude bottom portion of the screen for the controls (menu & inventory)
+#define CONTROL_REGION_HEIGHT		85
+
+// HASAN - new for collision stuff
+// In screen coordinates
+#define MIN_ATOM_VELOCITY			70
+#define MAX_ATOM_VELOCITY			180
 
 enum eSpriteType
 {
@@ -38,7 +51,7 @@ enum eSpriteType
 	ST_Compound
 };
 
-// HASAN - new enum for different game states
+// enum for different game states
 enum eGameState
 {
 	GS_Welcome,
@@ -67,10 +80,12 @@ public:
 	void						addSprite(CSprite* sprite)		{ SpriteManager->addSprite(sprite); }
 	void						removeSprite(CSprite* sprite)	{ SpriteManager->removeSprite(sprite); }
 	void						updateScore(int amount);
-	// HASAN - new to expose the game state to other classes
-	int							getGameState();
-	// HASAN - expose so everything can use the same font
-	CIw2DFont*					getFont();
+	// expose the game state to other classes
+	int							getGameState()					{ return m_nGameState; }
+	// expose so everything can use the same font
+	CIw2DFont*					getFont()						{ return Font; }
+	// expose so atoms can access the box2d world for physics
+	b2World*					getBox2dWorld()					{ return m_world; }
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
@@ -81,11 +96,13 @@ protected:
 
 	//For input
 	//CInput*				m_pInput;
-	bool				m_bHasPointer;
-	int					xTouch1;
-	int					xTouch2;
+	bool					m_bHasPointer;
+	int						xTouch1;
+	int						xTouch2;
 	float					yTouch1;
 	float					yTouch2;
+	int						screenWidth;
+	int						screenHeight;
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------
@@ -99,8 +116,6 @@ protected:
 
 	CIw2DImage*				m_Image;
 	b2World*				m_world;
-
-	b2Body*					m_body;
 
 	int64					m_prevTime, m_timeNow;
 	float					m_deltaTime, m_accumulator;
@@ -116,6 +131,8 @@ protected:
 	// Audio
 	CIwSoundSpec*				ExplosionSoundSpec;
 	CIwSoundInst*				ExplosionSoundInstance;
+	CIwSoundSpec*				PopSoundSpec;
+	CIwSoundInst*				PopSoundInstance;
 
 public:
 	CGame() : SpriteManager(NULL)	{}
@@ -124,6 +141,7 @@ public:
 	void	Release();			// Release the game
 
 	void	PlayExplosionSound();
+	void	PlayPopSound();
 	void	LoadLevel(const char* i_strLevelFile);
 	void	UnloadLevel();
 
@@ -138,39 +156,37 @@ extern CGame g_Game;
 
 // HASAN - this class probably should be moved somewhere else, but putting here for now
 
+#define MAX_COLLISION_INFO_COUNT	16
+
+struct AtomCollisionInfo {
+	b2Body* atom1Body;
+	b2Body* atom2Body;
+	int		energy;
+};
+
 class MyContactListener : public b2ContactListener
 {
-	void BeginContact(b2Contact* contact)
+	// HASAN - new value to store collection of atom collision info
+protected:
+	AtomCollisionInfo	m_pCollisions[MAX_COLLISION_INFO_COUNT];
+	int					m_nCollisionCount;
+
+public:
+	MyContactListener()
 	{
-  
-		////check if fixture A was a ball
-		//void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-		//if ( bodyUserData )
-		//	static_cast<Ball*>( bodyUserData )->startContact();
-  //
-		////check if fixture B was a ball
-		//bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		//if ( bodyUserData )
-		//	static_cast<Ball*>( bodyUserData )->startContact();
-		// HASAN - for simplicity, just play a sound regardless of what's hitting
-		g_Game.PlayExplosionSound();
+		m_nCollisionCount = 0;
 	}
-  
-	void EndContact(b2Contact* contact)
-	{
-  
-		// HASAN - for simplicity, don't care about ending contact for now
-		////check if fixture A was a ball
-		//void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-		//if ( bodyUserData )
-		//	static_cast<Ball*>( bodyUserData )->endContact();
-  //
-		////check if fixture B was a ball
-		//bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		//if ( bodyUserData )
-		//	static_cast<Ball*>( bodyUserData )->endContact();
-  
-	}
+	~MyContactListener() {}
+
+	int						getCollisionCount();
+	void					setCollisionInfo(b2Body* atom1Body, b2Body* atom2Body, int energy);
+	AtomCollisionInfo*		getCollisionInfo(int i_nIndex);
+	void					clearCollisionInfo();
+
+protected:
+	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
+	void BeginContact(b2Contact* contact);
+	void EndContact(b2Contact* contact);
 };
 
 extern MyContactListener g_MyContactListener;

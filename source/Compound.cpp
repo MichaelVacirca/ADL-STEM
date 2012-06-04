@@ -15,90 +15,139 @@
 //
 //
 
-void CCompound::Init()
+void CCompound::Init(const char* i_strFormula)
 {
-	Destroyed = false;
-	//Type = ST_Compound;
-	// HASAN - random velocity - may use later
-	//Velocity.x = 0;
-	//Velocity.y = 2 + (rand() * 6) / RAND_MAX;
-	Velocity.x = 0;
-	Velocity.y = 0;
-	//Position.x = 20 + (rand() * (Iw2DGetSurfaceWidth() - 40)) / RAND_MAX;
-	//Position.y = -20;
+	char*	buffer = new char[MAX_STR_SIZE];
+	char*	pch;
+	bool	bMatchFound = false;
+	int		nStepCount = 0;
+
+	// read file contents for atom data file and store in this object 
+	s3eFile* file = s3eFileOpen("compounds.dat", "rb");
+	if (file != NULL)
+	{
+		// HASAN - debug
+		//s3eDebugOutputString("Parsed file\n-----------\n");
+		while (s3eFileReadString(buffer, MAX_STR_SIZE, file) != NULL)
+		{
+			// HASAN - debug
+			//s3eDebugOutputString(buffer);
+			if (buffer[0] == '#')
+			{
+				// ignore comments
+				// HASAN - debug
+				//s3eDebugOutputString("  -> comment");
+			}
+			else
+			{
+				pch = strtok(buffer, ":\n\r \t(),@");
+				if (pch != NULL && !strcmp(pch, "compound_formula"))
+				{
+					// when find next 'atom_symbol' definition after already having found a match, early terminate
+					if (bMatchFound)
+					{
+						break;
+					}
+
+					// HASAN - debug
+					//s3eDebugOutputString("  -> compound_formula");
+
+					pch = strtok(NULL, ":\n\r \t(),@");
+					if (!strcmp(i_strFormula, pch))
+					{
+						// HASAN - debug
+						//s3eDebugOutputString("Compound formula match found!");
+						strcpy(m_strFormula, pch);
+
+						bMatchFound = true;
+					}
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "compound_root"))
+				{
+					pch = strtok(NULL, ":\n\r \t(),@");
+					strcpy(m_strRootAtomSymbol, pch);
+				}
+				else if (bMatchFound && pch != NULL && !strcmp(pch, "compound_step"))
+				{
+					pch = strtok(NULL, ":\n\r \t(),@");
+					
+					while (pch != NULL)
+					{
+						// atom symbol
+						strcpy(m_pCreationSteps[nStepCount].atomSymbol, pch);
+
+						// min power
+						pch = strtok(NULL, ":\n\r \t(),@");
+						m_pCreationSteps[nStepCount].minAtomImpactEnergy = atoi(pch);
+
+						// max power
+						pch = strtok(NULL, ":\n\r \t(),@");
+						m_pCreationSteps[nStepCount].maxAtomImpactEnergy = atoi(pch);
+
+						// angle (optional)
+						pch = strtok(NULL, ":\n\r \t(),@");
+						if(pch)
+						{
+							m_pCreationSteps[nStepCount].angleBetweenPrevAtom = atoi(pch);
+						}
+					}
+
+					nStepCount++;
+				}
+			}
+		}
+
+		m_nCreationStepsTotal = nStepCount;
+
+		s3eFileClose(file);
+	}
+	else
+	{
+		s3eFileGetError();
+		s3eDebugOutputString(s3eFileGetErrorString());
+	}
+
+	delete [] buffer;
+
+	m_nCurrentCreationStep = 0;
 }
 
 bool CCompound::Update()
 {
-	if (Destroyed)
-		return false;	// Tell the sprite manager to remove this compound
-
-	//CSprite::Update();
-
-	//Position.x += Velocity.x;
-	//Position.y += Velocity.y;
-
-	// If compound is at any edge of the screen, give new random velocity to 'bounce' it out of subsequent collisions
-	if (WallCollideCheck())
-	{
-		//do
-		//{
-		//	Velocity.x = 2 + (rand() * 6) / RAND_MAX;
-		//	Velocity.y = 2 + (rand() * 6) / RAND_MAX;
-		//} while (WallCollideCheck(Position.x + Velocity.x, Position.y + Velocity.y));
-		// for now, just reverse the velocity
-		Velocity.x = -Velocity.x;
-		Velocity.y = -Velocity.y;
-	}
-
-	// HASAN TODO - do compound collision
-	//return CompoundCollideCheck();
-
 	return true;
 }
 
-// Return true iff compound has collided with the wall
-bool CCompound::WallCollideCheck()
+bool CCompound::SetRootAtom(CAtom* i_pAtom)
 {
-	//return WallCollideCheck(Position.x, Position.y);
+	if (m_pRootAtom == NULL && !strcmp(i_pAtom->getSymbol(), m_strRootAtomSymbol))
+	{
+		m_pRootAtom = i_pAtom;
+		return true;
+	}
 	return false;
 }
 
-bool CCompound::WallCollideCheck(int x, int y)
+CAtom* CCompound::GetRootAtom()
 {
-	return y < 32 || y >= Iw2DGetSurfaceHeight() - 32 || x < 32 || x >= Iw2DGetSurfaceWidth() - 32;
+	return m_pRootAtom;
 }
 
-bool CCompound::CompoundCollideCheck()
+bool CCompound::AddAtom(CAtom* i_pAtom, int i_nEnergy)
 {
-	//// Search the sprite list in the spritemanager for atoms/compounds
-	//for (CSpriteManager::Iterator it = Parent->begin(); it != Parent->end(); ++it)
-	//{
-	//	if ((*it)->getType() == ST_Compound)
-	//	{
-	//		CCompound* compound = (CCompound*)*it;
-	//		// Check to see if the compound sprite is within the range (radius) of another compound
-	//		int dx = compound->getPosition().x - Position.x;
-	//		if (dx < 0) dx = -dx;
-	//		if (dx < 64)
-	//		{
-	//			// Check to see if the compound sprite is within the range (radius) of another compound
-	//			int dy = compound->getPosition().y - Position.y;
-	//			if (dy < 0) dy = -dy;
-	//			if (dy < 64)
-	//			{
-	//				// HASAN TODO - Create new compound iff activation energy and angle are correct
+	if (m_pRootAtom != NULL && !strcmp( m_pCreationSteps[m_nCurrentCreationStep].atomSymbol, i_pAtom->getSymbol()) &&
+		i_nEnergy >= m_pCreationSteps[m_nCurrentCreationStep].minAtomImpactEnergy &&
+		i_nEnergy <= m_pCreationSteps[m_nCurrentCreationStep].maxAtomImpactEnergy)
+	{
+		m_nCurrentCreationStep++;
+		return true;
+	}
+	return false;
+}
 
-	//				// HASAN TESTING = set velocity to 0
-	//				Velocity.x = 0;
-	//				Velocity.y = 0;
+bool CCompound::IsComplete()
+{
+	if (m_pRootAtom == NULL)
+		return false;
 
-	//				// Tell the compound to destroy itself
-	//				//compound->Destroy();
-	//				return false;
-	//			}
-	//		}
-	//	}
-	//}
-	return true;
+	return m_nCurrentCreationStep == m_nCreationStepsTotal;
 }
