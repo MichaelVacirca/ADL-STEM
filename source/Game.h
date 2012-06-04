@@ -37,7 +37,12 @@
 #define DISPLAY_TO_BOX_2D_CONV		(1.0f/BOX_2D_TO_DISPLAY_CONV)
 
 // HASAN - new to exclude bottom portion of the screen for the controls (menu & inventory)
-#define CONTROL_REGION_HEIGHT		100
+#define CONTROL_REGION_HEIGHT		85
+
+// HASAN - new for collision stuff
+// In screen coordinates
+#define MIN_ATOM_VELOCITY			70
+#define MAX_ATOM_VELOCITY			180
 
 enum eSpriteType
 {
@@ -149,96 +154,37 @@ extern CGame g_Game;
 
 // HASAN - this class probably should be moved somewhere else, but putting here for now
 
+#define MAX_COLLISION_INFO_COUNT	16
+
+struct AtomCollisionInfo {
+	b2Body* atom1Body;
+	b2Body* atom2Body;
+	int		energy;
+};
+
 class MyContactListener : public b2ContactListener
 {
-	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+	// HASAN - new value to store collection of atom collision info
+protected:
+	AtomCollisionInfo	m_pCollisions[MAX_COLLISION_INFO_COUNT];
+	int					m_nCollisionCount;
+
+public:
+	MyContactListener()
 	{
-		b2WorldManifold worldManifold;
-		//contact->GetWorldManifold(&worldManifold);
-		//b2PointState state1[2], state2[2];
-		//b2GetPointStates(state1, state2, oldManifold, contact->GetManifold());
-		//if (state2[0] == b2_addState)
-		//{
-			const b2Body* bodyA = contact->GetFixtureA()->GetBody();
-			const b2Body* bodyB = contact->GetFixtureB()->GetBody();
-			b2Vec2 point = worldManifold.points[0];
-			b2Vec2 vA = bodyA->GetLinearVelocityFromWorldPoint(point);
-			b2Vec2 vB = bodyB->GetLinearVelocityFromWorldPoint(point);
-			b2Vec2 temp = vB - vA;
-			float32 approachVelocity = b2Dot(temp, worldManifold.normal);
-
-			// HASAN - debug
-			char strTemp[64];
-			sprintf(strTemp, "Approach velocity : %f", approachVelocity);
-			s3eDebugOutputString(strTemp);
-
-			if (approachVelocity > 1.0f)
-			{
-				// HASAN - debug
-				s3eDebugOutputString("");
-
-				// HASAN - for simplicity, just play a sound regardless of what's hitting
-				g_Game.PlayExplosionSound();
-			}
-		//}
+		m_nCollisionCount = 0;
 	}
+	~MyContactListener() {}
 
-	void BeginContact(b2Contact* contact)
-	{
-  
-		//check if fixture A was an atom
-		void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-		if ( bodyUserDataA )
-		{
-			// HASAN - debug
-			char temp[64];
-			sprintf(temp, "*** Atom %s collided with something.", static_cast<CAtom*>( bodyUserDataA )->getSymbol());
-			s3eDebugOutputString(temp);
-		}
+	int						getCollisionCount();
+	void					setCollisionInfo(b2Body* atom1Body, b2Body* atom2Body, int energy);
+	AtomCollisionInfo*		getCollisionInfo(int i_nIndex);
+	void					clearCollisionInfo();
 
-		//check if fixture B was an atom
-		void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
-		if ( bodyUserDataB )
-		{
-			// HASAN - debug
-			char temp[64];
-			sprintf(temp, "*** Atom %s collided with something, too.", static_cast<CAtom*>( bodyUserDataB )->getSymbol());
-			s3eDebugOutputString(temp);
-		}
-
-		if (bodyUserDataA && bodyUserDataB)
-		{
-			// HASAN - debug
-			s3eDebugOutputString("===> 2 Atoms collided <===");
-		}
-
-		//// HASAN - for simplicity, just play a sound regardless of what's hitting
-		//g_Game.PlayExplosionSound();
-	}
-  
-	void EndContact(b2Contact* contact)
-	{
-  
-		//check if fixture A was an atom
-		void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-		if ( bodyUserData )
-		{
-			// HASAN - debug
-			char temp[64];
-			sprintf(temp, "*** Atom %s STOPPED colliding with something.", static_cast<CAtom*>( bodyUserData )->getSymbol());
-			s3eDebugOutputString(temp);
-		}
-
-		//check if fixture B was an atom
-		bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		if ( bodyUserData )
-		{
-			// HASAN - debug
-			char temp[64];
-			sprintf(temp, "*** Atom %s STOPPED colliding with something, too.", static_cast<CAtom*>( bodyUserData )->getSymbol());
-			s3eDebugOutputString(temp);
-		}
-	}
+protected:
+	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
+	void BeginContact(b2Contact* contact);
+	void EndContact(b2Contact* contact);
 };
 
 extern MyContactListener g_MyContactListener;

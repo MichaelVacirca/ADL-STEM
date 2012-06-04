@@ -21,8 +21,8 @@
 #define MAX_BEAKER_POWER				100
 #define MIN_BEAKER_POWER				20
 
-#define MAX_FLAME_POWER					2000
-#define MIN_FLAME_POWER					1000
+#define MAX_FLAME_POWER					2000.0f
+#define MIN_FLAME_POWER					1000.0f
 
 class CBeaker
 {

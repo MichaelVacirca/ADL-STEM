@@ -103,7 +103,8 @@ bool CBeaker::shootAtom()
 
 	char prevAtomSymbol[4];
 	strcpy(prevAtomSymbol, currentAtom->getSymbol());
-	// HASAN - shoot atom into environment
+
+	// shoot atom into environment
 	// 1 - destroy current atom
 	currentAtom->Destroy();
 	currentAtom = NULL;
@@ -131,9 +132,23 @@ bool CBeaker::shootAtom()
 	newAtom->setPosition(beakerCenter.x + xOffset, beakerCenter.y + yOffset);
 
 	// 4 - set velocity the same as the beaker orientation & flame power
-	int power = (int)(m_flamePower * 0.001f);
-	newAtom->setVelocity(xOffset * power, yOffset * power);
+	float powerNorm = (m_flamePower - MIN_FLAME_POWER) / (MAX_FLAME_POWER - MIN_FLAME_POWER);
+	float power = (powerNorm * ((float)(MAX_ATOM_VELOCITY - MIN_ATOM_VELOCITY))) + (float)(MIN_ATOM_VELOCITY);
+	float magnitude = sqrtf((float)(xOffset * xOffset) + (float)(yOffset * yOffset));
+	float xOffsetNorm = (float)xOffset / magnitude;
+	float yOffsetNorm = (float)yOffset / magnitude;
+	int newVelocityX = (int)(xOffsetNorm * power);
+	int newVelocityY = (int)(yOffsetNorm * power);
 
+	newAtom->setVelocity(newVelocityX, newVelocityY);
+
+	// HASAN - debug
+	//char strTemp[64];
+	//sprintf(strTemp, "Creating atom with velocity x/y: %d/%d", newVelocityX, newVelocityY);
+	//s3eDebugOutputString(strTemp);
+	//sprintf(strTemp, "(Min/max velocity: %d/%d)", MIN_ATOM_VELOCITY, MAX_ATOM_VELOCITY);
+	//s3eDebugOutputString(strTemp);
+	
 	// Play sound-effect when shoot an atom
 	g_Game.PlayPopSound();
 

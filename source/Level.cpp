@@ -153,6 +153,14 @@ void CLevel::Init(const char* i_strLevelFile)
 		atom->Init(atomSymbol[i], true);
 		atom->setPosition(atomX[i], atomY[i]);
 		atom->setVelocity(atomVelX[i], atomVelY[i]);
+
+		// HASAN - set the first atom parsed as the root atom for the compound
+		if (i == 0 && m_pCurrentCompound == NULL)
+		{
+			m_pCurrentCompound = new CCompound();
+			m_pCurrentCompound->Init(m_strGoalCompound);
+			m_pCurrentCompound->SetRootAtom(atom);
+		}
 	}
 
 	// Create inventory atoms parsed from above
@@ -179,6 +187,12 @@ void CLevel::Release()
 
 	// Clean up Beaker
 	g_Beaker.Release();
+
+	if (m_pCurrentCompound != NULL)
+	{
+		delete m_pCurrentCompound;
+		m_pCurrentCompound = NULL;
+	}
 }
 
 void CLevel::Update()
@@ -236,17 +250,33 @@ void CLevel::decreaseFlame(float flamePower)
 	g_Beaker.decreaseFlame(flamePower);
 }
 
+// HASAN - new check to allow for collision checking
+bool CLevel::CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy)
+{
+	if (m_pCurrentCompound->GetRootAtom() == i_pAtom1)
+	{
+		return m_pCurrentCompound->AddAtom(i_pAtom2, i_nEnergy);
+	}
+	else if (m_pCurrentCompound->GetRootAtom() == i_pAtom2)
+	{
+		return m_pCurrentCompound->AddAtom(i_pAtom1, i_nEnergy);
+	}
+	return false;
+}
+
 // HASAN - new method for determining for when level is complete
+// Return 0 for NOT complete, 1 for complete success & 2 for complete failure
 int CLevel::IsComplete()
 {
 	if (m_pCurrentCompound == NULL)
 		return 0;
 
-	if (strcmp(m_pCurrentCompound->getFormula(), m_strGoalCompound))
+	if (m_pCurrentCompound->IsComplete())
 		return 1;
 
 	// HASAN TODO - how to determine failure ... ???
 	//  - 5 seconds after final atom is shot into the scene and no goal compound is created
+	//if (!m_pCurrentCompound->IsComplete())
 
 	return 0;
 }

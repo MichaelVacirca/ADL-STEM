@@ -4,12 +4,13 @@
 level_name:					Baby Steps
 level_goal_compound:		CO
 level_background_image:		background_co
-#level_inventory:			C(3)
+level_inventory:			C(3)
 # HASAN - using below for testing
-level_inventory:			C(3),N(1),O(4),S(1)
+#level_inventory:			C(3),N(1),O(4),S(1)
 # level_atoms format
 # <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>); ...
-#level_atoms:				O(200,150,0,10)
+# The first atom is the root of the target compound
+level_atoms:				O(200,150,0,10)
 # HASAN - using below for testing
-level_atoms:				C(50,50,0,0);O(200,200,100,0);H(500,200,0,0)
+#level_atoms:				O(200,200,100,0);C(50,50,0,0);H(500,200,0,0)
 level_music:				hero.mp3

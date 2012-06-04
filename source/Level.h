@@ -54,7 +54,9 @@ public:
 	void increaseFlame(float flamePower);
 	void decreaseFlame(float flamePower);
 
-	// HASAN - new method for determining
+	// HASAN - new check to allow for collision checking
+	bool CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy);
+	// HASAN - new method for determining when level is complete
 	// Return 0 for NOT complete, 1 for complete success & 2 for complete failure
 	int IsComplete();
 };

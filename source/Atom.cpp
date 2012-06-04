@@ -123,7 +123,7 @@ void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 			fd.friction = 0.1f;
 			fd.density = 0.1f;
 
-			fd.restitution = 0.95f;													// between 0 & 1 (1 = most bouncy)
+			fd.restitution = 0.85f;													// between 0 & 1 (1 = most bouncy)
 			m_body = g_Game.getBox2dWorld()->CreateBody(&bodyDef);					// Circle Shape used to represent the atom dynamicBody.
 			m_body->SetLinearDamping(0.0f);
 			m_body->SetAngularDamping(0.1f);

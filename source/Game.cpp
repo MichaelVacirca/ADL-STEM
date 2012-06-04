@@ -6,7 +6,6 @@
 
 #include "Game.h"
 
-
 //
 // Global declaration of the CGame class. Allows global access to the game class
 //
@@ -186,11 +185,55 @@ void CGame::Update()
 	}
 	//-----------------------------------------------------------------------------
 
+	// HASAN - new to process collisions that occurred during the box2d world Step() function
+	for (int i = 0; i < g_MyContactListener.getCollisionCount(); i++)
+	{
+		AtomCollisionInfo* curCollisionInfo = g_MyContactListener.getCollisionInfo(i);
+
+		// HASAN - check to see if this collision meets the next step in the compound creation
+		void* bodyUserDataA = curCollisionInfo->atom1Body->GetUserData();
+		void* bodyUserDataB = curCollisionInfo->atom2Body->GetUserData();
+		if (m_pLevel->CompoundCollisionCheck(static_cast<CAtom*>( bodyUserDataA ), static_cast<CAtom*>( bodyUserDataB ), curCollisionInfo->energy))
+		{
+			// HASAN - debug
+			s3eDebugOutputString("Creating weld joint between 2 atoms");
+
+			b2Vec2 worldCoordinateAnchorPoint = curCollisionInfo->atom1Body->GetWorldPoint( b2Vec2(0.5f, 0) );
+			b2WeldJointDef weldJointDef;
+			weldJointDef.bodyA = curCollisionInfo->atom1Body;
+			weldJointDef.bodyB = curCollisionInfo->atom2Body;
+			weldJointDef.localAnchorA = weldJointDef.bodyA->GetLocalPoint(worldCoordinateAnchorPoint);
+			weldJointDef.localAnchorB = weldJointDef.bodyB->GetLocalPoint(worldCoordinateAnchorPoint);
+			weldJointDef.referenceAngle = weldJointDef.bodyB->GetAngle() - weldJointDef.bodyA->GetAngle();
+			g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
+
+			// HASAN - debug
+			s3eDebugOutputString("Created weld joint between 2 atoms");
+		}
+	}
+	g_MyContactListener.clearCollisionInfo();
+
 	// Update level
 	if (m_pLevel != NULL)
 	{
 		UpdateInput();
 		m_pLevel->Update();
+
+		int levelCompleteStatus = m_pLevel->IsComplete();
+		if (levelCompleteStatus == 1)
+		{
+			// HASAN TODO - trigger level completion successful screen
+
+			// HASAN - debug
+			s3eDebugOutputString("=== LEVEL COMPLETE = SUCCESSFUL");
+		}
+		else if (levelCompleteStatus == 2)
+		{
+			// HASAN TODO - trigger level completion failure screen
+
+			// HASAN - debug
+			s3eDebugOutputString("=== LEVEL COMPLETE = FAILURE");
+		}
 	}
 }
 
@@ -339,3 +382,159 @@ void CGame::Draw()
 }
 
 
+
+int	MyContactListener::getCollisionCount()
+{
+	return m_nCollisionCount;
+}
+void MyContactListener::setCollisionInfo(b2Body* atom1Body, b2Body* atom2Body, int energy)
+{
+	if (m_nCollisionCount < MAX_COLLISION_INFO_COUNT)
+	{
+		m_pCollisions[m_nCollisionCount].atom1Body = atom1Body;
+		m_pCollisions[m_nCollisionCount].atom2Body = atom2Body;
+		m_pCollisions[m_nCollisionCount].energy = energy;
+
+		m_nCollisionCount++;
+	}
+}
+AtomCollisionInfo* MyContactListener::getCollisionInfo(int i_nIndex)
+{
+	if (i_nIndex >= 0 && i_nIndex <= m_nCollisionCount)
+	{
+		return &m_pCollisions[i_nIndex];
+	}
+	return NULL;
+}
+void MyContactListener::clearCollisionInfo()
+{
+	m_nCollisionCount = 0;
+}
+
+void MyContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+{
+	b2WorldManifold worldManifold;
+	contact->GetWorldManifold(&worldManifold);
+	b2PointState state1[2], state2[2];
+	b2GetPointStates(state1, state2, oldManifold, contact->GetManifold());
+	if (state2[0] == b2_addState)
+	{
+		const b2Body* bodyA = contact->GetFixtureA()->GetBody();
+		const b2Body* bodyB = contact->GetFixtureB()->GetBody();
+		b2Vec2 point = worldManifold.points[0];
+		b2Vec2 vA = bodyA->GetLinearVelocityFromWorldPoint(point);
+		b2Vec2 vB = bodyB->GetLinearVelocityFromWorldPoint(point);
+		b2Vec2 temp = vB - vA;
+		float32 approachVelocity = b2Dot(temp, worldManifold.normal);
+
+		// HASAN - debug
+		char strTemp[64];
+		sprintf(strTemp, "Approach velocity : %f", approachVelocity);
+		s3eDebugOutputString(strTemp);
+
+		//check if fixture A was an atom
+		void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		if ( bodyUserDataA )
+		{
+			// HASAN - debug
+			//char temp[64];
+			//sprintf(temp, "*** Atom %s collided with something.", static_cast<CAtom*>( bodyUserDataA )->getSymbol());
+			//s3eDebugOutputString(temp);
+		}
+
+		//check if fixture B was an atom
+		void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+		if ( bodyUserDataB )
+		{
+			// HASAN - debug
+			//char temp[64];
+			//sprintf(temp, "*** Atom %s collided with something, too.", static_cast<CAtom*>( bodyUserDataB )->getSymbol());
+			//s3eDebugOutputString(temp);
+		}
+
+		if (bodyUserDataA && bodyUserDataB)
+		{
+			// HASAN - debug
+			s3eDebugOutputString("===> 2 Atoms collided <===");
+
+			// HASAN - scale the energy to be in the 0 to 100 range
+			// min = 0 and max = MAX_ATOM_VELOCITY
+			// need to flip the energy level to be positive
+			int energy = -(int)(100.0f * (BOX_2D_TO_DISPLAY_CONV * approachVelocity) / (float)(MAX_ATOM_VELOCITY));
+			if (energy > 100)
+				energy = 100;
+
+			// HASAN - debug
+			char temp[64];
+			sprintf(temp, "*** Collision with %d energy", energy);
+			s3eDebugOutputString(temp);
+
+			setCollisionInfo(contact->GetFixtureA()->GetBody(), contact->GetFixtureB()->GetBody(), energy);
+		}
+
+		// HASAN - for simplicity, just play a sound regardless of what's hitting
+		//g_Game.PlayExplosionSound();
+	}
+}
+
+void MyContactListener::BeginContact(b2Contact* contact)
+{
+	// HASAN - moved below to PreSolve() method
+	////check if fixture A was an atom
+	//void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	//if ( bodyUserDataA )
+	//{
+	//	// HASAN - debug
+	//	//char temp[64];
+	//	//sprintf(temp, "*** Atom %s collided with something.", static_cast<CAtom*>( bodyUserDataA )->getSymbol());
+	//	//s3eDebugOutputString(temp);
+	//}
+
+	////check if fixture B was an atom
+	//void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	//if ( bodyUserDataB )
+	//{
+	//	// HASAN - debug
+	//	//char temp[64];
+	//	//sprintf(temp, "*** Atom %s collided with something, too.", static_cast<CAtom*>( bodyUserDataB )->getSymbol());
+	//	//s3eDebugOutputString(temp);
+	//}
+
+	//if (bodyUserDataA && bodyUserDataB)
+	//{
+	//	// HASAN - debug
+	//	s3eDebugOutputString("===> 2 Atoms collided <===");
+
+	//	// HASAN TODO - scale the energy to be in the 0 to 100 range
+	//	int energy = 50;
+
+	//	setCollisionInfo(contact->GetFixtureA()->GetBody(), contact->GetFixtureB()->GetBody(), energy);
+	//}
+
+	//// HASAN - for simplicity, just play a sound regardless of what's hitting
+	//g_Game.PlayExplosionSound();
+}
+  
+void MyContactListener::EndContact(b2Contact* contact)
+{
+	// HASAN - not using
+	////check if fixture A was an atom
+	//void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+	//if ( bodyUserData )
+	//{
+	//	// HASAN - debug
+	//	//char temp[64];
+	//	//sprintf(temp, "*** Atom %s STOPPED colliding with something.", static_cast<CAtom*>( bodyUserData )->getSymbol());
+	//	//s3eDebugOutputString(temp);
+	//}
+
+	////check if fixture B was an atom
+	//bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+	//if ( bodyUserData )
+	//{
+	//	// HASAN - debug
+	//	//char temp[64];
+	//	//sprintf(temp, "*** Atom %s STOPPED colliding with something, too.", static_cast<CAtom*>( bodyUserData )->getSymbol());
+	//	//s3eDebugOutputString(temp);
+	//}
+}
