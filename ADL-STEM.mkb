@@ -8,7 +8,7 @@ options
 subprojects
 {
 	iw2d
-	#iwresmanager
+	iwresmanager
 	# For physics
 	libraries/box2d/box2d_library
 	# For audio
@@ -46,6 +46,8 @@ files
 	LevelLauncher.cpp
 	Beaker.h
 	Beaker.cpp
+	Menu.h
+	Menu.cpp
 
 
 	[Data]

@@ -4,7 +4,7 @@
 level_name:					Double Trouble
 level_goal_compound:		NO2
 level_background_image:		background_no2
-level_inventory:			O(3)
+level_inventory:			O(4)
 # level_atoms format
 # <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
 # The first atom is the root of the target compound

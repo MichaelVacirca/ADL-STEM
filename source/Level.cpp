@@ -163,6 +163,10 @@ void CLevel::Init(const char* i_strLevelFile)
 		}
 	}
 
+	// HASAN - new to display a menu (needs to be before the inventory so it can be "behind" it
+	m_pMenu = new CMenu();
+	m_pMenu->Init();
+
 	// Create inventory atoms parsed from above
 	for(int i = 0; i < inventoryIndex; i++)
 	{
@@ -185,6 +189,14 @@ void CLevel::Release()
 		background_image = NULL;
 	}
 
+	// HASAN - new to display a menu
+	if (m_pMenu != NULL)
+	{
+		m_pMenu->Release();
+		delete m_pMenu;
+		m_pMenu = NULL;
+	}
+
 	// Clean up Beaker
 	g_Beaker.Release();
 
@@ -197,16 +209,11 @@ void CLevel::Release()
 
 void CLevel::Update()
 {
-	if (g_Game.getGameState() == GS_Playing)
-	{
-		// Update
+	// Update Beaker
+	g_Beaker.Update();
 
-		// Update Beaker
-		g_Beaker.Update();
-	}
-	else
-	{
-	}
+	// HASAN - update menu (for mouse interactions)
+	m_pMenu->Update();
 }
 
 void CLevel::Draw()
@@ -220,9 +227,6 @@ void CLevel::Draw()
 			bBackgroundDisplayed = true;
 			g_Game.getSpriteManager()->addSprite(background_sprite);
 		}
-
-		// Draw Beaker
-		g_Beaker.Draw();
 	}
 	else
 	{
@@ -233,6 +237,12 @@ void CLevel::Draw()
 			g_Game.getSpriteManager()->removeSprite(background_sprite);
 		}
 	}
+
+	// Draw Beaker
+	g_Beaker.Draw();
+
+	// HASAN - draw menu
+	m_pMenu->Draw();
 }
 
 void CLevel::RotateBeaker(int rotateScale)
@@ -251,7 +261,7 @@ void CLevel::decreaseFlame(float flamePower)
 }
 
 // HASAN - new check to allow for collision checking
-bool CLevel::CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy)
+int CLevel::CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy)
 {
 	if (m_pCurrentCompound->GetRootAtom() == i_pAtom1)
 	{
@@ -261,7 +271,7 @@ bool CLevel::CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEne
 	{
 		return m_pCurrentCompound->AddAtom(i_pAtom1, i_nEnergy);
 	}
-	return false;
+	return -1;
 }
 
 // HASAN - new method for determining for when level is complete

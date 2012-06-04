@@ -22,6 +22,8 @@ CIwResGroup
     "./WelcomeScreen.png"
 	"./flame.png"
 	"./bunsen.png"
+	"./menu_play.png"
+	"./menu_pause.png"
 
 	// -----------------------------------------------------------------------
 	

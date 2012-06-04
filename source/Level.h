@@ -6,6 +6,7 @@
 #include "Inventory.h"
 #include "Beaker.h"
 #include "Compound.h"
+#include "Menu.h"
 
 #define	MAX_STR_SIZE	255
 
@@ -24,6 +25,9 @@ protected:
 
 	CCompound*			m_pCurrentCompound;
 
+	// HASAN - new to display a menu
+	CMenu*				m_pMenu;
+
 public:
 	CLevel()
 	{
@@ -34,6 +38,9 @@ public:
 		m_pBeaker = NULL;
 
 		m_pCurrentCompound = NULL;
+
+		// HASAN - new to display a menu
+		m_pMenu;
 	}
 	~CLevel()
 	{
@@ -54,9 +61,9 @@ public:
 	void increaseFlame(float flamePower);
 	void decreaseFlame(float flamePower);
 
-	// HASAN - new check to allow for collision checking
-	bool CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy);
-	// HASAN - new method for determining when level is complete
+	// Return -1 to indicate failure, otherwise, return the angle to add the atom (in degrees)
+	int CompoundCollisionCheck(CAtom* i_pAtom1, CAtom* i_pAtom2, int i_nEnergy);
+
 	// Return 0 for NOT complete, 1 for complete success & 2 for complete failure
 	int IsComplete();
 };

@@ -247,7 +247,9 @@ void CInventory::Draw()
 		Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
 
 		// Set the texts colour to black
-		Iw2DSetColour(0xff000000);
+		//Iw2DSetColour(0xff000000);
+		// HASAN - switched to white since there's a background now
+		Iw2DSetColour(0xffffffff);
 
 		// Convert the atom count number to text
 		char str[32];

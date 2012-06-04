@@ -4,9 +4,11 @@
 level_name:					Covalent Challenge
 level_goal_compound:		CH4
 level_background_image:		background_ch4
-level_inventory:			H(5)
+#level_inventory:			H(5)
+level_inventory:			H(10)
 # level_atoms format
 # <atom_symbol>(<origin_x>, <origin_y>, <velocity_x>, <velocity_y>), ...
 # The first atom is the root of the target compound
-level_atoms:				C(300,50,-20,5),N(250,100,-15,-10)
+#level_atoms:				C(300,50,-20,5),N(250,100,-15,-10)
+level_atoms:				C(50,400,0,0)
 level_music:				droidmarch.mp3
