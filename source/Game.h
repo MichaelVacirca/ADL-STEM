@@ -93,6 +93,8 @@ protected:
 	int						xTouch2;
 	float					yTouch1;
 	float					yTouch2;
+	int						screenWidth;
+	int						screenHeight;
 
 	// HASAN - new values from box2d example
 	//-----------------------------------------------------------------------------

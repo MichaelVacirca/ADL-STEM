@@ -206,28 +206,37 @@ void CGame::UpdateInput()
 	//   and then the user can slide their finger beyond the initial bound
 	if (m_nGameState == GS_Playing)
 	{
-		if(xTouch1 < xTouch2)
+		screenWidth = Iw2DGetSurfaceWidth();
+		screenHeight = Iw2DGetSurfaceHeight();
+
+		//if they touch in the bottom left corner and right
+		if(xTouch2 < (screenWidth / 4))
 		{
-			s3eDebugOutputString("MOVING RIGHT");
-			m_pLevel->RotateBeaker(2);
-		}
-		else if (xTouch2 < xTouch1)
-		{
-			s3eDebugOutputString("MOVING LEFT");
-			m_pLevel->RotateBeaker(-2);
+			if(xTouch1 < xTouch2)
+			{
+				s3eDebugOutputString("MOVING RIGHT");
+				m_pLevel->RotateBeaker(2);
+			}
+			else if (xTouch2 < xTouch1)
+			{
+				s3eDebugOutputString("MOVING LEFT");
+				m_pLevel->RotateBeaker(-2);
+			}
 		}
 
-		if(yTouch1 < yTouch2)
+		//if they touch next to the beaker and up
+		if(yTouch2 > (screenHeight / 2))
 		{
-			s3eDebugOutputString("MOVING DOWN");
-			m_pLevel->decreaseFlame(.97f);
-
-		}
-		else if (yTouch2 < yTouch1)
-		{
-			s3eDebugOutputString("MOVING UP");
-			m_pLevel->increaseFlame(1.03f);
-
+			if(yTouch1 < yTouch2)
+			{
+				s3eDebugOutputString("MOVING DOWN");
+				m_pLevel->decreaseFlame(.97f);
+			}
+			else if (yTouch2 < yTouch1)
+			{
+				s3eDebugOutputString("MOVING UP");
+				m_pLevel->increaseFlame(1.03f);
+			}
 		}
 
 		xTouch1 = xTouch2;
