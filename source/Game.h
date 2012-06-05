@@ -86,6 +86,7 @@ public:
 	CIw2DFont*					getFont()						{ return Font; }
 	// expose so atoms can access the box2d world for physics
 	b2World*					getBox2dWorld()					{ return m_world; }
+	bool						b_isMuted;
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
@@ -148,6 +149,8 @@ public:
 	void	Update();			// Update the game
 	void	Draw();				// Draw the game
 	void	UpdateInput();		// Update the input
+
+	void	ToggleMute();		// Mute/unmute the music
 };
 
 extern CGame g_Game;

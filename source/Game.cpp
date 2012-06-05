@@ -68,6 +68,7 @@ void CGame::Init()
 		ExplosionSoundInstance = NULL;
 		PopSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("pop", IW_SOUND_RESTYPE_SPEC);
 		PopSoundInstance = NULL;
+		b_isMuted = false;
 
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
@@ -403,6 +404,11 @@ void CGame::Draw()
 
 	// Show surface
 	Iw2DSurfaceShow();
+}
+
+void CGame::ToggleMute()
+{
+	b_isMuted = !b_isMuted;
 }
 
 
