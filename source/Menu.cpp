@@ -48,6 +48,9 @@ void CMenu::Update()
 	// respond to user touch
 	int touchX = 0;
 	int touchY = 0;
+	int screen_width = Iw2DGetSurfaceWidth();
+	int screen_height = Iw2DGetSurfaceHeight();
+
 	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
 	{
 		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
@@ -55,9 +58,29 @@ void CMenu::Update()
 			touchX = s3ePointerGetX();
 			touchY = s3ePointerGetY();
 
-			//if (->isTouched(touchX, touchY))
-			//{
-			//}
+			if ((screen_height - MENU_IMAGE_HEIGHT) <= touchY <= screen_height) 
+			{
+				if ((screen_width - 85) <= touchX <= screen_width)
+				{
+					// PlayButton();
+				}
+				else if ((screen_width - 105) <= touchX <= (screen_width - 85))
+				{
+					// HomeButton();
+				}
+				else if ((screen_width - 125) <= touchX <= (screen_width - 105))
+				{
+					// RestartButton();
+				}
+				else if ((screen_width - 145) <= touchX <= (screen_width - 125))
+				{
+					// MuteButton();
+				}
+
+
+
+			}
+
 		}
 	}
 
