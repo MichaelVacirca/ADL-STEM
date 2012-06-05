@@ -231,7 +231,6 @@ void LaunchGame()
 		}
 		else
 		{
-
 			LevelRender();
 			Button *pressed = GetSelectedButton();
 			if (pressed)
@@ -285,22 +284,17 @@ bool LevelUpdate()
 */
 void LevelRender()
 {
-		bool firstPass = true;
-		if (firstPass)
-		{
-			IwGxSetScreenSpaceSlot(-1);
-			Iw2DDrawImage(loadScreen,CIwSVec2(0,0),CIwSVec2(Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight()));
-			IwGxFlush();
-			IwGxClear(IW_GX_DEPTH_BUFFER_F);
-			IwGxSetScreenSpaceSlot(1);
-			Iw2DDrawImage(nitrogenSelect,CIwSVec2(30,165));
-			Iw2DDrawImage(carbonSelect,CIwSVec2(450,298));
-			Iw2DDrawImage(hydrogenSelect,CIwSVec2(30,432));
-			ButtonsRender();
-			IwGxSetScreenSpaceSlot(-1);
-			Iw2DSurfaceShow();
-			firstPass = false;
-		}
+		IwGxSetScreenSpaceSlot(-1);
+		Iw2DDrawImage(loadScreen,CIwSVec2(0,0),CIwSVec2(Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight()));
+		IwGxFlush();
+		IwGxClear(IW_GX_DEPTH_BUFFER_F);
+		IwGxSetScreenSpaceSlot(1);
+		Iw2DDrawImage(nitrogenSelect,CIwSVec2(30,165));
+		Iw2DDrawImage(carbonSelect,CIwSVec2(450,298));
+		Iw2DDrawImage(hydrogenSelect,CIwSVec2(30,432));
+		ButtonsRender();
+		IwGxSetScreenSpaceSlot(-1);
+		Iw2DSurfaceShow();
 		s3eKeyboardUpdate();
 		s3ePointerUpdate();
 }
