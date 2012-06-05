@@ -75,6 +75,7 @@ void CMenu::Update()
 				else if ((screen_width - 145) <= touchX <= (screen_width - 125))
 				{
 					// MuteButton();
+					g_Game.b_isMuted = !g_Game.b_isMuted;
 				}
 
 
