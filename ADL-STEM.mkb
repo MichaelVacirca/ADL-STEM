@@ -85,6 +85,7 @@ deployments
 {
 	["Default"]
 	caption='Compound Collider'
+	icon='data/icons/'
 	name='CompoundCollider'
 	version-major=0
 	version-minor=0
