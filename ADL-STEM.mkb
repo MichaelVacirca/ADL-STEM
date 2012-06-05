@@ -80,8 +80,16 @@ assets
 	#game.group.bin
 }
 
+#### AUTO GENERATED deployment settings from DeployTool.exe. Do not edit below this line ####
 deployments
 {
+	["Default"]
+	caption='Compound Collider'
+	icon='data/icons/'
+	name='CompoundCollider'
+	version-major=0
+	version-minor=0
+	version-revision=1
 	["PrimaryConfig"]
 	"android,iphone"
 

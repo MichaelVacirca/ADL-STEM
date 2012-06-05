@@ -125,15 +125,41 @@ void LevelInit()
 	// Read in a list of applications for launching
 	while ((dirent = readdir(dir)))
 	{
-		std::string FileName = dirent->d_name;
-		if (dirent->d_type == isFile && (FileName.substr(0,6) == "level_"))
+		//std::string FileName = dirent->d_name;
+		
+		//if (dirent->d_type == isFile && (FileName.substr(0,6) == "level_"))
+		//{
+		//	g_Applist.push_back(FileName);
+
+		//	// Store user friendly descriptions to display. The button
+		//	// code needs these strings to persist in memory
+		//	char* description = new char[256];
+		//	strlen(
+		//	sprintf(description, "Level %s", (FileName.substr(FileName.length()-6,2)));
+		//	if (description[6] == '0')
+		//	{
+		//		memmove(description+6, description+7, strlen(description));
+		//	}
+		//	g_Desclist.push_back(description);
+		//	NewButton(g_Desclist[g_Desclist.size()-1]);
+		//}
+		// HASAN - RABB to replace std::string with primitive type so can be built for android
+		char fileNamePrefix[7];
+		char fileNameNumSuffix[3];
+		char* FileName = dirent->d_name;
+		int fileNameLength = strlen(FileName);
+		memcpy(fileNamePrefix, &FileName[0], 6);
+		fileNamePrefix[6] = '\0';
+		if (dirent->d_type == isFile && !strcmp(fileNamePrefix, "level_"))
 		{
 			g_Applist.push_back(FileName);
 
 			// Store user friendly descriptions to display. The button
 			// code needs these strings to persist in memory
 			char* description = new char[256];
-			sprintf(description, "Level %s", (FileName.substr(FileName.length()-6,2)));
+			memcpy(fileNameNumSuffix, &FileName[fileNameLength - 6], 2);
+			fileNameNumSuffix[2] = '\0';
+			sprintf(description, "Level %s", fileNameNumSuffix);
 			if (description[6] == '0')
 			{
 				memmove(description+6, description+7, strlen(description));
@@ -141,6 +167,7 @@ void LevelInit()
 			g_Desclist.push_back(description);
 			NewButton(g_Desclist[g_Desclist.size()-1]);
 		}
+
 	}
 
 	// dirent operation is finished so directory can be closed now

@@ -17,6 +17,7 @@ void CMenu::Init()
 	menu_play_sprite->setPosAngScale(screen_width - (MENU_IMAGE_WIDTH / 2), screen_height - (MENU_IMAGE_HEIGHT / 2), 0, IW_GEOM_ONE);
 	menu_play_sprite->setImage(menu_play_image);
 	menu_play_sprite->setDestSize(MENU_IMAGE_WIDTH, MENU_IMAGE_HEIGHT);
+	menu_play_sprite->setVisible(false);
 	menu_play_sprite->setVisible(true);
 	g_Game.getSpriteManager()->addSprite(menu_play_sprite);
 
@@ -88,12 +89,9 @@ void CMenu::Update()
 				else if (((screen_width - 260) <= touchX) && (touchX <= (screen_width - 210)))
 				{
 					// MuteButton();
+					g_Game.b_isMuted = !g_Game.b_isMuted;
 				}
-
-
-
 			}
-
 		}
 	}
 

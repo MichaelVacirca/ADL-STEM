@@ -112,8 +112,7 @@ void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 			bodyDef.type = b2_dynamicBody;											//  Object is redefined to create a dynamicBody.
 			b2CircleShape circleShape;												
 			// HASAN TODO - update below to use actual atom radius loaded from file (FOR NOW, just using iamge size)
-			//circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 2.0f);
-			circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 4.0f);  // HASAN - DO NOT CHECK THIS IN, for testing to approximate accounting for the empty space around the atom icons
+			circleShape.m_radius = DISPLAY_TO_BOX_2D_CONV * ((float)Width / 2.0f);
 			b2FixtureDef fd;
 			fd.shape = &circleShape;
 

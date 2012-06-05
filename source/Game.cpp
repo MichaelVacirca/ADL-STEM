@@ -69,6 +69,7 @@ void CGame::Init()
 		ExplosionSoundInstance = NULL;
 		PopSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("pop", IW_SOUND_RESTYPE_SPEC);
 		PopSoundInstance = NULL;
+		b_isMuted = false;
 
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
@@ -252,7 +253,7 @@ void CGame::Update()
 			// HASAN - RABB to try to use our own custom-defined angle from the data file
 			//weldJointDef.referenceAngle = collisionAngle * (PI / 180.0f);
 
-//			b2Joint* tempJoint = g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
+			g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
 			
 			// HASAN - for testing
 			//curCollisionInfo->atom1Body->SetLinearVelocity(b2Vec2(0, 0));
@@ -439,6 +440,11 @@ void CGame::Draw()
 
 	// Show surface
 	Iw2DSurfaceShow();
+}
+
+void CGame::ToggleMute()
+{
+	b_isMuted = !b_isMuted;
 }
 
 

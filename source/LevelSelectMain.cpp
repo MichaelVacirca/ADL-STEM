@@ -20,6 +20,7 @@
 
 #define FRAMETIME  30
 
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
 //static void CursorRender();
 //static void SoftkeysRender();
 
@@ -153,6 +154,48 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
     }
 }
 
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
+//static void SoftkeyRender(const char* text, s3eDeviceSoftKeyPosition pos, void(*handler)())
+//{
+//    // Get area of text displayed
+//    int width = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_WIDTH);
+//    int height = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT);
+//    width *= strlen(text) - 8; //-8 to ignore colour flag (e.g. "`x666666")
+//
+//    // Expand area by half text height to make easier to click
+//    width += height;
+//    height += height;
+//
+//    int x = 0;
+//    int y = 0;
+//    switch (pos)
+//    {
+//        case S3E_DEVICE_SOFTKEY_BOTTOM_LEFT:
+//            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
+//            x = 0;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_BOTTOM_RIGHT:
+//            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
+//            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_TOP_RIGHT:
+//            y = 0;
+//            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_TOP_LEFT:
+//            x = 0;
+//            y = 0;
+//            break;
+//    }
+//    s3eDebugPrint(x + (height/4), y + (height/4), text, 0); // place in centre of touchable area
+//    if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
+//    {
+//        int pointerx = s3ePointerGetX();
+//        int pointery = s3ePointerGetY();
+//        if (pointerx >= x && pointerx <= x+width && pointery >=y && pointery <= y+height)
+//            handler();
+//    }
+//}
 //static void SoftkeyRender(const char* text, s3eDeviceSoftKeyPosition pos, void(*handler)())
 //{
 //    // Get area of text displayed
@@ -195,6 +238,7 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
 //    }
 //}
 
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
 //static void SoftkeysRender()
 //{
 //    //int advance = s3eDeviceGetInt(S3E_DEVICE_ADVANCE_SOFTKEY_POSITION);
@@ -203,6 +247,7 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
 //    SoftkeyRender("`x666666Exit", (s3eDeviceSoftKeyPosition)back, s3eDeviceRequestQuit);
 //}
 
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
 //static void CursorRender()
 //{
 //    if (!s3ePointerGetInt(S3E_POINTER_AVAILABLE))
