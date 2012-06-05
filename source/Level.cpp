@@ -211,8 +211,6 @@ void CLevel::Update()
 {
 	// Update Beaker
 	g_Beaker.Update();
-
-	// HASAN - update menu (for mouse interactions)
 	m_pMenu->Update();
 
 	if(g_Game.b_isMuted)

@@ -91,20 +91,15 @@ deployments
 	version-minor=0
 	version-revision=1
 	["PrimaryConfig"]
-	"android,iphone"
-
-	icon="data/"
-
-
-    ["iPhone"]
-    name='Compound Collider'
-    caption='Compound Collider'
-    manufacturer='Compound Collider'
-    provider='Compound Collider'
-    version-major=1
-    version-minor=0
-
-    iphone-appid='SRXN6G7KU9.CompoundCollider'
-
-
+	icon='data/'
+	["iPhone"]
+	caption='Compound Collider'
+	iphone-appid='SRXN6G7KU9.CompoundCollider'
+	iphone-no-splash=1
+	iphone-nosign=0
+	manufacturer='Compound Collider'
+	name='Compound Collider'
+	provider='Compound Collider'
+	version-major=1
+	version-minor=0
 }

@@ -221,12 +221,19 @@ void LaunchGame()
 	// Main Loop
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
+		if (g_Game.currentLevel == NULL)
+		{ 
+			g_Game.Init();
+			g_Game.LoadLevel(folder);
+			g_Game.currentLevel = folder;
+		}
+		else {
 		// Update the game
 		g_Game.Update();
 
 		// Draw the game
-			g_Game.Draw();
-
+		g_Game.Draw();
+		}
 
 		// Yield to the operating system
 		s3eDeviceYield(0);

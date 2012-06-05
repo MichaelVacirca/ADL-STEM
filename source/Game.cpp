@@ -13,7 +13,7 @@ CGame g_Game;
 
 MyContactListener g_MyContactListener;
 const char* currentLevel = NULL;
-
+CIwResGroup* gameGroup = NULL;	// Load the resource group that contains our graphics
 //
 //
 // CGame implementation
@@ -22,8 +22,12 @@ const char* currentLevel = NULL;
 void CGame::Init()
 {
 	// This section sets up major global environment variables needed for gameplay
-		CIwResGroup* gameGroup = IwGetResManager()->LoadGroup("game.group");	// Load the resource group that contains our graphics
-		IwGetResManager()->SetCurrentGroup(gameGroup);							// Ensure that game is the current resource group
+
+	    if (gameGroup == NULL)
+		{
+			gameGroup = IwGetResManager()->LoadGroup("game.group");
+			IwGetResManager()->SetCurrentGroup(gameGroup);	
+		}																		// Ensure that game is the current resource group
 		m_nGameState = GS_Playing;												// HASAN - set initial game state
 		SpriteManager = new CSpriteManager();									// Allocate the sprite manager
 
@@ -154,54 +158,35 @@ void CGame::UnloadLevel()
 
 void CGame::Restart()
 {
-	// Clean up game object
-	//g_Game.Release();
-	//// Shut down the resource manager
-	//IwResManagerTerminate();
-
-	//// Shutdown IwSound
-	//IwSoundTerminate();
-
-	//// Shut down Marmalade 2D graphics system
-	////Iw2DTerminate();
-
-	//	// Initialise Marmalade 2D graphics system
-	////Iw2DInit();
-
-	//// Init IwSound
-	//IwSoundInit();
-
-
-	////IwGetResManager()->AddHandler(new CIwResHandlerWAV);
-
-	//// Initialise the resource manager
-	//IwResManagerInit();
-
 	// Initialise the game object
+	m_pLevel->Release();
+	m_pLevel = NULL;
 	g_Game.UnloadLevel();
-	delete SpriteManager;
-	SpriteManager = new CSpriteManager();									// Allocate the sprite manager
-
 	g_Inventory.inventoryCount = 0;
 	g_Inventory.Clear();
+	g_Game.Release();
+	g_Game.Init();
 	g_Game.LoadLevel(currentLevel);
+	g_Beaker.RotateBeaker(-1);
+	g_Beaker.increaseFlame(-1);
 }
 
 void CGame::Update()
 {
-	// Update the games sprite objects
-	SpriteManager->Update();
 
-	// Update Iw Sound Manager
-	IwGetSoundManager()->Update();
-	
-	// Update inventory
-	g_Inventory.Update();
 
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
 	if (m_nGameState == GS_Playing)
 	{
+		// Update the games sprite objects
+		SpriteManager->Update();
+
+		// Update Iw Sound Manager
+		IwGetSoundManager()->Update();
+	
+		// Update inventory
+		g_Inventory.Update();
 		// timer
 		m_timeNow = s3eTimerGetMs();
 		m_deltaTime = float( (m_timeNow - m_prevTime) * 0.001 );
@@ -209,6 +194,7 @@ void CGame::Update()
 
 		// physics loop (fixed timing at 60Hz)
 		m_accumulator += m_deltaTime;
+		UpdateInput();
 	}
 	else
 	{
@@ -268,23 +254,25 @@ void CGame::Update()
 	// Update level
 	if (m_pLevel != NULL)
 	{
-		UpdateInput();
+
 		m_pLevel->Update();
-
-		int levelCompleteStatus = m_pLevel->IsComplete();
-		if (levelCompleteStatus == 1)
+		if (m_pLevel != NULL)
 		{
-			// HASAN TODO - trigger level completion successful screen
+			int levelCompleteStatus = m_pLevel->IsComplete();
+			if (levelCompleteStatus == 1)
+			{
+				// HASAN TODO - trigger level completion successful screen
 
-			// HASAN - debug
-			s3eDebugOutputString("=== LEVEL COMPLETE = SUCCESSFUL");
-		}
-		else if (levelCompleteStatus == 2)
-		{
-			// HASAN TODO - trigger level completion failure screen
+				// HASAN - debug
+				s3eDebugOutputString("=== LEVEL COMPLETE = SUCCESSFUL");
+			}
+			else if (levelCompleteStatus == 2)
+			{
+				// HASAN TODO - trigger level completion failure screen
 
-			// HASAN - debug
-			s3eDebugOutputString("=== LEVEL COMPLETE = FAILURE");
+				// HASAN - debug
+				s3eDebugOutputString("=== LEVEL COMPLETE = FAILURE");
+			}
 		}
 	}
 }
