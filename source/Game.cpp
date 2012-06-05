@@ -186,19 +186,6 @@ void CGame::Home()
 	g_Beaker.setCurrentBeakerEmpty();
 }
 
-void CGame::Home()
-{
-	// Initialise the game object
-	m_pLevel->Release();
-	m_pLevel = NULL;
-	g_Game.UnloadLevel();
-	g_Inventory.inventoryCount = 0;
-	g_Inventory.Clear();
-	g_Beaker.Release();
-	g_Game.Release();
-
-
-}
 
 void CGame::Update()
 {
