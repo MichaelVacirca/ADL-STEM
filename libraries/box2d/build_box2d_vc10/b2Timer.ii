@@ -1,0 +1,615 @@
+# 1 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.cpp"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "E:/Users/Hasan/Development/MarmaladeProjects/ADL-STEM/libraries/box2d/build_box2d_vc10/temp_defines_release.h" 1
+# 1 "<command-line>" 2
+# 1 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.cpp"
+# 19 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.cpp"
+# 1 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.h" 1
+# 19 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.h"
+# 1 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Settings.h" 1
+# 22 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Settings.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/cassert" 1
+# 18 "c:/marmalade/6.0/s3e/h/std/c++/cassert"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h" 1
+# 10 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 1
+# 62 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl_user_config.h" 1
+# 63 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 2
+
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config_compat.h" 1
+# 68 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 2
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_site_config.h" 1
+# 72 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 2
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/stlcomp.h" 1
+# 54 "c:/marmalade/6.0/s3e/h/std/c++/config/stlcomp.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/stl_gcc_s3e.h" 1
+# 67 "c:/marmalade/6.0/s3e/h/std/c++/config/stl_gcc_s3e.h"
+     typedef char __stl_char;
+# 55 "c:/marmalade/6.0/s3e/h/std/c++/config/stlcomp.h" 2
+# 75 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 2
+# 83 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/stl_confix.h" 1
+# 84 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h" 2
+# 488 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h"
+namespace std { }
+namespace __std_alias = std;
+# 546 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config.h"
+namespace _STL { }
+
+namespace stlport = _STL;
+# 11 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h" 2
+
+
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/_prolog.h" 1
+# 17 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h" 2
+# 19 "c:/marmalade/6.0/s3e/h/std/c++/cassert" 2
+
+
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/assert.h" 1
+# 15 "c:/marmalade/6.0/s3e/h/std/assert.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/sys/types.h" 1
+# 15 "c:/marmalade/6.0/s3e/h/std/sys/types.h"
+# 1 "c:/marmalade/6.0/s3e/h/s3eTypes.h" 1
+# 37 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef unsigned char s3e_uint8_t;
+typedef signed char s3e_int8_t;
+typedef unsigned short int s3e_uint16_t;
+typedef signed short int s3e_int16_t;
+typedef unsigned int s3e_uint32_t;
+typedef signed int s3e_int32_t;
+# 51 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+  typedef signed long long s3e_int64_t;
+  typedef unsigned long long s3e_uint64_t;
+# 74 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef s3e_uint64_t uint64_t;
+typedef s3e_int64_t int64_t;
+typedef s3e_uint32_t uint32_t;
+typedef s3e_int32_t int32_t;
+typedef s3e_uint16_t uint16_t;
+typedef s3e_int16_t int16_t;
+typedef s3e_uint8_t uint8_t;
+typedef s3e_int8_t int8_t;
+# 96 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+    typedef int intptr_t;
+    typedef unsigned int uintptr_t;
+# 108 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef unsigned int uint;
+typedef unsigned short int ushort;
+typedef unsigned long int ulong;
+typedef unsigned char uint8;
+typedef signed char int8;
+
+
+
+
+
+
+
+typedef int64_t int64;
+typedef uint64_t uint64;
+
+
+
+
+
+typedef unsigned int uint32;
+
+
+
+
+
+
+typedef signed int int32;
+
+
+
+
+
+
+typedef uint16_t uint16;
+
+
+
+
+typedef int16_t int16;
+# 226 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef enum s3eResult
+{
+    S3E_RESULT_SUCCESS = 0,
+    S3E_RESULT_ERROR = 1
+} s3eResult;
+
+
+
+
+typedef uint8 s3eBool;
+# 244 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef wchar_t s3eWChar;
+# 256 "c:/marmalade/6.0/s3e/h/s3eTypes.h"
+typedef int32 (*s3eCallback) (void* systemData, void* userData);
+# 16 "c:/marmalade/6.0/s3e/h/std/sys/types.h" 2
+# 1 "c:/marmalade/6.0/s3e/h/std/stddef.h" 1
+# 15 "c:/marmalade/6.0/s3e/h/std/stddef.h"
+typedef signed int ptrdiff_t;
+
+
+    typedef unsigned int wint_t;
+    typedef unsigned long int wctype_t;
+
+
+
+
+
+
+
+typedef unsigned int size_t;
+# 17 "c:/marmalade/6.0/s3e/h/std/sys/types.h" 2
+# 1 "c:/marmalade/6.0/s3e/h/std/stdint.h" 1
+# 19 "c:/marmalade/6.0/s3e/h/std/stdint.h"
+typedef signed char int_least8_t;
+typedef short int_least16_t;
+typedef long int_least32_t;
+typedef int64_t int_least64_t;
+
+typedef unsigned char uint_least8_t;
+typedef unsigned short uint_least16_t;
+typedef unsigned long uint_least32_t;
+typedef uint64_t uint_least64_t;
+
+typedef signed char int_fast8_t;
+typedef short int_fast16_t;
+typedef long int_fast32_t;
+typedef int64_t int_fast64_t;
+
+typedef unsigned char uint_fast8_t;
+typedef unsigned short uint_fast16_t;
+typedef unsigned long uint_fast32_t;
+typedef uint64_t uint_fast64_t;
+
+typedef int64_t intmax_t;
+typedef uint64_t uintmax_t;
+# 18 "c:/marmalade/6.0/s3e/h/std/sys/types.h" 2
+# 1 "c:/marmalade/6.0/s3e/h/std/sys/select.h" 1
+# 24 "c:/marmalade/6.0/s3e/h/std/sys/select.h"
+struct timeval;
+
+typedef struct fd_set
+{
+    char fds_bits[256/8];
+} fd_set;
+# 39 "c:/marmalade/6.0/s3e/h/std/sys/select.h"
+extern "C" {
+
+int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+
+}
+# 19 "c:/marmalade/6.0/s3e/h/std/sys/types.h" 2
+
+
+
+typedef long off_t;
+
+typedef int64_t off64_t;
+
+
+namespace std
+{
+    typedef ::size_t size_t;
+}
+
+
+typedef uint u_int;
+typedef uint8_t u_int8_t;
+typedef uint16_t u_int16_t;
+typedef uint32_t u_int32_t;
+typedef uint64_t u_int64_t;
+
+typedef unsigned short u_short;
+typedef unsigned long u_long;
+typedef unsigned char u_char;
+
+typedef int ssize_t;
+typedef int pid_t;
+typedef short uid_t;
+typedef short gid_t;
+typedef int idtype_t;
+typedef int id_t;
+typedef uint32 mode_t;
+typedef short dev_t;
+typedef short ino_t;
+typedef int key_t;
+typedef void* caddr_t;
+# 16 "c:/marmalade/6.0/s3e/h/std/assert.h" 2
+
+extern "C" {
+# 43 "c:/marmalade/6.0/s3e/h/std/assert.h"
+}
+# 25 "c:/marmalade/6.0/s3e/h/std/c++/cassert" 2
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 1
+# 10 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/_epilog.h" 1
+# 11 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 2
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config_compat_post.h" 1
+# 15 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 2
+# 29 "c:/marmalade/6.0/s3e/h/std/c++/cassert" 2
+# 23 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Settings.h" 2
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 1
+# 21 "c:/marmalade/6.0/s3e/h/std/c++/cmath"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h" 1
+# 16 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/_prolog.h" 1
+# 17 "c:/marmalade/6.0/s3e/h/std/c++/stl/_prolog.h" 2
+# 22 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 2
+# 33 "c:/marmalade/6.0/s3e/h/std/c++/cmath"
+# 1 "c:/marmalade/6.0/s3e/h/std/math.h" 1
+# 17 "c:/marmalade/6.0/s3e/h/std/math.h"
+extern "C" {
+# 48 "c:/marmalade/6.0/s3e/h/std/math.h"
+double pow(double x, double y);
+float powf(float x, float y);
+long double powl(long double x, long double y);
+
+double sin(double x);
+float sinf(float x);
+long double sinl(long double x);
+
+double asin(double x);
+float asinf(float x);
+long double asinl(long double x);
+
+double sinh(double x);
+float sinhf(float x);
+long double sinhl(long double x);
+
+double cos(double x);
+float cosf(float x);
+long double cosl(long double x);
+
+double cosh(double x);
+float coshf(float x);
+long double coshl(long double x);
+
+double acos(double x);
+float acosf(float x);
+long double acosl(long double x);
+
+double tan(double x);
+float tanf(float x);
+long double tanl(long double x);
+
+double atan(double x);
+float atanf(float x);
+long double atanl(long double x);
+
+double atan2(double y, double x);
+float atan2f(float y, float x);
+long double atan2l(long double y, long double x);
+
+double tanh(double x);
+float tanhf(float x);
+long double tanhl(long double x);
+
+double fabs(double x);
+float fabsf(float x);
+long double fabsl(long double x);
+
+double ceil(double x);
+float ceilf(float x);
+long double ceill(long double x);
+
+double floor(double x);
+float floorf(float x);
+long double floorl(long double x);
+
+double sqrt(double x);
+float sqrtf(float x);
+long double sqrtl(long double x);
+
+double cbrt(double x);
+float cbrtf(float x);
+long double cbrtl(long double x);
+
+double fmod(double x, double y);
+float fmodf(float x, float y);
+long double fmodl(long double x, long double y);
+
+double modf(double x, double *iptr);
+float modff(float x, float *iptr);
+long double modfl(long double x, long double *iptr);
+
+double ldexp(double x, int exp);
+float ldexpf(float x, int exp);
+long double ldexpl(long double x, int exp);
+
+double exp(double x);
+float expf(float x);
+long double expl(long double x);
+
+double log(double x);
+float logf(float x);
+long double logl(long double x);
+
+double log10(double x);
+float log10f(float x);
+long double log10l(long double x);
+
+double rint(double x);
+float rintf(float x);
+long double rintl(long double x);
+
+double round(double x);
+float roundf(float x);
+long double roundl(long double x);
+
+double frexp(double x, int *exp);
+float frexpf(float x, int *exp);
+long double frexpl(long double x, int *exp);
+
+long int lround(double x);
+long int lroundf(float x);
+long int lroundl(long double x);
+
+int64 llround(double x);
+int64 llroundf(float x);
+int64 llroundl(long double x);
+
+double nextafter(double x, double y);
+float nextafterf(float x, float y);
+long double nextafterl(long double x, long double y);
+
+double nexttoward(double x, long double y);
+float nexttowardf(float x, long double y);
+long double nexttowardl(long double x, long double y);
+
+double trunc(double x);
+float truncf(float x);
+long double truncl(long double x);
+
+double hypot(double x, double y);
+
+double copysign(double x, double y);
+float copysignf(float x, float y);
+long double copysignl(long double x, long double y);
+
+int finite(double x);
+# 188 "c:/marmalade/6.0/s3e/h/std/math.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/math_gcc.h" 1
+# 33 "c:/marmalade/6.0/s3e/h/std/math_gcc.h"
+int __isnanf(float);
+int __isnand(double);
+int __isinff(float);
+int __isinfd(double);
+int __signbitf(float);
+int __signbitd(double);
+int __fpclassifyf(float);
+int __fpclassifyd(double);
+int __fpclassifyl(long double);
+# 189 "c:/marmalade/6.0/s3e/h/std/math.h" 2
+# 213 "c:/marmalade/6.0/s3e/h/std/math.h"
+}
+# 34 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 2
+# 49 "c:/marmalade/6.0/s3e/h/std/c++/cmath"
+namespace _STL {
+
+
+
+
+using ::acos;
+using ::asin;
+using ::atan2;
+using ::atan;
+using ::ceil;
+using ::cos;
+using ::cosh;
+using ::exp;
+using ::fabs;
+using ::floor;
+using ::fmod;
+using ::frexp;
+using ::ldexp;
+using ::log10;
+using ::log;
+using ::modf;
+using ::pow;
+using ::sin;
+using ::sinh;
+using ::sqrt;
+using ::tan;
+using ::tanh;
+
+}
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_cmath.h" 1
+# 19 "c:/marmalade/6.0/s3e/h/std/c++/stl/_cmath.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 1
+# 20 "c:/marmalade/6.0/s3e/h/std/c++/stl/_cmath.h" 2
+
+namespace _STL {
+# 111 "c:/marmalade/6.0/s3e/h/std/c++/stl/_cmath.h"
+}
+
+
+
+
+
+namespace _STL {
+
+
+inline double abs(double __x) { return ::fabs(__x); }
+inline float abs (float __x) { return ::fabs(__x); }
+
+
+inline double pow(double __x, int __y) { return ::pow(__x, __y); }
+inline float acos (float __x) { return ::acos(__x); }
+inline float asin (float __x) { return ::asin(__x); }
+inline float atan (float __x) { return ::atan(__x); }
+inline float atan2(float __x, float __y) { return ::atan2(__x, __y); }
+inline float ceil (float __x) { return ::ceil(__x); }
+inline float cos (float __x) { return ::cos(__x); }
+inline float cosh (float __x) { return ::cosh(__x); }
+inline float exp (float __x) { return ::exp(__x); }
+
+inline float fabs (float __x) { return ::fabs(__x); }
+
+inline float floor(float __x) { return ::floor(__x); }
+inline float fmod (float __x, float __y) { return ::fmod(__x, __y); }
+inline float frexp(float __x, int* __y) { return ::frexp(__x, __y); }
+inline float ldexp(float __x, int __y) { return ::ldexp(__x, __y); }
+
+
+inline float modf (float __x, float* __y) {
+  double __dd[2];
+  double __res = ::modf((double)__x, __dd);
+  __y[0] = (float)__dd[0] ; __y[1] = (float)__dd[1];
+  return (float)__res;
+}
+# 157 "c:/marmalade/6.0/s3e/h/std/c++/stl/_cmath.h"
+inline float log (float __x) { return ::log(__x); }
+inline float log10(float __x) { return ::log10(__x); }
+inline float pow (float __x, float __y) { return ::pow(__x, __y); }
+inline float pow (float __x, int __y) { return ::pow(__x, __y); }
+inline float sin (float __x) { return ::sin(__x); }
+inline float sinh (float __x) { return ::sinh(__x); }
+inline float sqrt (float __x) { return ::sqrt(__x); }
+inline float tan (float __x) { return ::tan(__x); }
+inline float tanh (float __x) { return ::tanh(__x); }
+
+
+
+
+inline long double abs (long double __x) { return ::fabs((double)__x); }
+
+inline long double acos (long double __x) { return ::acos(__x); }
+inline long double asin (long double __x) { return ::asin(__x); }
+inline long double atan (long double __x) { return ::atan(__x); }
+inline long double atan2(long double __x, long double __y) { return ::atan2(__x, __y); }
+inline long double ceil (long double __x) { return ::ceil(__x); }
+inline long double cos (long double __x) { return ::cos(__x); }
+inline long double cosh (long double __x) { return ::cosh(__x); }
+inline long double exp (long double __x) { return ::exp(__x); }
+inline long double fabs (long double __x) { return ::fabs(__x); }
+inline long double floor(long double __x) { return ::floor(__x); }
+inline long double fmod (long double __x, long double __y) { return ::fmod(__x, __y); }
+inline long double frexp(long double __x, int* __y) { return ::frexp(__x, __y); }
+inline long double ldexp(long double __x, int __y) { return ::ldexp(__x, __y); }
+
+inline long double modf (long double __x, long double* __y) {
+  double __dd[2];
+  double __res = ::modf((double)__x, __dd);
+  __y[0] = (long double)__dd[0] ; __y[1] = (long double)__dd[1];
+  return (long double)__res;
+}
+inline long double log (long double __x) { return ::log(__x); }
+inline long double log10(long double __x) { return ::log10(__x); }
+inline long double pow (long double __x, long double __y) { return ::pow(__x, __y); }
+inline long double pow (long double __x, int __y) { return ::pow(__x, __y); }
+inline long double sin (long double __x) { return ::sin(__x); }
+inline long double sinh (long double __x) { return ::sinh(__x); }
+inline long double sqrt (long double __x) { return ::sqrt(__x); }
+inline long double tan (long double __x) { return ::tan(__x); }
+inline long double tanh (long double __x) { return ::tanh(__x); }
+
+
+}
+# 82 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 2
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 1
+# 10 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h"
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/config/_epilog.h" 1
+# 11 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 2
+
+
+
+# 1 "c:/marmalade/6.0/s3e/h/std/c++/stl/_config_compat_post.h" 1
+# 15 "c:/marmalade/6.0/s3e/h/std/c++/stl/_epilog.h" 2
+# 86 "c:/marmalade/6.0/s3e/h/std/c++/cmath" 2
+# 24 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Settings.h" 2
+
+
+
+
+typedef signed char int8;
+typedef signed short int16;
+typedef signed int int32;
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned int uint32;
+typedef float float32;
+typedef double float64;
+# 129 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Settings.h"
+void* b2Alloc(int32 size);
+
+
+void b2Free(void* mem);
+
+
+
+struct b2Version
+{
+ int32 major;
+ int32 minor;
+ int32 revision;
+};
+
+
+extern b2Version b2_version;
+# 20 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.h" 2
+
+
+
+class b2Timer
+{
+public:
+
+
+ b2Timer();
+
+
+ void Reset();
+
+
+ float32 GetMilliseconds() const;
+
+private:
+# 45 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.h"
+};
+# 20 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.cpp" 2
+# 87 "e:/users/hasan/development/marmaladeprojects/adl-stem/libraries/box2d/Box2D/Common/b2Timer.cpp"
+b2Timer::b2Timer()
+{
+}
+
+void b2Timer::Reset()
+{
+}
+
+float32 b2Timer::GetMilliseconds() const
+{
+ return 0.0f;
+}
