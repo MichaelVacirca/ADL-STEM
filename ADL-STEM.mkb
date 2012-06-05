@@ -101,12 +101,13 @@ deployments
 	icon='data/'
 	["iPhone"]
 	caption='Compound Collider'
+	icon='data/icons/stem_icon3.png'
 	iphone-appid='SRXN6G7KU9.CompoundCollider'
 	iphone-no-splash=1
 	iphone-nosign=0
 	manufacturer='Compound Collider'
-	name='Compound Collider'
-	provider='Compound Collider'
+	name='CompoundCollider'
+	provider='Michael Vacirca'
 	version-major=1
 	version-minor=0
 }
