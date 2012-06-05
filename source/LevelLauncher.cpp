@@ -188,6 +188,7 @@ void LaunchGame()
 
 	// Initialise the game object
 	g_Game.Init();
+	g_Game.currentLevel = folder;
 	g_Game.LoadLevel(folder);
 
 	// Main Loop
@@ -197,7 +198,8 @@ void LaunchGame()
 		g_Game.Update();
 
 		// Draw the game
-		g_Game.Draw();
+			g_Game.Draw();
+
 
 		// Yield to the operating system
 		s3eDeviceYield(0);

@@ -172,7 +172,7 @@ void ButtonsRender()
                 snprintf(buf, sizeof(buf), "`xa0a0a0%s", iter->m_Name);
         }
 
-        int len = strlen(buf) - 8;
+//        int len = strlen(buf) - 8;
         int _x0 = x - 2;
         int _y0 = y - 4;
         int _h = 144;

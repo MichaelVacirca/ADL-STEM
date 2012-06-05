@@ -18,7 +18,7 @@ protected:
 	CIw2DImage*			inventory_image;
 	CSprite*			inventory_sprite;
 
-	int			inventoryCount;
+
 	CAtom*		atomObjs[MAX_COUNT];
 	// HASAN - new to track images used for displaying inventory counts
 	CSprite*	atomCountImages[MAX_COUNT];
@@ -34,6 +34,7 @@ public:
 	}
 	~CInventory()	{}
 
+	int			inventoryCount;
 	void AddAtom(char* i_strAtomSymbol);
 	void AddAtoms(char* i_strAtomSymbol, int i_nCount);
 	void AddCompound(char* i_strCompoundFormula);

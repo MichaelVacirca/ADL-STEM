@@ -12,6 +12,7 @@
 CGame g_Game;
 
 MyContactListener g_MyContactListener;
+const char* currentLevel = NULL;
 
 //
 //
@@ -150,6 +151,41 @@ void CGame::UnloadLevel()
 	}
 }
 
+void CGame::Restart()
+{
+	// Clean up game object
+	//g_Game.Release();
+	//// Shut down the resource manager
+	//IwResManagerTerminate();
+
+	//// Shutdown IwSound
+	//IwSoundTerminate();
+
+	//// Shut down Marmalade 2D graphics system
+	////Iw2DTerminate();
+
+	//	// Initialise Marmalade 2D graphics system
+	////Iw2DInit();
+
+	//// Init IwSound
+	//IwSoundInit();
+
+
+	////IwGetResManager()->AddHandler(new CIwResHandlerWAV);
+
+	//// Initialise the resource manager
+	//IwResManagerInit();
+
+	// Initialise the game object
+	g_Game.UnloadLevel();
+	delete SpriteManager;
+	SpriteManager = new CSpriteManager();									// Allocate the sprite manager
+
+	g_Inventory.inventoryCount = 0;
+	g_Inventory.Clear();
+	g_Game.LoadLevel(currentLevel);
+}
+
 void CGame::Update()
 {
 	// Update the games sprite objects
@@ -216,7 +252,7 @@ void CGame::Update()
 			// HASAN - RABB to try to use our own custom-defined angle from the data file
 			//weldJointDef.referenceAngle = collisionAngle * (PI / 180.0f);
 
-			b2Joint* tempJoint = g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
+//			b2Joint* tempJoint = g_Game.getBox2dWorld()->CreateJoint( &weldJointDef );
 			
 			// HASAN - for testing
 			//curCollisionInfo->atom1Body->SetLinearVelocity(b2Vec2(0, 0));

@@ -87,4 +87,16 @@ deployments
 
 	icon="data/"
 
+
+    ["iPhone"]
+    name='Compound Collider'
+    caption='Compound Collider'
+    manufacturer='Compound Collider'
+    provider='Compound Collider'
+    version-major=1
+    version-minor=0
+
+    iphone-appid='SRXN6G7KU9.CompoundCollider'
+
+
 }

@@ -17,7 +17,7 @@ void CMenu::Init()
 	menu_play_sprite->setPosAngScale(screen_width - (MENU_IMAGE_WIDTH / 2), screen_height - (MENU_IMAGE_HEIGHT / 2), 0, IW_GEOM_ONE);
 	menu_play_sprite->setImage(menu_play_image);
 	menu_play_sprite->setDestSize(MENU_IMAGE_WIDTH, MENU_IMAGE_HEIGHT);
-	menu_play_sprite->setVisible(false);
+	menu_play_sprite->setVisible(true);
 	g_Game.getSpriteManager()->addSprite(menu_play_sprite);
 
 	menu_pause_sprite = new CSprite();
@@ -51,6 +51,19 @@ void CMenu::Update()
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
 
+		// Only display menu in certain game states
+	//if (g_Game.getGameState() == GS_Playing )
+	//{
+	//	menu_play_sprite->setVisible(true);
+	//	menu_pause_sprite->setVisible(false);
+	//}
+	//else if (g_Game.getGameState() == GS_Paused ||
+	//	g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
+	//{
+	//	menu_play_sprite->setVisible(false);
+	//	menu_pause_sprite->setVisible(true);
+	//}
+
 	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
 	{
 		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
@@ -58,21 +71,21 @@ void CMenu::Update()
 			touchX = s3ePointerGetX();
 			touchY = s3ePointerGetY();
 
-			if ((screen_height - MENU_IMAGE_HEIGHT) <= touchY <= screen_height) 
+			if (((screen_height - MENU_IMAGE_HEIGHT) <= touchY) && (touchY <= screen_height))
 			{
-				if ((screen_width - 85) <= touchX <= screen_width)
+				if (((screen_width - 70) <= touchX) && (touchX <= screen_width))
 				{
 					// PlayButton();
 				}
-				else if ((screen_width - 105) <= touchX <= (screen_width - 85))
+				else if (((screen_width - 130) <= touchX) && (touchX <= (screen_width - 70)))
 				{
 					// HomeButton();
 				}
-				else if ((screen_width - 125) <= touchX <= (screen_width - 105))
+				else if (((screen_width - 210) <= touchX) && (touchX <= (screen_width - 130)))
 				{
-					// RestartButton();
+					g_Game.Restart();
 				}
-				else if ((screen_width - 145) <= touchX <= (screen_width - 125))
+				else if (((screen_width - 260) <= touchX) && (touchX <= (screen_width - 210)))
 				{
 					// MuteButton();
 				}
@@ -84,18 +97,7 @@ void CMenu::Update()
 		}
 	}
 
-	// Only display menu in certain game states
-	if (g_Game.getGameState() == GS_Playing )
-	{
-		menu_play_sprite->setVisible(true);
-		menu_pause_sprite->setVisible(false);
-	}
-	else if (g_Game.getGameState() == GS_Paused ||
-		g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
-	{
-		menu_play_sprite->setVisible(false);
-		menu_pause_sprite->setVisible(true);
-	}
+
 }
 
 void CMenu::Draw()
