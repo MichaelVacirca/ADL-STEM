@@ -279,13 +279,11 @@ void CGame::UpdateInput()
 			{
 				s3eDebugOutputString("MOVING RIGHT");
 				m_pLevel->RotateBeaker(2);
-				b_isMuted = true;
 			}
 			else if (xTouch2 < xTouch1)
 			{
 				s3eDebugOutputString("MOVING LEFT");
 				m_pLevel->RotateBeaker(-2);
-				b_isMuted = false;
 			}
 		}
 
