@@ -430,7 +430,7 @@ void CGame::Draw()
 	// Clear screen 
 	Iw2DSurfaceClear(0xff000000);
 
-	//s3eDebugErrorPrintf("Sprite Manager DRAW");
+	s3eDebugOutputString("Sprite Manager DRAW");
 
 	// Draw the games sprite objects
 	SpriteManager->Draw();
@@ -438,17 +438,17 @@ void CGame::Draw()
 	// Draw level
 	if (m_pLevel != NULL)
 	{
-		//s3eDebugErrorPrintf("Level DRAW");  // <--- HASAN - current issue
+		s3eDebugOutputString("Level DRAW");  // <--- HASAN - current issue
 
 		m_pLevel->Draw();
 	}
 
-	//s3eDebugErrorPrintf("Inventory DRAW");
+	s3eDebugOutputString("Inventory DRAW");
 
 	// Draw inventory
 	g_Inventory.Draw();
 
-	//s3eDebugErrorPrintf("DRAW SurfaceShow()");
+	s3eDebugOutputString("DRAW SurfaceShow()");
 
 	// Show surface
 	Iw2DSurfaceShow();

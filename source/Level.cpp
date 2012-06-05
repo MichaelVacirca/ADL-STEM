@@ -175,6 +175,8 @@ void CLevel::Init(const char* i_strLevelFile)
 	// Play level music
 	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
 		s3eAudioPlay(levelMusic, 1);
+
+	bBackgroundDisplayed = true;
 }
 
 void CLevel::Release()
@@ -226,25 +228,26 @@ void CLevel::Update()
 
 void CLevel::Draw()
 {
-	// Only display level in certain game states
-	if (g_Game.getGameState() == GS_Playing)
-	{
-		// Only add/remove background graphic from sprite manager once (not every frame)
-		if (!bBackgroundDisplayed)
-		{
-			bBackgroundDisplayed = true;
-			g_Game.getSpriteManager()->addSprite(background_sprite);
-		}
-	}
-	else
-	{
-		// Only add/remove background graphic from sprite manager once (not every frame)
-		if (bBackgroundDisplayed)
-		{
-			bBackgroundDisplayed = false;
-			g_Game.getSpriteManager()->removeSprite(background_sprite);
-		}
-	}
+	// HASAN - try to simplify this and just put it in the Init() method
+	//// Only display level in certain game states
+	//if (g_Game.getGameState() == GS_Playing)
+	//{
+	//	// Only add/remove background graphic from sprite manager once (not every frame)
+	//	if (!bBackgroundDisplayed)
+	//	{
+	//		bBackgroundDisplayed = true;
+	//		g_Game.getSpriteManager()->addSprite(background_sprite);
+	//	}
+	//}
+	//else
+	//{
+	//	// Only add/remove background graphic from sprite manager once (not every frame)
+	//	if (bBackgroundDisplayed)
+	//	{
+	//		bBackgroundDisplayed = false;
+	//		g_Game.getSpriteManager()->removeSprite(background_sprite);
+	//	}
+	//}
 
 	// Draw Beaker
 	g_Beaker.Draw();

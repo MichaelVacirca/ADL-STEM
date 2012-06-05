@@ -41,6 +41,8 @@ public:
 
 		// HASAN - new to display a menu
 		m_pMenu = NULL;
+
+		bBackgroundDisplayed = false;
 	}
 	~CLevel()
 	{
