@@ -109,25 +109,13 @@ void SetButtonName(Button* button, const char *name)
 
 void ButtonsRender()
 {
-	IwGxSetScreenSpaceSlot(1);
-    int previousDebugTextSize = s3eDebugGetInt(S3E_DEBUG_FONT_SCALE);
-    int fontScale = g_ButtonScale;
-    char buf[128];
-
-    // select double sized text
-    if (previousDebugTextSize != (int)g_ButtonScale)
-        s3eDebugSetInt(S3E_DEBUG_FONT_SCALE, g_ButtonScale);
-
-    // find out the dimensions of the font
-    const int textWidthDefault = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_WIDTH);
-    const int textHeight = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT);
-
+	IwGxSetScreenSpaceSlot(15);
     // get the current pointer position and selection state
     int pointerX = s3ePointerGetX();
     int pointerY = s3ePointerGetY();
     s3ePointerState pointerState = s3ePointerGetState(S3E_POINTER_BUTTON_SELECT);
 
-    int x = 35;
+    int x = 30;
     int y = 165;
 
     g_SelectedButton = 0;
@@ -141,52 +129,16 @@ void ButtonsRender()
         if (g_HideDisabledButtons && !iter->m_Enabled)
             continue;
 
-        fontScale = g_ButtonScale;
-        int textWidth = textWidthDefault;
-        if (s3eDebugGetInt(S3E_DEBUG_FONT_SCALE) != fontScale)
-            s3eDebugSetInt(S3E_DEBUG_FONT_SCALE, fontScale);
-
-        if (iter->m_Key != S3E_KEY_INVALID)
-        {
-            if (s3eKeyboardGetState(iter->m_Key) & S3E_KEY_STATE_PRESSED)
-            {
-                g_SelectedButton = iter;
-                s3eDebugTracePrintf("button selected using key");
-            }
-        }
-
-        if (iter->m_Key != S3E_KEY_INVALID)
-        {
-            char keyName[32];
-            s3eKeyboardGetDisplayName(keyName, iter->m_Key);
-            if (iter->m_Enabled)
-                snprintf(buf, sizeof(buf), "`x000000%s: %s", keyName, iter->m_Name);
-            else
-                snprintf(buf, sizeof(buf), "`xa0a0a0%s: %s", keyName, iter->m_Name);
-        }
-        else
-        {
-            if (iter->m_Enabled)
-                snprintf(buf, sizeof(buf), "`x000000%s", iter->m_Name);
-            else
-                snprintf(buf, sizeof(buf), "`xa0a0a0%s", iter->m_Name);
-        }
-
-//        int len = strlen(buf) - 8;
-//        int len = strlen(buf) - 8;
-        int _x0 = x - 2;
-        int _y0 = y - 4;
+        int _x0 = x;
+        int _y0 = y;
         int _h = 144;
         int _y1 = _y0 + _h;
-        int _w = 419;
+        int _w = 150;
         int _x1;
         int textOffset = 0;
 		int xOffset = 420;
 
-        // Scale down font size if button contents are too long for screen
-        while (true)
-        {
-            _w = 419;
+
 			if (evenSet){
 				_x0 = _x0 + xOffset;
 				evenSet = false;
@@ -197,40 +149,23 @@ void ButtonsRender()
 
             _x1 = _x0 + _w;
 
-            if (fontScale == 1 || _x1 <= s3eSurfaceGetInt(S3E_SURFACE_WIDTH))
-                break;
-
-            fontScale -= 1;
-            s3eDebugSetInt(S3E_DEBUG_FONT_SCALE, fontScale);
-            textWidth = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_WIDTH);
-            textOffset += (textHeight-s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT))/2;
-        }
-
         if (pointerX >= _x0 && pointerX <= _x1 &&
             pointerY >= _y0 && pointerY <= _y1 && iter->m_Enabled)
         {
-            if (pointerState & S3E_POINTER_STATE_DOWN)
-                DrawRect(_x0, _y0, 419, _h, 0, 255, 0);
-            else
-                DrawRect(_x0, _y0, 419, _h, 255, 0, 0);
-
             if (pointerState & S3E_POINTER_STATE_RELEASED)
                 g_SelectedButton = iter;
         }
         else
         {
             if (iter->m_Enabled)
-                DrawRect(_x0, _y0, 419, _h, 255, 0, 0);
-            else
-                DrawRect(_x0, _y0, 419, _h, 127, 0, 0);
+                DrawRect(_x0, _y0, _w, _h, 255, 0, 0);
         }
 
-        s3eDebugPrint(x, y+textOffset,  buf, 0);
 
         // Store button's position and size
         iter->m_XPos = _x0;
         iter->m_YPos = _y0;
-        iter->m_Width = 419;
+        iter->m_Width = _w;
         iter->m_Height = _h;
 
         y = y + 133;
@@ -238,9 +173,6 @@ void ButtonsRender()
 
     if (g_SelectedButton && g_SelectedButton->m_Callback)
         g_SelectedButton->m_Callback(g_SelectedButton);
-
-    if (previousDebugTextSize != fontScale)
-        s3eDebugSetInt(S3E_DEBUG_FONT_SCALE, previousDebugTextSize);
 
     g_YBelowButtons = y;
 }

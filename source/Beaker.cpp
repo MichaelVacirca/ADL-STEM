@@ -75,6 +75,12 @@ void CBeaker::Clear()
 }
 
 
+void CBeaker::setCurrentBeakerEmpty()
+{
+	currentAtom = NULL;
+}
+
+
 CAtom* CBeaker::setAtom(CAtom* newAtom)
 {
 	CAtom* prevAtom = NULL;

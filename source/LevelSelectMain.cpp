@@ -16,6 +16,7 @@
 #include <malloc.h>
 #include "Iw2D.h"
 #include "IwGx.h"
+#include "Game.h"
 
 
 #define FRAMETIME  30
@@ -44,7 +45,7 @@ bool LevelSelectMainUpdate()
 
     LevelRender();
 	}
-   // s3eSurfaceShow();
+    //s3eSurfaceShow();
     s3eDeviceYield(FRAMETIME);
     return true;
 }
@@ -109,25 +110,23 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
 {
     int right = x + width;
     int bottom = y + height;
-    int pitch = s3eSurfaceGetInt(S3E_SURFACE_PITCH);
     if (x < 0)
         x = 0;
     if (y < 0)
         y = 0;
-    if (right > (int32)s3eSurfaceGetInt(S3E_SURFACE_WIDTH))
-        right = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
-    if (bottom > (int32)s3eSurfaceGetInt(S3E_SURFACE_HEIGHT))
-        bottom = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
+    if (right > S3E_SURFACE_DEVICE_WIDTH)
+        right = S3E_SURFACE_DEVICE_WIDTH;
+    if (bottom > S3E_SURFACE_DEVICE_HEIGHT)
+        bottom = S3E_SURFACE_DEVICE_HEIGHT;
 
     uint16* pSurface = (uint16*)s3eSurfacePtr();
-    pitch /= 2;
     uint16 colour = (uint16)s3eSurfaceConvertRGB(r,g,b);
 
     if (((right - x) & 0x3) == 0)
     {
         for (int _y = y; _y < bottom; _y++)
         {
-            uint16* p = pSurface + _y*pitch + x;
+            uint16* p = pSurface + _y + x;
             uint16* pEnd = p + right - x;
 
             do
@@ -143,7 +142,7 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
     {
         for (int _y = y; _y < bottom; _y++)
         {
-            uint16* p = pSurface + _y*pitch + x;
+            uint16* p = pSurface + _y + x;
             uint16* pEnd = p + right - x;
 
             do
