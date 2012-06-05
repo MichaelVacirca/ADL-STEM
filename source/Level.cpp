@@ -185,6 +185,8 @@ void CLevel::Release()
 		background_image = NULL;
 	}
 
+	s3eAudioStop();
+
 	// HASAN - new to display a menu
 	if (m_pMenu != NULL)
 	{
@@ -207,8 +209,6 @@ void CLevel::Update()
 {
 	// Update Beaker
 	g_Beaker.Update();
-
-	// HASAN - update menu (for mouse interactions)
 	m_pMenu->Update();
 
 	if(g_Game.b_isMuted)
@@ -219,7 +219,9 @@ void CLevel::Update()
 		}
 	}
 	else
+	{
 		s3eAudioSetInt(S3E_AUDIO_VOLUME, 100);
+	}
 }
 
 void CLevel::Draw()

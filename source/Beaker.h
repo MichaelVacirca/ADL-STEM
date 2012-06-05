@@ -67,6 +67,7 @@ public:
 	void RotateBeaker(int rotateScale);
 	void increaseFlame(float flamePower);
 	void decreaseFlame(float flamePower);
+	void setCurrentBeakerEmpty();
 
 protected:
 	bool	shootAtom();

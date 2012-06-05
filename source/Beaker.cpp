@@ -75,6 +75,12 @@ void CBeaker::Clear()
 }
 
 
+void CBeaker::setCurrentBeakerEmpty()
+{
+	currentAtom = NULL;
+}
+
+
 CAtom* CBeaker::setAtom(CAtom* newAtom)
 {
 	CAtom* prevAtom = NULL;
@@ -181,7 +187,11 @@ void CBeaker::Update()
 
 void CBeaker::RotateBeaker(int rotateScale)
 {
-	m_rotateScale += rotateScale;
+	if (rotateScale == -1)
+	{
+		m_rotateScale = 0;
+	}
+	else m_rotateScale += rotateScale;
 
 	if (m_rotateScale > MAX_BEAKER_ANGLE)
 	{
@@ -200,9 +210,17 @@ void CBeaker::RotateBeaker(int rotateScale)
 
 void CBeaker::increaseFlame(float flamePower)
 {
-	if (MAX_FLAME_POWER > m_flamePower)
+	if (flamePower == -1)
 	{
-		m_flamePower *= flamePower;
+		m_flamePower = (0.25f*IW_GEOM_ONE);
+	}
+	else {
+
+
+		if (MAX_FLAME_POWER > m_flamePower)
+		{
+			m_flamePower *= flamePower;
+		}
 	}
 }
 

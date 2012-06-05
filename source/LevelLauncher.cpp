@@ -73,7 +73,7 @@
 static char g_Applist[3][256];			// List of launch applications
 static int g_nAppListCount;
 
-static std::vector<char*>         g_Desclist;			// List of matching descriptions
+//static std::vector<char*>         g_Desclist;			// List of matching descriptions
 static unsigned int               g_App = 0;			// Index into list of applications
 static CIw2DImage*	 loadScreen;						// Level Selection Screen
 static CIw2DImage*	 nitrogenSelect;
@@ -89,7 +89,20 @@ void LevelInit()
 {
 	g_nAppListCount = 0;
 
-	Iw2DInit();																				// Welcome Screen
+	// Initialise Marmalade 2D graphics system
+	Iw2DInit();
+
+	// Init IwSound
+	IwSoundInit();
+
+	// Initialise the resource manager
+	IwResManagerInit();
+
+#ifdef IW_BUILD_RESOURCES
+	// Tell resource system how to convert WAV files
+	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
+#endif
+
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
 	CIw2DImage* welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
@@ -112,7 +125,6 @@ void LevelInit()
 			keyPressed = 1;
 
 		}
-
 	}
 
 
@@ -190,10 +202,19 @@ void LevelInit()
 */
 void LevelTerm()
 {
-	for (std::vector<char*>::iterator i = g_Desclist.begin(); i < g_Desclist.end(); i++)
-	{
-		delete[] (*i);
-	}
+	//for (std::vector<char*>::iterator i = g_Desclist.begin(); i < g_Desclist.end(); i++)
+	//{
+	//	delete[] (*i);
+	//}
+
+	// Shut down the resource manager
+	IwResManagerTerminate();
+
+	// Shutdown IwSound
+	IwSoundTerminate();
+
+	// Shut down Marmalade 2D graphics system
+	Iw2DTerminate();
 }
 
 /*
@@ -212,44 +233,55 @@ void LaunchGame()
 	// HASAN - RABB to avoid using vectors
 	IwPathJoin(folder, g_Applist[g_App], S3E_FILE_MAX_PATH);
 
-	s3eDebugErrorPrintf("Level file from path: '%s' (SHOULD NOT BE EMPTY)", folder);
-
-	// Initialise Marmalade 2D graphics system
-	Iw2DInit();
-
-	// Init IwSound
-	IwSoundInit();
-
-#ifdef IW_BUILD_RESOURCES
-	// Tell resource system how to convert WAV files
-	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
-#endif
-
-	// Initialise the resource manager
-	IwResManagerInit();
+	//s3eDebugErrorPrintf("Level file from path: '%s' (SHOULD NOT BE EMPTY)", folder);
 
 	// Initialise the game object
 	g_Game.Init();
-	s3eDebugErrorPrintf("LOADING LEVEL");
+	g_Game.currentLevel = folder;
+	//s3eDebugErrorPrintf("LOADING LEVEL");
 	g_Game.LoadLevel(folder);
 
-	s3eDebugErrorPrintf("LOADED LEVEL");
+	//s3eDebugErrorPrintf("LOADED LEVEL");
 
 	// Main Loop
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
-		s3eDebugErrorPrintf("GAME UPDATE");
+		if (g_Game.getBox2dWorld() != NULL)
+		{
+			//s3eDebugErrorPrintf("GAME UPDATE");
 
-		// Update the game
-		g_Game.Update();
+			// Draw the game
+			g_Game.Draw();
 
-		s3eDebugErrorPrintf("GAME DRAW");
+			// Update the game
+			g_Game.Update();
 
-		// Draw the game
-		g_Game.Draw();
+			//s3eDebugErrorPrintf("GAME DRAW");
 
-		// Yield to the operating system
-		s3eDeviceYield(0);
+			// Yield to the operating system
+			s3eDeviceYield(0);
+		}
+		else
+		{
+			//// Now that no game is complete,
+			//// LevelUpdate() will set the g_App reference if a button is clicked
+			//g_App = 0;
+
+			//LevelRender();
+			//LevelUpdate();
+			//if (g_App != 0)
+			//{
+			//	//g_App = pressed->m_Index;
+			//	char folder[S3E_FILE_MAX_PATH];
+			//	strcpy(folder, APP_FOLDER);
+			//	IwPathJoin(folder, g_Applist[g_App], S3E_FILE_MAX_PATH);
+			//	g_Game.Init();
+			//	g_Game.currentLevel = folder;
+			//	g_Game.LoadLevel(folder);
+			//}
+			// HASAN - RABB to actually shutdown properly
+			break;
+		}
 	}
 
 	s3eDebugErrorPrintf("SHUTTING DOWN");
@@ -257,35 +289,9 @@ void LaunchGame()
 	// Clean up game object
 	g_Game.Release();
 
-	// Shut down the resource manager
-	IwResManagerTerminate();
-
-	// Shutdown IwSound
-	IwSoundTerminate();
-
-	// Shut down Marmalade 2D graphics system
-	Iw2DTerminate();
-	// Push the current application onto the device exec stack so it
-	/* will be launched after sample application has quit.
-	s3eDeviceExecPushNext(NULL);
-
-	// Specify which application to launch after s3eLauncher has quit
-	if (s3eDeviceExecPushNext(folder) == S3E_RESULT_ERROR)
-	{
-	s3eDeviceError err = s3eDeviceGetError();
-
-	if (err == S3E_DEVICE_ERR_UNSUPPORTED)
-	{
-	IwError(("s3eDeviceExecPushNext unsupported on this platform!") );
-	}
-	else
-	{
-	IwError(("failed to launch app: %s", s3eDeviceGetErrorString()));
-	}
-	} */
-
-	// Quit this application in order to start the next one on the stack
-	// s3eDeviceExit();
+	// HASAN - come up with some way to quit from the app ... add button to home screen?
+	// Quit this application
+	//s3eDeviceExit();
 }
 
 #define LEVEL_BUTTON_WIDTH		419
