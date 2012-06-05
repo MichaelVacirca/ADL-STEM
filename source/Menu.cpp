@@ -80,7 +80,7 @@ void CMenu::Update()
 				}
 				else if (((screen_width - 130) <= touchX) && (touchX <= (screen_width - 70)))
 				{
-					// HomeButton();
+					g_Game.Home();
 				}
 				else if (((screen_width - 210) <= touchX) && (touchX <= (screen_width - 130)))
 				{

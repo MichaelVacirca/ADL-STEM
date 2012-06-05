@@ -16,6 +16,7 @@
 #include <malloc.h>
 #include "Iw2D.h"
 #include "IwGx.h"
+#include "Game.h"
 
 
 #define FRAMETIME  30

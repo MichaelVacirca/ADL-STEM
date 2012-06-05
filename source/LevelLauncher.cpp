@@ -221,22 +221,30 @@ void LaunchGame()
 	// Main Loop
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
-		if (g_Game.currentLevel == NULL)
-		{ 
-			g_Game.Init();
-			g_Game.LoadLevel(folder);
-			g_Game.currentLevel = folder;
-		}
-		else {
-		// Update the game
-		g_Game.Update();
-
+		if (g_Game.getBox2dWorld() != NULL){
 		// Draw the game
 		g_Game.Draw();
-		}
-
+		// Update the game
+		g_Game.Update();
 		// Yield to the operating system
 		s3eDeviceYield(0);
+		}
+		else
+		{
+			LevelRender();
+			Button *pressed = GetSelectedButton();
+			if (pressed)
+				{
+					g_App = pressed->m_Index;
+					char folder[S3E_FILE_MAX_PATH];
+					strcpy(folder, APP_FOLDER);
+					IwPathJoin(folder, g_Applist[g_App].c_str(), S3E_FILE_MAX_PATH);
+					g_Game.Init();
+					g_Game.currentLevel = folder;
+					g_Game.LoadLevel(folder);
+
+				}
+		}
 	}
 
 	// Clean up game object
@@ -250,27 +258,9 @@ void LaunchGame()
 
 	// Shut down Marmalade 2D graphics system
 	Iw2DTerminate();
-	// Push the current application onto the device exec stack so it
-	/* will be launched after sample application has quit.
-	s3eDeviceExecPushNext(NULL);
 
-	// Specify which application to launch after s3eLauncher has quit
-	if (s3eDeviceExecPushNext(folder) == S3E_RESULT_ERROR)
-	{
-	s3eDeviceError err = s3eDeviceGetError();
-
-	if (err == S3E_DEVICE_ERR_UNSUPPORTED)
-	{
-	IwError(("s3eDeviceExecPushNext unsupported on this platform!") );
-	}
-	else
-	{
-	IwError(("failed to launch app: %s", s3eDeviceGetErrorString()));
-	}
-	} */
-
-	// Quit this application in order to start the next one on the stack
-	// s3eDeviceExit();
+	// Quit this application
+	s3eDeviceExit();
 }
 
 /*
@@ -294,8 +284,6 @@ bool LevelUpdate()
 */
 void LevelRender()
 {
-
-
 		IwGxSetScreenSpaceSlot(-1);
 		Iw2DDrawImage(loadScreen,CIwSVec2(0,0),CIwSVec2(Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight()));
 		IwGxFlush();
@@ -309,6 +297,4 @@ void LevelRender()
 		Iw2DSurfaceShow();
 		s3eKeyboardUpdate();
 		s3ePointerUpdate();
-
-
 }
