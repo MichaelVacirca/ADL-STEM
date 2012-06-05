@@ -58,30 +58,26 @@ void CMenu::Update()
 			touchX = s3ePointerGetX();
 			touchY = s3ePointerGetY();
 
-			if ((screen_height - MENU_IMAGE_HEIGHT) <= touchY <= screen_height) 
+			if ((screen_height - MENU_IMAGE_HEIGHT) <= touchY && touchY <= screen_height) 
 			{
-				if ((screen_width - 85) <= touchX <= screen_width)
+				if ((screen_width - 85) <= touchX && touchX <= screen_width)
 				{
 					// PlayButton();
 				}
-				else if ((screen_width - 105) <= touchX <= (screen_width - 85))
+				else if ((screen_width - 105) <= touchX && touchX <= (screen_width - 85))
 				{
 					// HomeButton();
 				}
-				else if ((screen_width - 125) <= touchX <= (screen_width - 105))
+				else if ((screen_width - 125) <= touchX && touchX <= (screen_width - 105))
 				{
 					// RestartButton();
 				}
-				else if ((screen_width - 145) <= touchX <= (screen_width - 125))
+				else if ((screen_width - 145) <= touchX && touchX <= (screen_width - 125))
 				{
 					// MuteButton();
 					g_Game.b_isMuted = !g_Game.b_isMuted;
 				}
-
-
-
 			}
-
 		}
 	}
 
