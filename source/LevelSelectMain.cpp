@@ -20,8 +20,9 @@
 
 #define FRAMETIME  30
 
-static void CursorRender();
-static void SoftkeysRender();
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
+//static void CursorRender();
+//static void SoftkeysRender();
 
 //Will be set to true if the device has a keyboard or number pad
 bool            g_DeviceHasKeyboard = false;
@@ -153,90 +154,93 @@ void DrawRect(int x, int y, int width, int height, uint8 r, uint8 g, uint8 b)
     }
 }
 
-static void SoftkeyRender(const char* text, s3eDeviceSoftKeyPosition pos, void(*handler)())
-{
-    // Get area of text displayed
-    int width = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_WIDTH);
-    int height = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT);
-    width *= strlen(text) - 8; //-8 to ignore colour flag (e.g. "`x666666")
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
+//static void SoftkeyRender(const char* text, s3eDeviceSoftKeyPosition pos, void(*handler)())
+//{
+//    // Get area of text displayed
+//    int width = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_WIDTH);
+//    int height = s3eDebugGetInt(S3E_DEBUG_FONT_SIZE_HEIGHT);
+//    width *= strlen(text) - 8; //-8 to ignore colour flag (e.g. "`x666666")
+//
+//    // Expand area by half text height to make easier to click
+//    width += height;
+//    height += height;
+//
+//    int x = 0;
+//    int y = 0;
+//    switch (pos)
+//    {
+//        case S3E_DEVICE_SOFTKEY_BOTTOM_LEFT:
+//            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
+//            x = 0;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_BOTTOM_RIGHT:
+//            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
+//            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_TOP_RIGHT:
+//            y = 0;
+//            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
+//            break;
+//        case S3E_DEVICE_SOFTKEY_TOP_LEFT:
+//            x = 0;
+//            y = 0;
+//            break;
+//    }
+//    s3eDebugPrint(x + (height/4), y + (height/4), text, 0); // place in centre of touchable area
+//    if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
+//    {
+//        int pointerx = s3ePointerGetX();
+//        int pointery = s3ePointerGetY();
+//        if (pointerx >= x && pointerx <= x+width && pointery >=y && pointery <= y+height)
+//            handler();
+//    }
+//}
 
-    // Expand area by half text height to make easier to click
-    width += height;
-    height += height;
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
+//static void SoftkeysRender()
+//{
+//    //int advance = s3eDeviceGetInt(S3E_DEVICE_ADVANCE_SOFTKEY_POSITION);
+//    //SoftkeyRender("`x666666ASK", (s3eDeviceSoftKeyPosition)advance);
+//    int back = s3eDeviceGetInt(S3E_DEVICE_BACK_SOFTKEY_POSITION);
+//    SoftkeyRender("`x666666Exit", (s3eDeviceSoftKeyPosition)back, s3eDeviceRequestQuit);
+//}
 
-    int x = 0;
-    int y = 0;
-    switch (pos)
-    {
-        case S3E_DEVICE_SOFTKEY_BOTTOM_LEFT:
-            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
-            x = 0;
-            break;
-        case S3E_DEVICE_SOFTKEY_BOTTOM_RIGHT:
-            y = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) - height;
-            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
-            break;
-        case S3E_DEVICE_SOFTKEY_TOP_RIGHT:
-            y = 0;
-            x = s3eSurfaceGetInt(S3E_SURFACE_WIDTH) - width;
-            break;
-        case S3E_DEVICE_SOFTKEY_TOP_LEFT:
-            x = 0;
-            y = 0;
-            break;
-    }
-    s3eDebugPrint(x + (height/4), y + (height/4), text, 0); // place in centre of touchable area
-    if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
-    {
-        int pointerx = s3ePointerGetX();
-        int pointery = s3ePointerGetY();
-        if (pointerx >= x && pointerx <= x+width && pointery >=y && pointery <= y+height)
-            handler();
-    }
-}
-
-static void SoftkeysRender()
-{
-    //int advance = s3eDeviceGetInt(S3E_DEVICE_ADVANCE_SOFTKEY_POSITION);
-    //SoftkeyRender("`x666666ASK", (s3eDeviceSoftKeyPosition)advance);
-    int back = s3eDeviceGetInt(S3E_DEVICE_BACK_SOFTKEY_POSITION);
-    SoftkeyRender("`x666666Exit", (s3eDeviceSoftKeyPosition)back, s3eDeviceRequestQuit);
-}
-
-static void CursorRender()
-{
-    if (!s3ePointerGetInt(S3E_POINTER_AVAILABLE))
-        return;
-
-    uint16* ptr = (uint16*)s3eSurfacePtr();
-    int height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
-    int width = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
-    int pitch = s3eSurfaceGetInt(S3E_SURFACE_PITCH);
-
-    int pointerx = s3ePointerGetX();
-    int pointery = s3ePointerGetY();
-
-    pointerx = (pointerx > width)?width-1:pointerx;
-    pointery = (pointery > height)?height-1:pointery;
-
-    int cursor_size = 10;
-
-    for (int y = pointery-cursor_size; y < pointery+cursor_size; y++)
-    {
-        if (y < 0 || y >= height)
-            continue;
-        int location = y*pitch/sizeof(uint16) + pointerx;
-        ptr[location] = 0x5555;
-    }
-
-    for (int x = pointerx-cursor_size; x < pointerx+cursor_size; x++)
-    {
-        if (x < 0 || x >= width)
-            continue;
-        int location = pointery*pitch/sizeof(uint16) + x;
-        ptr[location] = 0x5555;
-    }
-}
+// HASAN - removed these un-used methods because causing build error when in GCC ARM Release
+//static void CursorRender()
+//{
+//    if (!s3ePointerGetInt(S3E_POINTER_AVAILABLE))
+//        return;
+//
+//    uint16* ptr = (uint16*)s3eSurfacePtr();
+//    int height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
+//    int width = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
+//    int pitch = s3eSurfaceGetInt(S3E_SURFACE_PITCH);
+//
+//    int pointerx = s3ePointerGetX();
+//    int pointery = s3ePointerGetY();
+//
+//    pointerx = (pointerx > width)?width-1:pointerx;
+//    pointery = (pointery > height)?height-1:pointery;
+//
+//    int cursor_size = 10;
+//
+//    for (int y = pointery-cursor_size; y < pointery+cursor_size; y++)
+//    {
+//        if (y < 0 || y >= height)
+//            continue;
+//        int location = y*pitch/sizeof(uint16) + pointerx;
+//        ptr[location] = 0x5555;
+//    }
+//
+//    for (int x = pointerx-cursor_size; x < pointerx+cursor_size; x++)
+//    {
+//        if (x < 0 || x >= width)
+//            continue;
+//        int location = pointery*pitch/sizeof(uint16) + x;
+//        ptr[location] = 0x5555;
+//    }
+//}
 
 //-----------------------------------------------------------------------------
 // Helper functions print messages to the screen

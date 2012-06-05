@@ -40,7 +40,7 @@ public:
 		m_pCurrentCompound = NULL;
 
 		// HASAN - new to display a menu
-		m_pMenu;
+		m_pMenu = NULL;
 	}
 	~CLevel()
 	{

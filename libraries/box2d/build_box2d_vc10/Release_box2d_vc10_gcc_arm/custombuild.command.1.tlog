@@ -1,2 +1,2 @@
-^C:\GIT\ADL-STEM\LIBRARIES\BOX2D.MKB
-"C:\Marmalade\6.0\s3e\python\python.exe" "C:\Marmalade\6.0\s3e\makefile_builder\mkb.py" "--open-with-wmlaunchpad" "C:/GIT/ADL-STEM/libraries/box2d.mkb" "--default-buildenv=vc10" --msvc-project
+^E:\USERS\HASAN\DEVELOPMENT\MARMALADEPROJECTS\ADL-STEM\LIBRARIES\BOX2D\BOX2D.MKB
+"C:\Marmalade\6.0\s3e\python\python.exe" "C:\Marmalade\6.0\s3e\makefile_builder\mkb.py" "--open-with-wmlaunchpad" "E:/Users/Hasan/Development/MarmaladeProjects/ADL-STEM/libraries/box2d/box2d.mkb" "--default-buildenv=vc10" --msvc-project
