@@ -214,6 +214,16 @@ void CLevel::Update()
 
 	// HASAN - update menu (for mouse interactions)
 	m_pMenu->Update();
+
+	if(g_Game.b_isMuted)
+	{
+		if(s3eAudioIsPlaying() && (s3eAudioGetInt(S3E_AUDIO_VOLUME) > 0))
+		{
+			s3eAudioSetInt(s3eAudioProperty(S3E_AUDIO_VOLUME), 0);
+		}
+	}
+	else
+		s3eAudioSetInt(S3E_AUDIO_VOLUME, 100);
 }
 
 void CLevel::Draw()
