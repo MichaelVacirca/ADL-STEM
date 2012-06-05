@@ -135,19 +135,25 @@ void ButtonsRender()
         int _y1 = _y0 + _h;
         int _w = 150;
         int _x1;
-        int textOffset = 0;
+        //int textOffset = 0;
 		int xOffset = 420;
 
-
-			if (evenSet){
+        // Scale down font size if button contents are too long for screen
+        while (true)
+        {
+            _w = 419;
+			if (evenSet)
+			{
 				_x0 = _x0 + xOffset;
 				evenSet = false;
-				}
-				else if (!evenSet){
+			}
+			else if (!evenSet)
+			{
 				evenSet = true;
-				}
+			}
 
             _x1 = _x0 + _w;
+		}
 
         if (pointerX >= _x0 && pointerX <= _x1 &&
             pointerY >= _y0 && pointerY <= _y1 && iter->m_Enabled)

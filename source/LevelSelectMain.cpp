@@ -42,8 +42,7 @@ bool LevelSelectMainUpdate()
 
     if (g_ClearScreen)
 	{
-
-    LevelRender();
+		LevelRender();
 	}
     //s3eSurfaceShow();
     s3eDeviceYield(FRAMETIME);
