@@ -28,8 +28,6 @@ void CLevel::Init(const char* i_strLevelFile)
 	int		atomsIndex = 0;
 	char	levelMusic[100];
 
-	
-
 	// HASAN - level atom information to create the correct atom
 
 	// HASAN - read file contents for atom data file and store in this object
@@ -132,7 +130,6 @@ void CLevel::Init(const char* i_strLevelFile)
 
 	delete [] buffer;
 
-
 	// Get screen dimensions
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
@@ -144,7 +141,6 @@ void CLevel::Init(const char* i_strLevelFile)
 	background_sprite->setImage(background_image);
 	background_sprite->setDestSize(screen_width, screen_height);
 	g_Game.getSpriteManager()->addSprite(background_sprite);
-
 
 	// Created level atoms parsed from above
 	for(int i = 0; i < atomsIndex; i++) {

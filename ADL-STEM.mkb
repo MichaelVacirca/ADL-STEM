@@ -9,6 +9,7 @@ subprojects
 {
 	iw2d
 	iwresmanager
+	iwutil
 	# For physics
 	libraries/box2d/box2d_library
 	# For audio
@@ -75,9 +76,15 @@ assets
 	LevelSelectNitrogen.png
 	flame.png
 	bunsen.png
+	levels.dat
+	level_01.dat
+	level_02.dat
+	level_03.dat
+	atoms.dat
+	compounds.dat
 
 	(data-ram/data-gles1, data)
-	#game.group.bin
+	game.group.bin
 }
 
 #### AUTO GENERATED deployment settings from DeployTool.exe. Do not edit below this line ####

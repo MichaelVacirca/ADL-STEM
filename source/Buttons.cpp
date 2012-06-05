@@ -186,13 +186,15 @@ void ButtonsRender()
         while (true)
         {
             _w = 419;
-			if (evenSet){
+			if (evenSet)
+			{
 				_x0 = _x0 + xOffset;
 				evenSet = false;
-				}
-				else if (!evenSet){
+			}
+			else if (!evenSet)
+			{
 				evenSet = true;
-				}
+			}
 
             _x1 = _x0 + _w;
 

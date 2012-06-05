@@ -24,11 +24,7 @@ compound_root:C
 # energy is a percentage of the min & max values
 # <atom_symbol>(<min_impact_energy,max_impact_energy)
 # NOTE: This atom forms in 3-dimensions which are challenging to represent in 2D, so just doing something simple
-#compound_step:H(20,60)
-#compound_step:H(20,60)@90
-#compound_step:H(20,60)@90
-#compound_step:H(20,60)@90
-compound_step:H(0,100)
-compound_step:H(0,100)@90
-compound_step:H(0,100)@90
-compound_step:H(0,100)@90
+compound_step:H(20,80)
+compound_step:H(20,80)@90
+compound_step:H(20,80)@90
+compound_step:H(20,80)@90
