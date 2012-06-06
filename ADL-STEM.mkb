@@ -211,7 +211,7 @@ assets
 	
 
 	(data-ram/data-gles1, data)
-	game.group.bin
+	#game.group.bin
 }
 
 #### AUTO GENERATED deployment settings from DeployTool.exe. Do not edit below this line ####
