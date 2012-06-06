@@ -242,21 +242,22 @@ void LaunchGame()
 	g_Game.LoadLevel(folder);
 
 	//s3eDebugErrorPrintf("LOADED LEVEL");
+	s3eDebugOutputString("LOADED LEVEL");
 
 	// Main Loop
 	while (!s3eDeviceCheckQuitRequest())	// Exit main loop if device quit request received
 	{
 		if (g_Game.getBox2dWorld() != NULL)
 		{
-			//s3eDebugErrorPrintf("GAME UPDATE");
+			//s3eDebugErrorPrintf("GAME DRAW");
 
 			// Draw the game
 			g_Game.Draw();
 
+			//s3eDebugErrorPrintf("GAME UPDATE");
+
 			// Update the game
 			g_Game.Update();
-
-			//s3eDebugErrorPrintf("GAME DRAW");
 
 			// Yield to the operating system
 			s3eDeviceYield(0);
@@ -353,12 +354,17 @@ void LevelRender()
 		// Clear screen 
 		Iw2DSurfaceClear(0xff000000);
 
-		//IwGxSetScreenSpaceSlot(-1);
-		// HASAN - commenting out the below worked!!!!!
-		//Iw2DDrawImage(loadScreen,CIwSVec2(0,0),CIwSVec2(Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight()));
-		//IwGxFlush();
-		//IwGxClear(IW_GX_DEPTH_BUFFER_F);
-		//IwGxSetScreenSpaceSlot(1);
+		IwGxSetScreenSpaceSlot(-1);
+
+		// HASAN - debug
+		//char strTemp[256];
+		//sprintf(strTemp, "Drawing background background image @ 0,0 and width/height : %d/%d", Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight());
+		//s3eDebugOutputString(strTemp);
+
+		Iw2DDrawImage(loadScreen,CIwSVec2(0,0),CIwSVec2(Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight()));
+		IwGxFlush();
+		IwGxClear(IW_GX_DEPTH_BUFFER_F);
+		IwGxSetScreenSpaceSlot(1);
 
 		//Iw2DDrawImage(nitrogenSelect,CIwSVec2(30,165));
 		//Iw2DDrawImage(carbonSelect,CIwSVec2(450,298));
@@ -369,7 +375,7 @@ void LevelRender()
 		Iw2DDrawImage(hydrogenSelect, CIwSVec2(30,top + (2 * LEVEL_BUTTON_HEIGHT + 10)), CIwSVec2(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT));
 
 		//ButtonsRender();
-		//IwGxSetScreenSpaceSlot(-1);
+		IwGxSetScreenSpaceSlot(-1);
 		Iw2DSurfaceShow();
 		//s3eKeyboardUpdate();
 		//s3ePointerUpdate();

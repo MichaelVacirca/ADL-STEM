@@ -6,7 +6,7 @@
 void CMenu::Init()
 {
 	menu_play_image		= Iw2DCreateImageResource("menu_play");
-	menu_pause_image		= Iw2DCreateImageResource("menu_pause");
+	menu_pause_image	= Iw2DCreateImageResource("menu_pause");
 
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
@@ -52,18 +52,18 @@ void CMenu::Update()
 	int screen_width = Iw2DGetSurfaceWidth();
 	int screen_height = Iw2DGetSurfaceHeight();
 
-		// Only display menu in certain game states
-	//if (g_Game.getGameState() == GS_Playing )
-	//{
-	//	menu_play_sprite->setVisible(true);
-	//	menu_pause_sprite->setVisible(false);
-	//}
-	//else if (g_Game.getGameState() == GS_Paused ||
-	//	g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
-	//{
-	//	menu_play_sprite->setVisible(false);
-	//	menu_pause_sprite->setVisible(true);
-	//}
+	// Only display menu in certain game states
+	if (g_Game.getGameState() == GS_Playing )
+	{
+		menu_play_sprite->setVisible(true);
+		menu_pause_sprite->setVisible(false);
+	}
+	else if (g_Game.getGameState() == GS_Paused ||
+		g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
+	{
+		menu_play_sprite->setVisible(false);
+		menu_pause_sprite->setVisible(true);
+	}
 
 	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
 	{

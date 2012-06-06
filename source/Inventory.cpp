@@ -15,6 +15,7 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 
 	if (inventoryCount == 0)
 	{
+		s3eDebugOutputString("Adding inventory sprite to sprite manager.");
 		// add the inventory to the sprite manager when the first atom is added
 		g_Game.getSpriteManager()->addSprite(inventory_sprite);
 	}
@@ -134,7 +135,9 @@ void CInventory::Clear()
 
 	for (int i = 0; i < inventoryCount; i++)
 	{
-		delete atomObjs[i];
+		//delete atomObjs[i];
+		// HASAN - don't delete atoms, but have the SpriteManager do it for us
+		g_Game.getSpriteManager()->removeSprite(atomObjs[i]);
 	}
 	inventoryCount = 0;
 
@@ -238,7 +241,7 @@ void CInventory::Update()
 void CInventory::Draw()
 {
 	// Only display inventory in certain game states
-	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused)
+	if (g_Game.getGameState() == GS_Playing || g_Game.getGameState() == GS_Paused || g_Game.getGameState() == GS_LevelCompletedFailure || g_Game.getGameState() == GS_LevelCompletedSuccess)
 	{
 		// Set the current font
 		Iw2DSetFont(g_Game.getFont());

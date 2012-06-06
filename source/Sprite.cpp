@@ -142,16 +142,25 @@ void CSpriteManager::Update()
 
 void CSpriteManager::Draw()
 {
+	// HASAN - debug
+	//char strTemp[128];
+	//sprintf(strTemp, "Drawing %d sprites", Sprites.size());
+	//s3eDebugOutputString(strTemp);
+
 	// Draw all sprites in the sprite manager
 	for (Iterator it = Sprites.begin(); it != Sprites.end(); ++it)
+	{
 		(*it)->Draw();
+	}
 }
 
 CSpriteManager::~CSpriteManager()
 {
 	// Delete all sprites in the sprite manager
 	for (Iterator it = Sprites.begin(); it != Sprites.end(); ++it)
+	{
 		delete *it;
+	}
 
 	Sprites.clear();
 }

@@ -118,7 +118,6 @@ protected:
 	int						velocityIterations;
 	int						positionIterations;
 
-	CIw2DImage*				m_Image;
 	b2World*				m_world;
 
 	int64					m_prevTime, m_timeNow;
@@ -128,6 +127,11 @@ protected:
 
 	// Shared images
 	CIw2DImage*					background_image;
+	// HASAN - new for level completion graphics
+	CIw2DImage*			lvl_complete_success_image;
+	CSprite*			lvl_complete_success_sprite;
+	CIw2DImage*			lvl_complete_failure_image;
+	CSprite*			lvl_complete_failure_sprite;
 
 	// Font
 	CIw2DFont*					Font;

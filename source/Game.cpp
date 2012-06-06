@@ -41,9 +41,13 @@ void CGame::Init()
 		m_accumulator = 0.0f;													// Initial Time of Game Start
 		m_prevTime = s3eTimerGetMs();											// Used to grab time for updates
 
+	// Create level completion screens
+		lvl_complete_success_image = Iw2DCreateImageResource("button_oxygen_up");
+		lvl_complete_failure_image = Iw2DCreateImageResource("button_hydrogen_up");
+
+
 	// This section sets up initialization of game elements 
 		g_Inventory.Init();														// Create Inventory 
-		m_Image = Iw2DCreateImageResource("atom");								// Default Atom Image
 		m_world = new b2World(m_gravity, m_doSleep);							// Initialization of a Box2D World 
 		//Font = Iw2DCreateFontResource("trebuchet8");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
 		Font = Iw2DCreateFontResource("trebuchet_12");							// Assign the default font used in the game.  This font is used by the Inventory for displaying how many atoms remain
@@ -90,10 +94,15 @@ void CGame::Release()
 		delete background_image;
 		background_image = NULL;
 	}
-	if (m_Image != NULL)
+	if (lvl_complete_failure_image != NULL)
 	{
-		delete m_Image;
-		m_Image = NULL;
+		delete lvl_complete_failure_image;
+		lvl_complete_failure_image = NULL;
+	}
+	if (lvl_complete_success_image != NULL)
+	{
+		delete lvl_complete_success_image;
+		lvl_complete_success_image = NULL;
 	}
 
 	// HASAN - new from box2d example
@@ -160,12 +169,10 @@ void CGame::UnloadLevel()
 void CGame::Restart()
 {
 	// Initialise the game object
-	m_pLevel->Release();
-	m_pLevel = NULL;
 	g_Game.UnloadLevel();
-	g_Inventory.inventoryCount = 0;
 	g_Inventory.Clear();
 	g_Game.Release();
+
 	g_Game.Init();
 	g_Game.LoadLevel(currentLevel);
 	g_Beaker.RotateBeaker(-1);
@@ -176,10 +183,7 @@ void CGame::Restart()
 void CGame::Home()
 {
 	// Initialise the game object
-	m_pLevel->Release();
-	m_pLevel = NULL;
 	g_Game.UnloadLevel();
-	g_Inventory.inventoryCount = 0;
 	g_Inventory.Clear();
 	g_Beaker.Release();
 	g_Game.Release();
@@ -189,6 +193,8 @@ void CGame::Home()
 
 void CGame::Update()
 {
+	UpdateInput();
+
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
 	if (m_nGameState == GS_Playing)
@@ -208,7 +214,6 @@ void CGame::Update()
 
 		// physics loop (fixed timing at 60Hz)
 		m_accumulator += m_deltaTime;
-		UpdateInput();
 	}
 	else
 	{
@@ -266,7 +271,7 @@ void CGame::Update()
 	g_MyContactListener.clearCollisionInfo();
 
 	// Update level
-	if (m_pLevel != NULL)
+	if (m_pLevel != NULL && m_nGameState == GS_Playing)
 	{
 
 		m_pLevel->Update();
@@ -277,17 +282,33 @@ void CGame::Update()
 			int levelCompleteStatus = m_pLevel->IsComplete();
 			if (levelCompleteStatus == 1)
 			{
-				// HASAN TODO - trigger level completion successful screen
-
 				// HASAN - debug
 				s3eDebugOutputString("=== LEVEL COMPLETE = SUCCESSFUL");
+
+				m_nGameState = GS_LevelCompletedSuccess;
+
+				lvl_complete_success_sprite = new CSprite();
+				lvl_complete_success_sprite->Init();
+				lvl_complete_success_sprite->setPosAngScale(Iw2DGetSurfaceWidth() / 2, Iw2DGetSurfaceHeight() / 2, 0, IW_GEOM_ONE);
+				lvl_complete_success_sprite->setImage(lvl_complete_success_image);
+				lvl_complete_success_sprite->setVisible(true);
+				lvl_complete_success_sprite->setDestSize((int)(lvl_complete_success_image->GetWidth() * 1.2f), (int)(lvl_complete_success_image->GetHeight() * 1.2f));
+				g_Game.getSpriteManager()->addSprite(lvl_complete_success_sprite);
 			}
 			else if (levelCompleteStatus == 2)
 			{
-				// HASAN TODO - trigger level completion failure screen
-
 				// HASAN - debug
 				s3eDebugOutputString("=== LEVEL COMPLETE = FAILURE");
+
+				m_nGameState = GS_LevelCompletedFailure;
+
+				lvl_complete_failure_sprite = new CSprite();
+				lvl_complete_failure_sprite->Init();
+				lvl_complete_failure_sprite->setPosAngScale(Iw2DGetSurfaceWidth() / 2, Iw2DGetSurfaceHeight() / 2, 0, IW_GEOM_ONE);
+				lvl_complete_failure_sprite->setImage(lvl_complete_failure_image);
+				lvl_complete_failure_sprite->setVisible(true);
+				lvl_complete_failure_sprite->setDestSize((int)(lvl_complete_failure_image->GetWidth() * 1.2f), (int)(lvl_complete_failure_image->GetHeight() * 1.2f));
+				g_Game.getSpriteManager()->addSprite(lvl_complete_failure_sprite);
 			}
 		}
 	}
@@ -302,58 +323,68 @@ void CGame::UpdateInput()
 	{
 		xTouch2 = s3ePointerGetX();
 		yTouch2 = (float)s3ePointerGetY();
-	}
 
-	//Should place bounds around the location where the xTouches are valid
-	// - likely will want to make sure the initial touch falls within the bound
-	//   and then the user can slide their finger beyond the initial bound
-	if (m_nGameState == GS_Playing)
-	{
-		screenWidth = Iw2DGetSurfaceWidth();
-		screenHeight = Iw2DGetSurfaceHeight();
-
-		//if they touch in the bottom left corner and right
-		if(xTouch2 < (screenWidth / 4))
+		//Should place bounds around the location where the xTouches are valid
+		// - likely will want to make sure the initial touch falls within the bound
+		//   and then the user can slide their finger beyond the initial bound
+		if (m_nGameState == GS_Playing)
 		{
-			if(xTouch1 < xTouch2)
-			{
-				s3eDebugOutputString("MOVING RIGHT");
-				m_pLevel->RotateBeaker(2);
-			}
-			else if (xTouch2 < xTouch1)
-			{
-				s3eDebugOutputString("MOVING LEFT");
-				m_pLevel->RotateBeaker(-2);
-			}
-		}
+			screenWidth = Iw2DGetSurfaceWidth();
+			screenHeight = Iw2DGetSurfaceHeight();
 
-		//if they touch next to the beaker and up
-		if(yTouch2 > (screenHeight / 2))
+			//if they touch in the bottom left corner and right
+			if(xTouch2 < (screenWidth / 4))
+			{
+				if(xTouch1 < xTouch2)
+				{
+					s3eDebugOutputString("MOVING RIGHT");
+					m_pLevel->RotateBeaker(2);
+				}
+				else if (xTouch2 < xTouch1)
+				{
+					s3eDebugOutputString("MOVING LEFT");
+					m_pLevel->RotateBeaker(-2);
+				}
+			}
+
+			//if they touch next to the beaker and up
+			if(yTouch2 > (screenHeight / 2))
+			{
+				if(yTouch1 < yTouch2)
+				{
+					s3eDebugOutputString("MOVING DOWN");
+					m_pLevel->decreaseFlame(.97f);
+				}
+				else if (yTouch2 < yTouch1)
+				{
+					s3eDebugOutputString("MOVING UP");
+					m_pLevel->increaseFlame(1.03f);
+				}
+			}
+
+			xTouch1 = xTouch2;
+			yTouch1 = yTouch2;
+			/*
+			   Need to define the location for touching (i.e. for buttons) - any touch that falls
+				 within that location then triggers whatever event needs to happen when the button
+				 is touched.
+
+			   Also need to figure out how to define the collisions (or whatever method will be used)
+				 for launching the atoms -- need to be able to drag/adjust the direction the flask is
+				 pointed and then need to be able to adjust the flame to heat the atom to the correct
+				 temperature.
+			*/
+		}
+		else if (m_nGameState == GS_LevelCompletedSuccess)
 		{
-			if(yTouch1 < yTouch2)
-			{
-				s3eDebugOutputString("MOVING DOWN");
-				m_pLevel->decreaseFlame(.97f);
-			}
-			else if (yTouch2 < yTouch1)
-			{
-				s3eDebugOutputString("MOVING UP");
-				m_pLevel->increaseFlame(1.03f);
-			}
+			// HASAN - if any touch, then return home
+			Home();
 		}
-
-		xTouch1 = xTouch2;
-		yTouch1 = yTouch2;
-		/*
-		   Need to define the location for touching (i.e. for buttons) - any touch that falls
-			 within that location then triggers whatever event needs to happen when the button
-			 is touched.
-
-		   Also need to figure out how to define the collisions (or whatever method will be used)
-			 for launching the atoms -- need to be able to drag/adjust the direction the flask is
-			 pointed and then need to be able to adjust the flame to heat the atom to the correct
-			 temperature.
-		*/
+		else if (m_nGameState == GS_LevelCompletedFailure)
+		{
+			// HASAN - if any touch, then restart
+			Restart();
+		}
 	}
 
 /*
@@ -430,25 +461,51 @@ void CGame::Draw()
 	// Clear screen 
 	Iw2DSurfaceClear(0xff000000);
 
-	s3eDebugOutputString("Sprite Manager DRAW");
-
 	// Draw the games sprite objects
 	SpriteManager->Draw();
 
 	// Draw level
 	if (m_pLevel != NULL)
 	{
-		s3eDebugOutputString("Level DRAW");  // <--- HASAN - current issue
-
 		m_pLevel->Draw();
-	}
 
-	s3eDebugOutputString("Inventory DRAW");
+		if (m_nGameState == GS_LevelCompletedFailure || m_nGameState == GS_LevelCompletedSuccess)
+		{
+			// Set the current font
+			Iw2DSetFont(g_Game.getFont());
+
+			// Reset the visual transform
+			Iw2DSetTransformMatrix(CIwMat2D::g_Identity);
+
+			// Set the texts colour to black
+			Iw2DSetColour(0xff000000);
+
+			int border = 5;
+			int topBottomGap = 80;
+			int leftRightGap = 25;
+			int textWidth = 256 - (2 * (border + leftRightGap));
+			int textHeight = 256 - (2 * (border + topBottomGap));
+
+			// center on screen
+			int posX = (Iw2DGetSurfaceWidth() / 2 ) - ( textWidth / 2 );
+			int posY = (Iw2DGetSurfaceHeight() / 2 ) - ( textHeight / 2 );
+
+			char strTemp[32];
+			if (m_nGameState == GS_LevelCompletedSuccess)
+			{
+				sprintf(strTemp, "CONGRATS!\nYou won!");
+			}
+			else
+			{
+				sprintf(strTemp, "Uh oh!\nTry again!");
+			}
+			// Draw the atom count in the appropriate location
+			Iw2DDrawString(strTemp, CIwSVec2(posX, posY), CIwSVec2(textWidth, textHeight), IW_2D_FONT_ALIGN_LEFT, IW_2D_FONT_ALIGN_TOP);
+		}
+	}
 
 	// Draw inventory
 	g_Inventory.Draw();
-
-	s3eDebugOutputString("DRAW SurfaceShow()");
 
 	// Show surface
 	Iw2DSurfaceShow();

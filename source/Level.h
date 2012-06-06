@@ -10,23 +10,30 @@
 
 #define	MAX_STR_SIZE	255
 
+#define MAX_FAILRE_TIMEOUT_SECONDS		10
+
 class CLevel
 {
 protected:
 	CIw2DImage*			background_image;
-	bool				bBackgroundDisplayed;
 	CSprite*			background_sprite;
 
 	char*				m_strName;
 	char*				m_strGoalCompound;
 
-	CInventory*			m_pInventory;
-	CBeaker*			m_pBeaker;
+	// HASAN TODO - use these instead of the global objects that are being used now
+	//CInventory*			m_pInventory;
+	//CBeaker*			m_pBeaker;
 
 	CCompound*			m_pCurrentCompound;
 
 	// HASAN - new to display a menu
 	CMenu*				m_pMenu;
+
+	// HASAN - new for failure timeout
+	uint64				m_nLastTime;
+	uint64				m_nTimeoutCounter;
+	bool				m_bFailureTimeoutEnabled;
 
 public:
 	CLevel()
@@ -34,15 +41,18 @@ public:
 		m_strName = new char[MAX_STR_SIZE];
 		m_strGoalCompound = new char[MAX_STR_SIZE];
 
-		m_pInventory = NULL;
-		m_pBeaker = NULL;
+		// HASAN TODO - use these instead of the global objects that are being used now
+		//m_pInventory = NULL;
+		//m_pBeaker = NULL;
 
 		m_pCurrentCompound = NULL;
 
 		// HASAN - new to display a menu
 		m_pMenu = NULL;
 
-		bBackgroundDisplayed = false;
+		m_nLastTime = 0;
+		m_nTimeoutCounter = 0;
+		m_bFailureTimeoutEnabled = false;
 	}
 	~CLevel()
 	{

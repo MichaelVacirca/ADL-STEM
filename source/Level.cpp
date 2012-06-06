@@ -175,8 +175,6 @@ void CLevel::Init(const char* i_strLevelFile)
 	// Play level music
 	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
 		s3eAudioPlay(levelMusic, 1);
-
-	bBackgroundDisplayed = true;
 }
 
 void CLevel::Release()
@@ -213,6 +211,32 @@ void CLevel::Update()
 	g_Beaker.Update();
 	m_pMenu->Update();
 
+	if (m_bFailureTimeoutEnabled && g_Game.getGameState() == GS_Playing)
+	{
+		// HASAN - new for failure timeout
+		// Either just starting or was previously paused and is now being played again
+		if (m_nLastTime == 0)
+		{
+			m_nLastTime = s3eTimerGetMs();
+		}
+		else
+		{
+			// update failure timeout
+			uint64 nCurrentTime = s3eTimerGetMs();
+			m_nTimeoutCounter += (nCurrentTime - m_nLastTime);
+			// HASAN - debug
+			char strTemp[64];
+			sprintf(strTemp, "New timout counter value (ms): %d ", m_nTimeoutCounter);
+			s3eDebugOutputString(strTemp);
+
+			m_nLastTime = nCurrentTime;
+		}
+	}
+	else if (g_Game.getGameState() == GS_Paused)
+	{
+		m_nLastTime = 0;
+	}
+
 	if(g_Game.b_isMuted)
 	{
 		if(s3eAudioIsPlaying() && (s3eAudioGetInt(S3E_AUDIO_VOLUME) > 0))
@@ -228,27 +252,6 @@ void CLevel::Update()
 
 void CLevel::Draw()
 {
-	// HASAN - try to simplify this and just put it in the Init() method
-	//// Only display level in certain game states
-	//if (g_Game.getGameState() == GS_Playing)
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (!bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = true;
-	//		g_Game.getSpriteManager()->addSprite(background_sprite);
-	//	}
-	//}
-	//else
-	//{
-	//	// Only add/remove background graphic from sprite manager once (not every frame)
-	//	if (bBackgroundDisplayed)
-	//	{
-	//		bBackgroundDisplayed = false;
-	//		g_Game.getSpriteManager()->removeSprite(background_sprite);
-	//	}
-	//}
-
 	// Draw Beaker
 	g_Beaker.Draw();
 
@@ -295,9 +298,17 @@ int CLevel::IsComplete()
 	if (m_pCurrentCompound->IsComplete())
 		return 1;
 
-	// HASAN TODO - how to determine failure ... ???
-	//  - 5 seconds after final atom is shot into the scene and no goal compound is created
-	//if (!m_pCurrentCompound->IsComplete())
+	//  Some timeout after the final atom is shot into the scene and no goal compound is created
+	if (g_Beaker.isEmpty() && g_Inventory.IsEmpty())
+	{
+		// HASAN - new for failure timeout
+		m_bFailureTimeoutEnabled = true;
+		if (m_nTimeoutCounter >= (MAX_FAILRE_TIMEOUT_SECONDS * 1000))
+		{
+			return 2;
+		}
+	}
+	// HASAN TODO - add more error conditions (wrong compound forming)
 
 	return 0;
 }
