@@ -226,7 +226,7 @@ void CLevel::Update()
 			m_nTimeoutCounter += (nCurrentTime - m_nLastTime);
 			// HASAN - debug
 			char strTemp[64];
-			sprintf(strTemp, "New timout counter value (ms): %d ", m_nTimeoutCounter);
+//			sprintf(strTemp, "New timout counter value (ms): %d ", m_nTimeoutCounter);
 			s3eDebugOutputString(strTemp);
 
 			m_nLastTime = nCurrentTime;

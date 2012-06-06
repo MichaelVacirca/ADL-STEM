@@ -60,6 +60,68 @@ files
 	LevelSelectNitrogen.png
 	flame.png
 	bunsen.png
+	app.config.txt
+	app.icf
+	atom.png
+	atom_c.png
+	atom_h.png
+	atom_o.png
+	atom_n.png
+	atom_s.png
+	background.png
+	background_ch4.png
+	background_co.png
+	background_no2.png
+	background_so3.png
+	beaker.png
+	boing.wav
+	boingoing.wav
+	bong.wav
+	bubbles.wav
+	button_hydrogen_down.png
+	button_hydrogen_up.png
+	button_oxygen_up.png
+	button_oxygen_down.png
+	compounds.dat
+	corkpop.wav
+	development.icf
+	droidmarch.mp3
+	emergence.mp3
+	explosion.wav
+	flame.png
+	font.tga
+	game.group
+	hero.mp3
+	icons/stem_icon.png
+	icons/stem_icon2.png
+	icons/stem_icon3.png
+	inventory.png
+	inventory_number.png
+	launcher.wav
+	levels.dat
+	LevelSelect.png
+	LevelSelectCarbon.png
+	LevelSelectHydrogen.png
+	LevelSelectNitrogen.png
+	level_01.dat
+	level_02.dat
+	level_03.dat
+	menu_pause.png
+	menu_play.png
+	music.mp3
+	pop.wav
+	ricochet.wav
+	rico_sequence.wav
+	shot.wav
+	trebuchet8.gxfont
+	trebuchet_12.gxfont
+	trebuchet_12.tga
+	WelcomeScreen.png
+	
+	
+
+
+
 }
 
 assets
@@ -82,9 +144,74 @@ assets
 	level_03.dat
 	atoms.dat
 	compounds.dat
+	game.group
+	WelcomeScreen.png
+	LevelSelectCarbon.png
+	LevelSelectHydrogen.png
+	LevelSelectNitrogen.png
+	flame.png
+	bunsen.png
+	app.config.txt
+	atom.png
+	atom_c.png
+	atom_h.png
+	atom_o.png
+	atom_n.png
+	atom_s.png
+	background.png
+	background_ch4.png
+	background_co.png
+	background_no2.png
+	background_so3.png
+	beaker.png
+	boing.wav
+	boingoing.wav
+	bong.wav
+	bubbles.wav
+	button_hydrogen_down.png
+	button_hydrogen_up.png
+	button_oxygen_up.png
+	button_oxygen_down.png
+	compounds.dat
+	corkpop.wav
+	development.icf
+	droidmarch.mp3
+	emergence.mp3
+	explosion.wav
+	flame.png
+	font.tga
+	game.group
+	hero.mp3
+	icons/stem_icon.png
+	icons/stem_icon2.png
+	icons/stem_icon3.png
+	inventory.png
+	inventory_number.png
+	launcher.wav
+	levels.dat
+	LevelSelect.png
+	LevelSelectCarbon.png
+	LevelSelectHydrogen.png
+	LevelSelectNitrogen.png
+	level_01.dat
+	level_02.dat
+	level_03.dat
+	menu_pause.png
+	menu_play.png
+	music.mp3
+	pop.wav
+	ricochet.wav
+	rico_sequence.wav
+	shot.wav
+	trebuchet8.gxfont
+	trebuchet_12.gxfont
+	trebuchet_12.tga
+	WelcomeScreen.png
+	
+	
 
 	(data-ram/data-gles1, data)
-	game.group.bin
+	#game.group.bin
 }
 
 #### AUTO GENERATED deployment settings from DeployTool.exe. Do not edit below this line ####
