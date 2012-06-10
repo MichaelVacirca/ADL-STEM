@@ -367,9 +367,9 @@ void LevelRender()
 		//Iw2DDrawImage(carbonSelect,CIwSVec2(450,298));
 		//Iw2DDrawImage(hydrogenSelect,CIwSVec2(30,432));
 		// HASAN - moved button positions to keep them on screen
-		Iw2DDrawImage(nitrogenSelect, CIwSVec2(100,(top/scale)+10), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
-		Iw2DDrawImage(carbonSelect, CIwSVec2(150,(top/scale) + LEVEL_BUTTON_HEIGHT/scale + 10), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
-		Iw2DDrawImage(hydrogenSelect, CIwSVec2(200,(top/scale) + (2 * LEVEL_BUTTON_HEIGHT/scale + 10)), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
+		Iw2DDrawImage(nitrogenSelect, CIwSVec2(((Iw2DGetSurfaceWidth()/2)- ((LEVEL_BUTTON_WIDTH/scale)/2)),(top/scale)+10), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
+		Iw2DDrawImage(carbonSelect, CIwSVec2(((Iw2DGetSurfaceWidth()/2)- ((LEVEL_BUTTON_WIDTH/scale)/2)),(top/scale) + LEVEL_BUTTON_HEIGHT/scale + 10), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
+		Iw2DDrawImage(hydrogenSelect, CIwSVec2(((Iw2DGetSurfaceWidth()/2)- ((LEVEL_BUTTON_WIDTH/scale)/2)),(top/scale) + (2 * LEVEL_BUTTON_HEIGHT/scale + 10)), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
 
 		//ButtonsRender();
 		IwGxSetScreenSpaceSlot(-1);
