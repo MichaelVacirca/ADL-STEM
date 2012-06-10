@@ -1,0 +1,103 @@
+ResGroupResources:
+	CIwTexture (0x3521f539)
+		"background" (0x677e1785)
+		Size: 2457632
+	CIwTexture (0x3521f539)
+		"background_ch4" (0xa04e1cc3)
+		Size: 1843232
+	CIwTexture (0x3521f539)
+		"background_co" (0x2ba546b6)
+		Size: 1843232
+	CIwTexture (0x3521f539)
+		"background_no2" (0xa04e4c73)
+		Size: 1843232
+	CIwTexture (0x3521f539)
+		"background_so3" (0xa04e61b9)
+		Size: 1843232
+	CIwTexture (0x3521f539)
+		"atom" (0x7c943c76)
+		Size: 16416
+	CIwTexture (0x3521f539)
+		"atom_c" (0xf2953e98)
+		Size: 4352
+	CIwTexture (0x3521f539)
+		"atom_h" (0xf2953e9d)
+		Size: 6756
+	CIwTexture (0x3521f539)
+		"atom_n" (0xf2953ea3)
+		Size: 5216
+	CIwTexture (0x3521f539)
+		"atom_o" (0xf2953ea4)
+		Size: 6432
+	CIwTexture (0x3521f539)
+		"atom_s" (0xf2953ea8)
+		Size: 12344
+	CIwTexture (0x3521f539)
+		"inventory" (0xac696ff3)
+		Size: 107888
+	CIwTexture (0x3521f539)
+		"inventory_number" (0xe40a47fb)
+		Size: 2532
+	CIwTexture (0x3521f539)
+		"beaker" (0xf3d342af)
+		Size: 107616
+	CIwTexture (0x3521f539)
+		"WelcomeScreen" (0x196c271)
+		Size: 1843232
+	CIwTexture (0x3521f539)
+		"flame" (0xf71a78a)
+		Size: 5216
+	CIwTexture (0x3521f539)
+		"bunsen" (0xf4fc0db0)
+		Size: 94240
+	CIwTexture (0x3521f539)
+		"menu_play" (0xec79ac0f)
+		Size: 158528
+	CIwTexture (0x3521f539)
+		"menu_pause" (0x7ba97a77)
+		Size: 158528
+	CIwTexture (0x3521f539)
+		"button_hydrogen_up" (0x3fe0ca44)
+		Size: 262176
+	CIwTexture (0x3521f539)
+		"button_hydrogen_down" (0xbb332457)
+		Size: 262176
+	CIwTexture (0x3521f539)
+		"button_oxygen_up" (0x7bf7471e)
+		Size: 262176
+	CIwTexture (0x3521f539)
+		"button_oxygen_down" (0x56dc3fb1)
+		Size: 262176
+	ResList 'CIwTexture' pos:35 size:13408570
+
+	CIwGxFont (0xa68776be)
+		"trebuchet_12" (0xd2d97c2d)
+		Size: 198433
+	CIwGxFont (0xa68776be)
+		"trebuchet8" (0xafcc0303)
+		Size: 67169
+	ResList 'CIwGxFont' pos:13408605 size:265612
+
+	CIwSoundData (0xd5610dab)
+		"explosion" (0x57921ec6)
+		Size: 50358
+	CIwSoundData (0xd5610dab)
+		"pop" (0xb889e14)
+		Size: 1563
+	ResList 'CIwSoundData' pos:13674217 size:51931
+
+	CIwSoundSpec (0xd569853c)
+		"explosion" (0x57921ec6)
+		Size: 30
+	CIwSoundSpec (0xd569853c)
+		"pop" (0xb889e14)
+		Size: 30
+	ResList 'CIwSoundSpec' pos:13726148 size:70
+
+	CIwSoundGroup (0x81c24cbe)
+		"sound_effects" (0x7f3c706d)
+		Size: 18
+	ResList 'CIwSoundGroup' pos:13726218 size:28
+
+ResGroupResources: Wrote 13726215 bytes to CIwResGroup "game"
+

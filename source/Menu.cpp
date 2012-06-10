@@ -75,7 +75,6 @@ void CMenu::Update()
 			{
 				if (((screen_width - 70) <= touchX) && (touchX <= screen_width))
 				{
-					// PlayButton();
 					g_Game.TogglePlay();
 				}
 				else if (((screen_width - 130) <= touchX) && (touchX <= (screen_width - 70)))
@@ -88,7 +87,6 @@ void CMenu::Update()
 				}
 				else if (((screen_width - 260) <= touchX) && (touchX <= (screen_width - 210)))
 				{
-					// MuteButton();
 					g_Game.ToggleMute();
 				}
 			}
