@@ -66,11 +66,12 @@ public:
 		delete m_strSymbol;
 		delete m_strName;
 
-		if (m_pImage != NULL)
-		{
-			delete m_pImage;
-			m_pImage = NULL;
-		}
+		// HASAN - this line was causing errors on shutdown because most classes delete their own iamge references
+		//if (m_pImage != NULL)
+		//{
+		//	delete m_pImage;
+		//	m_pImage = NULL;
+		//}
 
 		//if (m_body != NULL)
 		//{

@@ -57,6 +57,9 @@ ResGroupResources:
 		"menu_pause" (0x7ba97a77)
 		Size: 158528
 	CIwTexture (0x3521f539)
+		"menu_mute" (0xec782f94)
+		Size: 11268
+	CIwTexture (0x3521f539)
 		"button_hydrogen_up" (0x3fe0ca44)
 		Size: 262176
 	CIwTexture (0x3521f539)
@@ -68,7 +71,7 @@ ResGroupResources:
 	CIwTexture (0x3521f539)
 		"button_oxygen_down" (0x56dc3fb1)
 		Size: 262176
-	ResList 'CIwTexture' pos:35 size:13408570
+	ResList 'CIwTexture' pos:35 size:13419838
 
 	CIwGxFont (0xa68776be)
 		"trebuchet_12" (0xd2d97c2d)
@@ -76,7 +79,7 @@ ResGroupResources:
 	CIwGxFont (0xa68776be)
 		"trebuchet8" (0xafcc0303)
 		Size: 67169
-	ResList 'CIwGxFont' pos:13408605 size:265612
+	ResList 'CIwGxFont' pos:13419873 size:265612
 
 	CIwSoundData (0xd5610dab)
 		"explosion" (0x57921ec6)
@@ -84,7 +87,7 @@ ResGroupResources:
 	CIwSoundData (0xd5610dab)
 		"pop" (0xb889e14)
 		Size: 1563
-	ResList 'CIwSoundData' pos:13674217 size:51931
+	ResList 'CIwSoundData' pos:13685485 size:51931
 
 	CIwSoundSpec (0xd569853c)
 		"explosion" (0x57921ec6)
@@ -92,12 +95,12 @@ ResGroupResources:
 	CIwSoundSpec (0xd569853c)
 		"pop" (0xb889e14)
 		Size: 30
-	ResList 'CIwSoundSpec' pos:13726148 size:70
+	ResList 'CIwSoundSpec' pos:13737416 size:70
 
 	CIwSoundGroup (0x81c24cbe)
 		"sound_effects" (0x7f3c706d)
 		Size: 18
-	ResList 'CIwSoundGroup' pos:13726218 size:28
+	ResList 'CIwSoundGroup' pos:13737486 size:28
 
-ResGroupResources: Wrote 13726215 bytes to CIwResGroup "game"
+ResGroupResources: Wrote 13737483 bytes to CIwResGroup "game"
 

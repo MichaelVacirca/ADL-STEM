@@ -24,6 +24,7 @@ CIwResGroup
 	"./bunsen.png"
 	"./menu_play.png"
 	"./menu_pause.png"
+	"./menu_mute.png"
 	"./button_hydrogen_up.png"
 	"./button_hydrogen_down.png"
 	"./button_oxygen_up.png"

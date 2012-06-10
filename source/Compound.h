@@ -64,7 +64,7 @@ public:
 	{
 		for (int i = 0; i < MAX_CREATION_STEPS_COUNT; i++)
 		{
-			delete [] m_pCreationSteps[i].atomSymbol;
+			delete m_pCreationSteps[i].atomSymbol;
 		}
 
 		delete [] m_strRootAtomSymbol;

@@ -168,12 +168,12 @@ void CGame::UnloadLevel()
 void CGame::Restart()
 {
 	// Initialise the game object
-	g_Game.UnloadLevel();
+	UnloadLevel();
 	g_Inventory.Clear();
-	g_Game.Release();
+	Release();
 
-	g_Game.Init();
-	g_Game.LoadLevel(currentLevel);
+	Init();
+	LoadLevel(currentLevel);
 	g_Beaker.RotateBeaker(-1);
 	g_Beaker.increaseFlame(-1);
 	g_Beaker.setCurrentBeakerEmpty();
@@ -181,11 +181,13 @@ void CGame::Restart()
 
 void CGame::Home()
 {
+	m_nGameState = GS_Welcome;
+
 	// Initialise the game object
-	g_Game.UnloadLevel();
+	UnloadLevel();
 	g_Inventory.Clear();
 	g_Beaker.Release();
-	g_Game.Release();
+	Release();
 	g_Beaker.setCurrentBeakerEmpty();
 }
 
@@ -193,6 +195,10 @@ void CGame::Home()
 void CGame::Update()
 {
 	UpdateInput();
+
+	// HASAN - if updating the input changes the game state to welcome or level select, then exit
+	if (m_nGameState == GS_Welcome || m_nGameState == GS_LevelSelect)
+		return;
 
 	// Update the games sprite objects
 	SpriteManager->Update();

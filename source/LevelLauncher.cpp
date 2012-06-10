@@ -272,7 +272,8 @@ void LaunchGame()
 		}
 	}
 
-	s3eDebugErrorPrintf("SHUTTING DOWN");
+	// HASAN - debug
+	//s3eDebugErrorPrintf("SHUTTING DOWN");
 
 	// Clean up game object
 	g_Game.Release();
