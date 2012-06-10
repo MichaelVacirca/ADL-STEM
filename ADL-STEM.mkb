@@ -10,6 +10,7 @@ subprojects
 	iw2d
 	iwresmanager
 	iwutil
+	iwgx
 	# For physics
 	libraries/box2d/box2d_library
 	# For audio
@@ -55,6 +56,7 @@ files
 	(data)
 	game.group
 	WelcomeScreen.png
+	LevelSelect.png
 	LevelSelectCarbon.png
 	LevelSelectHydrogen.png
 	LevelSelectNitrogen.png
@@ -71,6 +73,7 @@ assets
 	hero.mp3
 	droidmarch.mp3
 	WelcomeScreen.png
+	LevelSelect.png
 	LevelSelectCarbon.png
 	LevelSelectHydrogen.png
 	LevelSelectNitrogen.png

@@ -89,7 +89,6 @@ public:
 	void						Home();					
 	void						Restart();
 	const char*					currentLevel;
-	bool						b_isMuted;
 	/// Properties End
 protected:
 	// HASAN - for determining what to display when
@@ -98,6 +97,7 @@ protected:
 	CBeaker*			m_pBeaker;
 	CLevel*				m_pLevel;
 
+	bool					m_bIsMuted;
 	//For input
 	//CInput*				m_pInput;
 	bool					m_bHasPointer;
@@ -158,6 +158,8 @@ public:
 	void	UpdateInput();		// Update the input
 
 	void	ToggleMute();		// Mute/unmute the music
+	bool	IsMuted();
+	void	TogglePlay();		// Play/pause the game
 };
 
 extern CGame g_Game;

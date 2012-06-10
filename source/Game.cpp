@@ -77,7 +77,7 @@ void CGame::Init()
 		ExplosionSoundInstance = NULL;
 		PopSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("pop", IW_SOUND_RESTYPE_SPEC);
 		PopSoundInstance = NULL;
-		b_isMuted = false;
+		m_bIsMuted = false;
 
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
@@ -130,7 +130,6 @@ void CGame::Release()
 		delete SpriteManager;
 		SpriteManager = NULL;
 	}
-
 }
 
 void CGame::PlayExplosionSound()
@@ -195,18 +194,20 @@ void CGame::Update()
 {
 	UpdateInput();
 
+	// Update the games sprite objects
+	SpriteManager->Update();
+
+	// Update Iw Sound Manager
+	IwGetSoundManager()->Update();
+
+	// Update inventory
+	g_Inventory.Update();
+
 	// HASAN - new from box2d example
 	//-----------------------------------------------------------------------------
+	float newTimeStep = timeStep;
 	if (m_nGameState == GS_Playing)
 	{
-		// Update the games sprite objects
-		SpriteManager->Update();
-
-		// Update Iw Sound Manager
-		IwGetSoundManager()->Update();
-	
-		// Update inventory
-		g_Inventory.Update();
 		// timer
 		m_timeNow = s3eTimerGetMs();
 		m_deltaTime = float( (m_timeNow - m_prevTime) * 0.001 );
@@ -217,13 +218,15 @@ void CGame::Update()
 	}
 	else
 	{
-		timeStep = 0;
+		// pauses box2d world
+		newTimeStep = 0.0f;
+		m_prevTime = s3eTimerGetMs();
 	}
 
 	while(m_accumulator > 0.0f)
 	{
-		m_world->Step(timeStep, velocityIterations, positionIterations);
-		m_accumulator -= timeStep;
+		m_world->Step(newTimeStep, velocityIterations, positionIterations);
+		m_accumulator -= newTimeStep;
 	}
 	//-----------------------------------------------------------------------------
 
@@ -271,13 +274,12 @@ void CGame::Update()
 	g_MyContactListener.clearCollisionInfo();
 
 	// Update level
-	if (m_pLevel != NULL && m_nGameState == GS_Playing)
+	if (m_pLevel != NULL)
 	{
-
 		m_pLevel->Update();
 
 		// NOTE: Updating the level above can set the 'm_pLevel' reference to null
-		if (m_pLevel != NULL)
+		if (m_pLevel != NULL && m_nGameState == GS_Playing)
 		{
 			int levelCompleteStatus = m_pLevel->IsComplete();
 			if (levelCompleteStatus == 1)
@@ -290,7 +292,7 @@ void CGame::Update()
 				lvl_complete_success_sprite = new CSprite();
 				lvl_complete_success_sprite->Init();
 				lvl_complete_success_sprite->setPosAngScale(Iw2DGetSurfaceWidth() / 2, Iw2DGetSurfaceHeight() / 2, 0, IW_GEOM_ONE);
-				lvl_complete_success_sprite->setImage(lvl_complete_success_image);
+				lvl_complete_success_sprite->setImage(lvl_complete_success_image, "button_oxygen_up");
 				lvl_complete_success_sprite->setVisible(true);
 				lvl_complete_success_sprite->setDestSize((int)(lvl_complete_success_image->GetWidth() * 1.2f), (int)(lvl_complete_success_image->GetHeight() * 1.2f));
 				g_Game.getSpriteManager()->addSprite(lvl_complete_success_sprite);
@@ -305,7 +307,7 @@ void CGame::Update()
 				lvl_complete_failure_sprite = new CSprite();
 				lvl_complete_failure_sprite->Init();
 				lvl_complete_failure_sprite->setPosAngScale(Iw2DGetSurfaceWidth() / 2, Iw2DGetSurfaceHeight() / 2, 0, IW_GEOM_ONE);
-				lvl_complete_failure_sprite->setImage(lvl_complete_failure_image);
+				lvl_complete_failure_sprite->setImage(lvl_complete_failure_image, "button_hydrogen_up");
 				lvl_complete_failure_sprite->setVisible(true);
 				lvl_complete_failure_sprite->setDestSize((int)(lvl_complete_failure_image->GetWidth() * 1.2f), (int)(lvl_complete_failure_image->GetHeight() * 1.2f));
 				g_Game.getSpriteManager()->addSprite(lvl_complete_failure_sprite);
@@ -509,13 +511,31 @@ void CGame::Draw()
 
 	// Show surface
 	Iw2DSurfaceShow();
+
+	// HASAN - testing to see if this fixes the draw order issue = didn't help
+	Iw2DFinishDrawing();
 }
 
 void CGame::ToggleMute()
 {
-	b_isMuted = !b_isMuted;
+	m_bIsMuted = !m_bIsMuted;
+}
+bool CGame::IsMuted()
+{
+	return m_bIsMuted;
 }
 
+void CGame::TogglePlay()
+{
+	if (m_nGameState == GS_Playing)
+	{
+		m_nGameState = GS_Paused;
+	}
+	else if (m_nGameState == GS_Paused)
+	{
+		m_nGameState = GS_Playing;
+	}
+}
 
 
 int	MyContactListener::getCollisionCount()

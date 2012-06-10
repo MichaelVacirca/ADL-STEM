@@ -76,7 +76,7 @@ void CAtom::Init(const char* i_strAtomSymbol, bool i_bUsePhysics)
 				{
 					pch = strtok(NULL, ":\n\r \t");
 					m_pImage = Iw2DCreateImageResource(pch);
-					setImage(m_pImage);
+					setImage(m_pImage, pch);
 				}
 				else if (bMatchFound && pch != NULL && !strcmp(pch, "atom_radius"))
 				{

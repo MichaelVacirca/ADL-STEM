@@ -87,6 +87,8 @@ static CIw2DImage*	 hydrogenSelect;
 */
 void LevelInit()
 {
+	IwGxInit();
+
 	g_nAppListCount = 0;
 
 	// Initialise Marmalade 2D graphics system
@@ -103,29 +105,29 @@ void LevelInit()
 	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
 #endif
 
-	int screen_width = Iw2DGetSurfaceWidth();
-	int screen_height = Iw2DGetSurfaceHeight();
-	CIw2DImage* welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
+	//int screen_width = Iw2DGetSurfaceWidth();
+	//int screen_height = Iw2DGetSurfaceHeight();
+	//CIw2DImage* welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
 	loadScreen = Iw2DCreateImage("LevelSelect.png");							// Level Selection Screen
 	nitrogenSelect = Iw2DCreateImage("LevelSelectNitrogen.png");
 	carbonSelect = Iw2DCreateImage("LevelSelectHydrogen.png");
 	hydrogenSelect = Iw2DCreateImage("LevelSelectCarbon.png");
-	int keyPressed = 0;
+	//int keyPressed = 0;
 
-	while(keyPressed == 0){
-		Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
-		IwGxClear(IW_GX_DEPTH_BUFFER_F);
-		IwGxFlush();
-		Iw2DSurfaceShow();
-		s3eKeyboardUpdate();
-		s3ePointerUpdate();
-		s3eDeviceYield(0);
-		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_RELEASED)
-		{
-			keyPressed = 1;
+	//while(keyPressed == 0){
+	//	Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
+	//	IwGxClear(IW_GX_DEPTH_BUFFER_F);
+	//	IwGxFlush();
+	//	Iw2DSurfaceShow();
+	//	s3eKeyboardUpdate();
+	//	s3ePointerUpdate();
+	//	s3eDeviceYield(0);
+	//	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_RELEASED)
+	//	{
+	//		keyPressed = 1;
 
-		}
-	}
+	//	}
+	//}
 
 
 	// Navigate to basedirectory were launch applications are situated
@@ -215,6 +217,8 @@ void LevelTerm()
 
 	// Shut down Marmalade 2D graphics system
 	Iw2DTerminate();
+
+	IwGxTerminate(); 
 }
 
 /*
@@ -264,23 +268,6 @@ void LaunchGame()
 		}
 		else
 		{
-			//// Now that no game is complete,
-			//// LevelUpdate() will set the g_App reference if a button is clicked
-			//g_App = 0;
-
-			//LevelRender();
-			//LevelUpdate();
-			//if (g_App != 0)
-			//{
-			//	//g_App = pressed->m_Index;
-			//	char folder[S3E_FILE_MAX_PATH];
-			//	strcpy(folder, APP_FOLDER);
-			//	IwPathJoin(folder, g_Applist[g_App], S3E_FILE_MAX_PATH);
-			//	g_Game.Init();
-			//	g_Game.currentLevel = folder;
-			//	g_Game.LoadLevel(folder);
-			//}
-			// HASAN - RABB to actually shutdown properly
 			break;
 		}
 	}

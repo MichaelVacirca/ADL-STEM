@@ -15,7 +15,9 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 
 	if (inventoryCount == 0)
 	{
-		s3eDebugOutputString("Adding inventory sprite to sprite manager.");
+		// HASAN - debug
+		//s3eDebugOutputString("Adding inventory sprite to sprite manager.");
+
 		// add the inventory to the sprite manager when the first atom is added
 		g_Game.getSpriteManager()->addSprite(inventory_sprite);
 	}
@@ -61,7 +63,7 @@ void CInventory::AddAtoms(char* i_strAtomSymbol, int i_nCount)
 		// HASAN - new to create/show the inventory count images
 		CIw2DImage* inventoryCountImage = Iw2DCreateImageResource("inventory_number");
 		CSprite* inventoryCountSprite = new CSprite();
-		inventoryCountSprite->setImage(inventoryCountImage);
+		inventoryCountSprite->setImage(inventoryCountImage, "inventory_number");
 		// NOTE: image width & height = 25 & font width & height = 30
 		inventoryCountSprite->setPosition(posX + 13 + (30 / 2), posY + (30 / 2) + 3);
 		inventoryCountSprite->setDestSize(30, 30);  // make larger than source to fit behind the text properly
@@ -155,8 +157,8 @@ void CInventory::Init()
 	inventory_sprite = new CSprite();
 	inventory_sprite->Init();
 	inventory_sprite->setPosAngScale(screen_width/2, screen_height - (IMAGE_SIZE_HEIGHT / 2), 0, IW_GEOM_ONE);  // center image vertically on screen
-	inventory_sprite->setImage(inventory_image);
 	inventory_sprite->setDestSize(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT);
+	inventory_sprite->setImage(inventory_image, "inventory");
 
 	// initialize inventory storage
 	Clear();
@@ -177,7 +179,7 @@ void CInventory::Update()
 	// add an atom to the beaker when selected from the inventory
 	int touchX = 0;
 	int touchY = 0;
-	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
+	if (g_Game.getGameState() == GS_Playing && s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_PRESSED)
 	{
 		touchX = s3ePointerGetX();
 		touchY = s3ePointerGetY();

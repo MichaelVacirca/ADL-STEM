@@ -17,6 +17,8 @@ class CSprite
 {
 	/// Properties
 protected:
+	// HASAN - new for debug when being drawn, but keep anyway
+	char		m_strName[256];
 	CSpriteManager* Parent;				// Parent sprite manager
 	CIwSVec2	Position;				// Position of the sprite
 	iwangle		Angle;					// Rotation of sprite (IW_ANGLE_2PI = 360 degrees)
@@ -26,7 +28,8 @@ protected:
 	CIw2DImage*	Image;					// Bitmapped image that represents this sprite
 	int			Width, Height;			// Destination width and height
 	int			Type;					// Sprite type
-	CIwVec2		Center;					// Center of Rotation
+	// HASAN - not being used right now
+	//CIwVec2		Center;					// Center of Rotation
 public:
 	void		setParent(CSpriteManager* parent) { Parent = parent; }
 	void		setPosAngScale(int x, int y, iwangle angle, iwfixed scale)
@@ -41,7 +44,8 @@ public:
 		Position.x = x;
 		Position.y = y;
 		Angle = angle;
-		Center = center;
+		// HASAN - not being used right now
+		//Center = center;
 	}
 	void		setPosition(int x, int y)
 	{
@@ -51,19 +55,32 @@ public:
 	CIwSVec2	getPosition() const			{ return Position; }
 	void		setAngle(iwangle angle)		{ Angle = angle; }
 	iwangle		getAngle() const			{ return Angle; }
-	void		setCenter(CIwVec2 center)	{ Center = center; }
-	CIwVec2		getCenter() const			{ return Center; }
+	// HASAN - not being used right now
+	//void		setCenter(CIwVec2 center)	{ Center = center; }
+	//CIwVec2		getCenter() const			{ return Center; }
 	void		setScale(iwfixed scale)		{ Scale = scale; }
 	iwfixed		getScale() const			{ return Scale; }
 	void		setColour(CIwColour colour) { Colour = colour; }
 	CIwColour	getColour() const			{ return Colour; }
 	void		setVisible(bool show)		{ Visible = show; }
 	bool		isVisible() const			{ return Visible; }
-	void		setImage(CIw2DImage* image)
+	void		setImage(CIw2DImage* image, const char* i_strName)
 	{
+		// HASAN - new for debug, but keep anyway
+		strcpy(m_strName, i_strName);
+
+		// HASAN - debug
+		char strTemp[256];
+		sprintf(strTemp, "Creating sprite name: '%s'", m_strName);
+		s3eDebugOutputString(strTemp);
+
 		Image = image;
 		Width = Image->GetWidth();
 		Height = Image->GetHeight();
+	}
+	const char*	getName()
+	{
+		return m_strName;
 	}
 	void		setDestSize(int width, int height)
 	{

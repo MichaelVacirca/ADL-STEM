@@ -67,7 +67,8 @@ void CLevel::Init(const char* i_strLevelFile)
 				else if (pch != NULL && !strcmp(pch, "level_background_image"))
 				{
 					pch = strtok(NULL, ":\n\r\t(),;");
-					background_image = Iw2DCreateImageResource(pch);
+					strcpy(m_strBackgroundName, pch);
+					background_image = Iw2DCreateImageResource(m_strBackgroundName);
 				}
 				else if (pch != NULL && !strcmp(pch, "level_inventory"))
 				{
@@ -138,7 +139,7 @@ void CLevel::Init(const char* i_strLevelFile)
 	CSprite* background_sprite = new CSprite();
 	background_sprite->Init();
 	background_sprite->setPosAngScale(screen_width / 2, screen_height / 2, 0, IW_GEOM_ONE);  // center image vertically & horizontally on screen
-	background_sprite->setImage(background_image);
+	background_sprite->setImage(background_image, m_strBackgroundName);
 	background_sprite->setDestSize(screen_width, screen_height);
 	g_Game.getSpriteManager()->addSprite(background_sprite);
 
@@ -225,9 +226,9 @@ void CLevel::Update()
 			uint64 nCurrentTime = s3eTimerGetMs();
 			m_nTimeoutCounter += (nCurrentTime - m_nLastTime);
 			// HASAN - debug
-			char strTemp[64];
-			sprintf(strTemp, "New timout counter value (ms): %d ", m_nTimeoutCounter);
-			s3eDebugOutputString(strTemp);
+			//char strTemp[64];
+			//sprintf(strTemp, "New timout counter value (ms): %d ", (int)m_nTimeoutCounter);
+			//s3eDebugOutputString(strTemp);
 
 			m_nLastTime = nCurrentTime;
 		}
@@ -237,7 +238,7 @@ void CLevel::Update()
 		m_nLastTime = 0;
 	}
 
-	if(g_Game.b_isMuted)
+	if(g_Game.IsMuted())
 	{
 		if(s3eAudioIsPlaying() && (s3eAudioGetInt(S3E_AUDIO_VOLUME) > 0))
 		{

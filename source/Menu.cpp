@@ -15,16 +15,15 @@ void CMenu::Init()
 	menu_play_sprite = new CSprite();
 	menu_play_sprite->Init();
 	menu_play_sprite->setPosAngScale(screen_width - (MENU_IMAGE_WIDTH / 2), screen_height - (MENU_IMAGE_HEIGHT / 2), 0, IW_GEOM_ONE);
-	menu_play_sprite->setImage(menu_play_image);
+	menu_play_sprite->setImage(menu_play_image, "menu_play");
 	menu_play_sprite->setDestSize(MENU_IMAGE_WIDTH, MENU_IMAGE_HEIGHT);
 	menu_play_sprite->setVisible(false);
-	menu_play_sprite->setVisible(true);
 	g_Game.getSpriteManager()->addSprite(menu_play_sprite);
 
 	menu_pause_sprite = new CSprite();
 	menu_pause_sprite->Init();
 	menu_pause_sprite->setPosAngScale(screen_width - (MENU_IMAGE_WIDTH / 2), screen_height - (MENU_IMAGE_HEIGHT / 2), 0, IW_GEOM_ONE);
-	menu_pause_sprite->setImage(menu_pause_image);
+	menu_pause_sprite->setImage(menu_pause_image, "menu_pause");
 	menu_pause_sprite->setDestSize(MENU_IMAGE_WIDTH, MENU_IMAGE_HEIGHT);
 	menu_pause_sprite->setVisible(false);
 	g_Game.getSpriteManager()->addSprite(menu_pause_sprite);
@@ -77,6 +76,7 @@ void CMenu::Update()
 				if (((screen_width - 70) <= touchX) && (touchX <= screen_width))
 				{
 					// PlayButton();
+					g_Game.TogglePlay();
 				}
 				else if (((screen_width - 130) <= touchX) && (touchX <= (screen_width - 70)))
 				{
@@ -89,7 +89,7 @@ void CMenu::Update()
 				else if (((screen_width - 260) <= touchX) && (touchX <= (screen_width - 210)))
 				{
 					// MuteButton();
-					g_Game.b_isMuted = !g_Game.b_isMuted;
+					g_Game.ToggleMute();
 				}
 			}
 		}

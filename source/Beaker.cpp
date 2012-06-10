@@ -24,7 +24,7 @@ void CBeaker::Init()
 	beaker_sprite = new CSprite();
 	beaker_sprite->Init();
 	beaker_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_HEIGHT/2-15, 0,IW_GEOM_ONE);  // position in lower left of screen
-	beaker_sprite->setImage(beaker_image);
+	beaker_sprite->setImage(beaker_image, "beaker");
 	beaker_sprite->setDestSize(BEAKER_IMAGE_SIZE_WIDTH, BEAKER_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(beaker_sprite);
 
@@ -33,7 +33,7 @@ void CBeaker::Init()
 	bunsen_sprite = new CSprite();
 	bunsen_sprite->Init();
 	bunsen_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - BEAKER_IMAGE_SIZE_WIDTH/2, 0, IW_GEOM_ONE);  // position in lower left of screen
-	bunsen_sprite->setImage(bunsen_image);
+	bunsen_sprite->setImage(bunsen_image, "bunsen");
 	bunsen_sprite->setDestSize(BUNSEN_IMAGE_SIZE_WIDTH, BUNSEN_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(bunsen_sprite);
 
@@ -42,7 +42,7 @@ void CBeaker::Init()
 	flame_sprite = new CSprite();
 	flame_sprite->Init();
 	flame_sprite->setPosAngScale(BEAKER_IMAGE_SIZE_WIDTH/2, screen_height - FLAME_IMAGE_SIZE_HEIGHT/2 -20, 0, (iwfixed)(0.25f*IW_GEOM_ONE));  // position in lower left of screen
-	flame_sprite->setImage(flame_image);
+	flame_sprite->setImage(flame_image, "flame");
 	flame_sprite->setDestSize(FLAME_IMAGE_SIZE_WIDTH, FLAME_IMAGE_SIZE_HEIGHT);
 	g_Game.getSpriteManager()->addSprite(flame_sprite);
 }

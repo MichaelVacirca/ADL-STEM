@@ -17,6 +17,7 @@ class CLevel
 protected:
 	CIw2DImage*			background_image;
 	CSprite*			background_sprite;
+	char				m_strBackgroundName[256];
 
 	char*				m_strName;
 	char*				m_strGoalCompound;
@@ -41,6 +42,7 @@ public:
 		m_strName = new char[MAX_STR_SIZE];
 		m_strGoalCompound = new char[MAX_STR_SIZE];
 
+		m_strBackgroundName[0] = '\0';
 		// HASAN TODO - use these instead of the global objects that are being used now
 		//m_pInventory = NULL;
 		//m_pBeaker = NULL;
