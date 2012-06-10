@@ -105,29 +105,29 @@ void LevelInit()
 	IwGetResManager()->AddHandler(new CIwResHandlerWAV);
 #endif
 
-	//int screen_width = Iw2DGetSurfaceWidth();
-	//int screen_height = Iw2DGetSurfaceHeight();
-	//CIw2DImage* welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
+	int screen_width = Iw2DGetSurfaceWidth();
+	int screen_height = Iw2DGetSurfaceHeight();
+	CIw2DImage* welcomeScreen = Iw2DCreateImage("WelcomeScreen.png");
 	loadScreen = Iw2DCreateImage("LevelSelect.png");							// Level Selection Screen
 	nitrogenSelect = Iw2DCreateImage("LevelSelectNitrogen.png");
 	carbonSelect = Iw2DCreateImage("LevelSelectHydrogen.png");
 	hydrogenSelect = Iw2DCreateImage("LevelSelectCarbon.png");
-	//int keyPressed = 0;
+	int keyPressed = 0;
 
-	//while(keyPressed == 0){
-	//	Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
-	//	IwGxClear(IW_GX_DEPTH_BUFFER_F);
-	//	IwGxFlush();
-	//	Iw2DSurfaceShow();
-	//	s3eKeyboardUpdate();
-	//	s3ePointerUpdate();
-	//	s3eDeviceYield(0);
-	//	if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_RELEASED)
-	//	{
-	//		keyPressed = 1;
+	while(keyPressed == 0){
+		Iw2DDrawImage(welcomeScreen,CIwSVec2(0,0),CIwSVec2(screen_width,screen_height));
+		IwGxClear(IW_GX_DEPTH_BUFFER_F);
+		IwGxFlush();
+		Iw2DSurfaceShow();
+		s3eKeyboardUpdate();
+		s3ePointerUpdate();
+		s3eDeviceYield(0);
+		if (s3ePointerGetState(S3E_POINTER_BUTTON_SELECT) & S3E_POINTER_STATE_RELEASED)
+		{
+			keyPressed = 1;
 
-	//	}
-	//}
+		}
+	}
 
 
 	// Navigate to basedirectory were launch applications are situated
@@ -343,6 +343,15 @@ void LevelRender()
 
 		IwGxSetScreenSpaceSlot(-1);
 
+		int scale = 1;
+		// Set default button size relative to screen resolution
+		if (s3eSurfaceGetInt(S3E_SURFACE_WIDTH) < 320 || s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) < 320)
+			scale = 3;
+		else if (s3eSurfaceGetInt(S3E_SURFACE_WIDTH) < 480 || s3eSurfaceGetInt(S3E_SURFACE_HEIGHT) < 480)
+			scale = 2;
+		else
+			scale = 1;
+
 		// HASAN - debug
 		//char strTemp[256];
 		//sprintf(strTemp, "Drawing background background image @ 0,0 and width/height : %d/%d", Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight());
@@ -357,9 +366,9 @@ void LevelRender()
 		//Iw2DDrawImage(carbonSelect,CIwSVec2(450,298));
 		//Iw2DDrawImage(hydrogenSelect,CIwSVec2(30,432));
 		// HASAN - moved button positions to keep them on screen
-		Iw2DDrawImage(nitrogenSelect, CIwSVec2(30,top), CIwSVec2(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT));
-		Iw2DDrawImage(carbonSelect, CIwSVec2(120,top + LEVEL_BUTTON_HEIGHT + 10), CIwSVec2(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT));
-		Iw2DDrawImage(hydrogenSelect, CIwSVec2(30,top + (2 * LEVEL_BUTTON_HEIGHT + 10)), CIwSVec2(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT));
+		Iw2DDrawImage(nitrogenSelect, CIwSVec2(30,top/scale), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
+		Iw2DDrawImage(carbonSelect, CIwSVec2(120,top/scale + LEVEL_BUTTON_HEIGHT/scale + 10), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
+		Iw2DDrawImage(hydrogenSelect, CIwSVec2(30,top/scale + (2 * LEVEL_BUTTON_HEIGHT/scale + 10)), CIwSVec2(LEVEL_BUTTON_WIDTH/scale, LEVEL_BUTTON_HEIGHT/scale));
 
 		//ButtonsRender();
 		IwGxSetScreenSpaceSlot(-1);
