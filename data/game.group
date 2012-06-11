@@ -39,7 +39,11 @@ CIwResGroup
 	
 	// Sound sample WAV files
 	"./explosion.wav"
-	"./pop.wav"
+	"./pop2.wav"
+	"./shoot.wav"
+	"./corkpop.wav"
+	"./bubbles2.wav"
+	"./boingoing.wav"
 
 	// Create sound specs (can be thought of as sound materials)
 	CIwSoundSpec
@@ -50,14 +54,40 @@ CIwResGroup
 		loop		false			# Do we want this sound effect to play forever?
 	}
 
+		CIwSoundSpec
+	{
+		name		"bubbles"		# The name we want to use to refer to this sound effect in out code
+		data		"bubbles2"		# The WAv file name (without .wav)
+		vol 		0.5				# Default volume to be played at
+		loop		false			# Do we want this sound effect to play forever?
+	}
+
+
+		CIwSoundSpec
+	{
+		name		"corkpop"		# The name we want to use to refer to this sound effect in out code
+		data		"corkpop"		# The WAv file name (without .wav)
+		vol 		0.25				# Default volume to be played at
+		loop		false			# Do we want this sound effect to play forever?
+	}
+
 	// Create sound specs (can be thought of as sound materials)
 	CIwSoundSpec
 	{
 		name		"pop"			# The name we want to use to refer to this sound effect in out code
-		data		"pop"			# The WAv file name (without .wav)
-		vol 		1				# Default volume to be played at
+		data		"pop2"			# The WAv file name (without .wav)
+		vol 		0.5				# Default volume to be played at
 		loop		false			# Do we want this sound effect to play forever?
 	}
+
+		CIwSoundSpec
+	{
+		name		"bounce"			# The name we want to use to refer to this sound effect in out code
+		data		"boingoing"			# The WAv file name (without .wav)
+		vol 		0.5				# Default volume to be played at
+		loop		false			# Do we want this sound effect to play forever?
+	}
+	
 	
 	// Create a sound group to contain all of our sound specs
 	CIwSoundGroup
@@ -68,6 +98,9 @@ CIwResGroup
 		killOldest		false			# Tell system not to stop the oldest sound effects from playing if we run out of channels
 		addSpec			"explosion"		# Add the explosion sound spec to our sound group
 		addSpec			"pop"			# Add the pop sound spec to our sound group
+		addSpec			"corkpop"			# add shoot sound spec to our sound group
+		addSpec			"bubbles"			# add shoot sound spec to our sound group
+		addSpec			"bounce"			# add shoot sound spec to our sound group
 	}
 	
 	// -----------------------------------------------------------------------

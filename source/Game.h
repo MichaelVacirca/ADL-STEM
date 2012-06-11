@@ -141,6 +141,12 @@ protected:
 	CIwSoundInst*				ExplosionSoundInstance;
 	CIwSoundSpec*				PopSoundSpec;
 	CIwSoundInst*				PopSoundInstance;
+	CIwSoundSpec*				ShootSoundSpec;
+	CIwSoundInst*				ShootSoundInstance;
+	CIwSoundSpec*				BubblesSoundSpec;
+	CIwSoundInst*				BubblesSoundInstance;
+	CIwSoundSpec*				BounceSoundSpec;
+	CIwSoundInst*				BounceSoundInstance;
 
 public:
 	CGame() : SpriteManager(NULL)	{}
@@ -148,8 +154,14 @@ public:
 	void	Init();				// Initialise the game
 	void	Release();			// Release the game
 
+	void	PlayShootSound();
 	void	PlayExplosionSound();
 	void	PlayPopSound();
+	void	PlayBubblesSound();
+	void	PlayBounceSound();
+
+
+
 	void	LoadLevel(const char* i_strLevelFile);
 	void	UnloadLevel();
 

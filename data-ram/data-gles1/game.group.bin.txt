@@ -85,22 +85,43 @@ ResGroupResources:
 		"explosion" (0x57921ec6)
 		Size: 50358
 	CIwSoundData (0xd5610dab)
-		"pop" (0xb889e14)
-		Size: 1563
-	ResList 'CIwSoundData' pos:13685485 size:51931
+		"pop2" (0x7c9c60c6)
+		Size: 2226
+	CIwSoundData (0xd5610dab)
+		"shoot" (0x105af072)
+		Size: 63538
+	CIwSoundData (0xd5610dab)
+		"corkpop" (0xd3bd3b03)
+		Size: 67102
+	CIwSoundData (0xd5610dab)
+		"bubbles2" (0x70870f6)
+		Size: 72754
+	CIwSoundData (0xd5610dab)
+		"boingoing" (0x950c0221)
+		Size: 36110
+	ResList 'CIwSoundData' pos:13685485 size:292098
 
 	CIwSoundSpec (0xd569853c)
 		"explosion" (0x57921ec6)
 		Size: 30
 	CIwSoundSpec (0xd569853c)
+		"bubbles" (0x939b6844)
+		Size: 30
+	CIwSoundSpec (0xd569853c)
+		"corkpop" (0xd3bd3b03)
+		Size: 30
+	CIwSoundSpec (0xd569853c)
 		"pop" (0xb889e14)
 		Size: 30
-	ResList 'CIwSoundSpec' pos:13737416 size:70
+	CIwSoundSpec (0xd569853c)
+		"bounce" (0xf4933bc1)
+		Size: 30
+	ResList 'CIwSoundSpec' pos:13977583 size:160
 
 	CIwSoundGroup (0x81c24cbe)
 		"sound_effects" (0x7f3c706d)
 		Size: 18
-	ResList 'CIwSoundGroup' pos:13737486 size:28
+	ResList 'CIwSoundGroup' pos:13977743 size:28
 
-ResGroupResources: Wrote 13737483 bytes to CIwResGroup "game"
+ResGroupResources: Wrote 13977740 bytes to CIwResGroup "game"
 

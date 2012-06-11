@@ -75,9 +75,21 @@ void CGame::Init()
 	// This section sets up Audio Initial Parameters
 		ExplosionSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("explosion", IW_SOUND_RESTYPE_SPEC);
 		ExplosionSoundInstance = NULL;
+
 		PopSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("pop", IW_SOUND_RESTYPE_SPEC);
 		PopSoundInstance = NULL;
-		m_bIsMuted = false;
+
+		ShootSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("corkpop", IW_SOUND_RESTYPE_SPEC);
+		ShootSoundInstance = NULL;
+		
+		BubblesSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("bubbles", IW_SOUND_RESTYPE_SPEC);
+		BubblesSoundInstance = NULL;
+		
+		BounceSoundSpec = (CIwSoundSpec*)gameGroup->GetResNamed("bounce", IW_SOUND_RESTYPE_SPEC);
+		BounceSoundInstance = NULL;
+
+
+		m_bIsMuted = false;		
 
 	// This section sets up Touch Initial Parameters
 		xTouch1 = 0;
@@ -148,6 +160,29 @@ void CGame::PlayPopSound()
 	}
 }
 
+void CGame::PlayShootSound()
+{
+	if (ShootSoundInstance == NULL || !ShootSoundInstance->IsPlaying())
+	{
+		ShootSoundInstance = ShootSoundSpec->Play();
+	}
+}
+
+void CGame::PlayBubblesSound()
+{
+	if (BubblesSoundInstance == NULL || !BubblesSoundInstance->IsPlaying())
+	{
+		BubblesSoundInstance = BubblesSoundSpec->Play();
+	}
+}
+
+void CGame::PlayBounceSound()
+{
+	if (BounceSoundInstance == NULL || !BounceSoundInstance->IsPlaying())
+	{
+		BounceSoundInstance = BounceSoundSpec->Play();
+	}
+}
 // load a level
 void CGame::LoadLevel(const char* i_strLevelFile)
 {
@@ -245,11 +280,15 @@ void CGame::Update()
 		void* bodyUserDataA = curCollisionInfo->atom1Body->GetUserData();
 		void* bodyUserDataB = curCollisionInfo->atom2Body->GetUserData();
 		int collisionAngle = m_pLevel->CompoundCollisionCheck(static_cast<CAtom*>( bodyUserDataA ), static_cast<CAtom*>( bodyUserDataB ), curCollisionInfo->energy);
-		if (collisionAngle != -1)
+		if (collisionAngle == -1)
+		{
+			g_Game.PlayBounceSound();
+		}
+		else if (collisionAngle != -1)
 		{
 			// HASAN - debug
 			s3eDebugOutputString("Creating weld joint between 2 atoms");
-
+			g_Game.PlayPopSound();
 			b2Vec2 worldCoordinateAnchorPoint = curCollisionInfo->atom1Body->GetWorldPoint( b2Vec2(0.5f, 0) );
 			// HASAN - RABB to try to setup rotations
 			//float collisionAngleRadians = (float)collisionAngle * PI / 180;
@@ -631,10 +670,9 @@ void MyContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifo
 			s3eDebugOutputString(temp);
 
 			setCollisionInfo(contact->GetFixtureA()->GetBody(), contact->GetFixtureB()->GetBody(), energy);
-		}
+			
 
-		// HASAN - for simplicity, just play a sound regardless of what's hitting
-		g_Game.PlayPopSound();
+		}
 	}
 }
 

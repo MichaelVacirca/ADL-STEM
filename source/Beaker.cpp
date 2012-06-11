@@ -96,6 +96,7 @@ CAtom* CBeaker::setAtom(CAtom* newAtom)
 	currentAtom->setPosition(BEAKER_IMAGE_SIZE_WIDTH/2, (Iw2DGetSurfaceHeight() - BEAKER_IMAGE_SIZE_HEIGHT/2)-15);
 	currentAtom->setVelocity(0, 0);
 	IwGxSetScreenSpaceSlot(-1);
+	g_Game.PlayBubblesSound();
 	return prevAtom;
 }
 
@@ -112,7 +113,7 @@ bool CBeaker::shootAtom()
 
 	char prevAtomSymbol[4];
 	strcpy(prevAtomSymbol, currentAtom->getSymbol());
-	g_Game.PlayPopSound();
+	//g_Game.PlayShootSound();
 	// shoot atom into environment
 	// 1 - destroy current atom
 	currentAtom->Destroy();
@@ -159,7 +160,7 @@ bool CBeaker::shootAtom()
 	//s3eDebugOutputString(strTemp);
 	
 	// Play sound-effect when shoot an atom
-	g_Game.PlayPopSound();
+	g_Game.PlayShootSound();
 
 	return true;
 }
