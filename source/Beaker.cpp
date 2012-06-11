@@ -106,10 +106,13 @@ bool CBeaker::shootAtom()
 
 	// HASAN - debug
 	s3eDebugOutputString("+++ SHOOTING ATOM NOW +++");
+	
+
+
 
 	char prevAtomSymbol[4];
 	strcpy(prevAtomSymbol, currentAtom->getSymbol());
-
+	g_Game.PlayPopSound();
 	// shoot atom into environment
 	// 1 - destroy current atom
 	currentAtom->Destroy();

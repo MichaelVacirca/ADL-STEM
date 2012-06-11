@@ -634,7 +634,7 @@ void MyContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifo
 		}
 
 		// HASAN - for simplicity, just play a sound regardless of what's hitting
-		//g_Game.PlayExplosionSound();
+		g_Game.PlayPopSound();
 	}
 }
 

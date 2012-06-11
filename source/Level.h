@@ -35,6 +35,8 @@ protected:
 	uint64				m_nLastTime;
 	uint64				m_nTimeoutCounter;
 	bool				m_bFailureTimeoutEnabled;
+	
+	int					resumeVolume;
 
 public:
 	CLevel()

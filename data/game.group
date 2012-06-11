@@ -55,7 +55,7 @@ CIwResGroup
 	{
 		name		"pop"			# The name we want to use to refer to this sound effect in out code
 		data		"pop"			# The WAv file name (without .wav)
-		vol 		0.5				# Default volume to be played at
+		vol 		1				# Default volume to be played at
 		loop		false			# Do we want this sound effect to play forever?
 	}
 	

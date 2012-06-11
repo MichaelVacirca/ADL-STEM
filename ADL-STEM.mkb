@@ -62,6 +62,7 @@ files
 	LevelSelectNitrogen.png
 	flame.png
 	bunsen.png
+	pop.wav
 }
 
 assets
@@ -88,6 +89,7 @@ assets
 
 	(data-ram/data-gles1, data)
 	game.group.bin
+	pop.wav
 }
 
 #### AUTO GENERATED deployment settings from DeployTool.exe. Do not edit below this line ####

@@ -29,7 +29,7 @@
 #include "Level.h"
 
 
-#define	MAX_STR_SIZE				255
+#define	MAX_STR_SIZE		255
 
 // 40 screen pixels to 1 box2d unit (meter)
 // Multiply these constants against the corresponding source values to get the desired conversion

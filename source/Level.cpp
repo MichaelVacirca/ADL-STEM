@@ -26,12 +26,15 @@ void CLevel::Init(const char* i_strLevelFile)
 	int		atomVelX[MAX_LEVEL_COUNT];
 	int		atomVelY[MAX_LEVEL_COUNT];
 	int		atomsIndex = 0;
+	s3eAudioSetInt(S3E_AUDIO_VOLUME,20);
+	resumeVolume = s3eAudioGetInt(s3eAudioProperty(S3E_AUDIO_VOLUME));
 	char	levelMusic[100];
 
 	// HASAN - level atom information to create the correct atom
 
 	// HASAN - read file contents for atom data file and store in this object
 	s3eFile* file = s3eFileOpen(i_strLevelFile, "rb");
+
 	if (file != NULL)
 	{
 		// HASAN - debug
@@ -175,7 +178,8 @@ void CLevel::Init(const char* i_strLevelFile)
 
 	// Play level music
 	if (s3eAudioIsCodecSupported(S3E_AUDIO_CODEC_MP3))
-		s3eAudioPlay(levelMusic, 1);
+		s3eAudioSetInt(s3eAudioProperty(S3E_AUDIO_VOLUME), 50);
+		s3eAudioPlay(levelMusic, 0);
 }
 
 void CLevel::Release()
@@ -242,12 +246,13 @@ void CLevel::Update()
 	{
 		if(s3eAudioIsPlaying() && (s3eAudioGetInt(S3E_AUDIO_VOLUME) > 0))
 		{
+			resumeVolume = s3eAudioGetInt(s3eAudioProperty(S3E_AUDIO_VOLUME));
 			s3eAudioSetInt(s3eAudioProperty(S3E_AUDIO_VOLUME), 0);
 		}
 	}
 	else
 	{
-		s3eAudioSetInt(S3E_AUDIO_VOLUME, 100);
+		s3eAudioSetInt(S3E_AUDIO_VOLUME, resumeVolume);
 	}
 }
 
